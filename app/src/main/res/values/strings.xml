@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">New York Times</string>
+    <string name="app_name">New York Times Latest News</string>
     <string name="article_title">Title:</string>
     <string name="article_date">Date:</string>
     <string name="article_author">Author</string>

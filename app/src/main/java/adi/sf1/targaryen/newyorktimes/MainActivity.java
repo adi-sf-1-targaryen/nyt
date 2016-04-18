@@ -91,14 +91,41 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                     fragment = new GeneralFragment();
                     break;
                 case 1:
-                    fragment = new Fragment();
+                    fragment = new GeneralFragment();
+                    break;
+                case 2:
+                    fragment = new GeneralFragment();
+                    break;
+                case 3:
+                    fragment = new GeneralFragment();
+                    break;
+                case 4:
+                    fragment = new GeneralFragment();
+                    break;
+                case 5:
+                    fragment = new GeneralFragment();
+                    break;
+                case 6:
+                    fragment = new GeneralFragment();
+                    break;
+                case 7:
+                    fragment = new GeneralFragment();
+                    break;
+                case 8:
+                    fragment = new GeneralFragment();
+                    break;
+                case 9:
+                    fragment = new GeneralFragment();
+                    break;
+                case 10:
+                    fragment = new GeneralFragment();
                     break;
             }
             return fragment;
         }
         @Override
         public int getCount() {
-            return 2;
+            return 10;
         }
 
         @Override
@@ -106,9 +133,25 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return "General Properties".toUpperCase(l);
+                    return "Top Stories".toUpperCase(l);
                 case 1:
-                    return "Physical Properties".toUpperCase(l);
+                    return "Most Popular".toUpperCase(l);
+                case 2:
+                    return "Opinion".toUpperCase(l);
+                case 3:
+                    return "World".toUpperCase(l);
+                case 4:
+                    return "U.S.".toUpperCase(l);
+                case 5:
+                    return "Business Day".toUpperCase(l);
+                case 6:
+                    return "Sports".toUpperCase(l);
+                case 7:
+                    return "Arts".toUpperCase(l);
+                case 8:
+                    return "New York".toUpperCase(l);
+                case 9:
+                    return "Magazine".toUpperCase(l);
             }
             return null;
         }

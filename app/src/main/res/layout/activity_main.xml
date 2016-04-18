@@ -18,8 +18,7 @@ tools:context="adi.sf1.targaryen.newyorktimes.MainActivity">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:background="@color/colorPrimary"
+            android:layout_height="40dp"
             android:minHeight="?attr/actionBarSize">
         </android.support.v7.widget.Toolbar>
 
@@ -27,11 +26,11 @@ tools:context="adi.sf1.targaryen.newyorktimes.MainActivity">
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <inducesmile.com.androidswipeviewandtoolbar.SlidingTabLayout
+            <adi.sf1.targaryen.newyorktimes.SlidingTabLayout
                 android:id="@+id/sliding_tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            </inducesmile.com.androidswipeviewandtoolbar.SlidingTabLayout>
+            </adi.sf1.targaryen.newyorktimes.SlidingTabLayout>
 
         </LinearLayout>
 
@@ -39,7 +38,7 @@ tools:context="adi.sf1.targaryen.newyorktimes.MainActivity">
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="inducesmile.com.completeorganicchemistry.AminoAcidActivity"/>
+           />
 
     </LinearLayout>
 
