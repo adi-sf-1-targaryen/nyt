@@ -165,3 +165,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+### Additional
+/app/src/main/java/adi/sf1/targaryen/newyorktimes/api/APIKeys.java
