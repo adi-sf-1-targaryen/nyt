@@ -1,7 +1,14 @@
 <resources>
-    <string name="app_name">New York Times</string>
+    <string name="app_name">New York Times Latest News</string>
     <string name="article_title">Title:</string>
     <string name="article_date">Date:</string>
     <string name="article_author">Author</string>
     <string name="article_content">Content</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="logo_desc">App logo</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="amino_title">Glycine</string>
+    <string name="amino_content">Click on the Navigation Drawer icon on the top left to selection a menu Click on the Navigation Drawer icon on the top left to selection a menu Click on the Navigation Drawer icon on the top left to selection a menu </string>
 </resources>
+
