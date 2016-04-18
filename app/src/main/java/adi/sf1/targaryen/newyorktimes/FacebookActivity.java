@@ -1,17 +1,26 @@
 package adi.sf1.targaryen.newyorktimes;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.model.ShareVideo;
 import com.facebook.share.model.ShareVideoContent;
+import com.facebook.share.widget.ShareButton;
 
 /**
  * This activity uses Facebook sdk tools to get content, pictures or videos from a url or specified location.
@@ -20,12 +29,16 @@ import com.facebook.share.model.ShareVideoContent;
  */
 public class FacebookActivity extends AppCompatActivity {
 
+  ShareButton shareButton;
+  LoginButton loginButton;
+  CallbackManager callbackManager;
+
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+      //Initialize Facebook SDK
+      FacebookSdk.sdkInitialize(getApplicationContext());
+      super.onCreate(savedInstanceState, persistentState);
 
-        //Initialize Facebook SDK
-        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 
   /**
@@ -70,18 +83,52 @@ public class FacebookActivity extends AppCompatActivity {
         return content;
     }
 
-    //Set multimedia function
+  private void facebookIntegrationMethods() {
+    shareButton = (ShareButton) findViewById(R.id.fb_share_button);
+    loginButton = (LoginButton) findViewById(R.id.fb_login_button);
 
-  /**
-   * Creates the share dialog interface that publishes to facebook.
-   * This will be in an activity or fragment it is called from.
-   * https://developers.facebook.com/docs/sharing/android#share_dialog
-   * for reference
-   */
-//    private void setShareDialog() {
-//        ShareDialog shareDialog = new ShareDialog(MainActivity.class);
-//        shareDialog.show(contentFromThisActivity, mode);
-//    }
+    /**
+     * Methods for logging in
+     */
+    callbackManager = CallbackManager.Factory.create();
+    LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+      @Override
+      public void onSuccess(LoginResult loginResult) {
+        Toast toast = Toast.makeText(getApplicationContext(), "Successful Login", Toast.LENGTH_SHORT);
+        toast.show();
+      }
+
+      @Override
+      public void onCancel() {
+
+      }
+
+      @Override
+      public void onError(FacebookException error) {
+
+      }
+    });
+
+    /**
+     * Dummy content to post to facebook wall
+     */
+    ShareLinkContent shareLinkContent = new ShareLinkContent.Builder()
+      .setContentUrl(Uri.parse("http://www.nfl.com/"))
+      .setContentTitle("NFL")
+      .setContentDescription("This is the football")
+      .build();
+
+    /**
+     * Post to facebookwall
+     */
+    shareButton.setShareContent(shareLinkContent);
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    callbackManager.onActivityResult(requestCode, resultCode, data);
+  }
 
   //        shareDialog = new ShareDialog(this);
 //        if(shareButton != null) {
