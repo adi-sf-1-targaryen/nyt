@@ -20,6 +20,22 @@ public class TopStories {
   @SerializedName("results")
   private Story[] results;
 
+  public String getCopyright() {
+    return copyright;
+  }
+
+  public Section getSection() {
+    return section;
+  }
+
+  public Date getUpdated() {
+    return updated;
+  }
+
+  public Story[] getResults() {
+    return results;
+  }
+
   public enum Section {
     @SerializedName("home")HOME("home"),
     @SerializedName("world")WORLD("world"),

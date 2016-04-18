@@ -59,6 +59,74 @@ public class Story {
   @SerializedName("multimedia")
   private Media[] media;
 
+  public String getSection() {
+    return section;
+  }
+
+  public String getSubSection() {
+    return subSection;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public String getSummary() {
+    return summary;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public String getByLine() {
+    return byLine;
+  }
+
+  public String getItemType() {
+    return itemType;
+  }
+
+  public Date getUpdated() {
+    return updated;
+  }
+
+  public Date getCreated() {
+    return created;
+  }
+
+  public Date getPublished() {
+    return published;
+  }
+
+  public String getMaterialTypeFacet() {
+    return materialTypeFacet;
+  }
+
+  public String getKicker() {
+    return kicker;
+  }
+
+  public String[] getDesFacet() {
+    return desFacet;
+  }
+
+  public String[] getOrgFacet() {
+    return orgFacet;
+  }
+
+  public String getPerFacet() {
+    return perFacet;
+  }
+
+  public String getGeoFacet() {
+    return geoFacet;
+  }
+
+  public Media[] getMedia() {
+    return media;
+  }
+
   /**
    * Created by moltendorf on 16/4/17.
    */
@@ -86,5 +154,37 @@ public class Story {
 
     @SerializedName("copyright")
     private String copyright;
+
+    public String getUrl() {
+      return url;
+    }
+
+    public String getFormat() {
+      return format;
+    }
+
+    public int getHeight() {
+      return height;
+    }
+
+    public int getWidth() {
+      return width;
+    }
+
+    public String getType() {
+      return type;
+    }
+
+    public String getSubType() {
+      return subType;
+    }
+
+    public String getCaption() {
+      return caption;
+    }
+
+    public String getCopyright() {
+      return copyright;
+    }
   }
 }
