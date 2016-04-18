@@ -2,8 +2,6 @@ package adi.sf1.targaryen.newyorktimes.api;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
-
 /**
  * Created by moltendorf on 16/4/17.
  */
@@ -15,7 +13,7 @@ public class TopStories {
   private Section section;
 
   @SerializedName("last_updated")
-  private Date updated;
+  private String updated;
 
   @SerializedName("results")
   private Story[] results;
@@ -28,7 +26,7 @@ public class TopStories {
     return section;
   }
 
-  public Date getUpdated() {
+  public String getUpdated() {
     return updated;
   }
 
