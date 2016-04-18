@@ -17,5 +17,6 @@ public class FacebookActivity extends AppCompatActivity {
 
         //Initialize Facebook SDK
         FacebookSdk.sdkInitialize(getApplicationContext());
+
     }
 }
