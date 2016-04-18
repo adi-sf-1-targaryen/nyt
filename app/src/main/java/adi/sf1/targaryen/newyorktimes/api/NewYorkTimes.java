@@ -5,6 +5,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by moltendorf on 16/4/15.
@@ -34,12 +35,12 @@ public class NewYorkTimes {
   }
 
   public Call<TopStories> getTopStories(TopStories.Section section) {
-    return service.getTopStores(APIKeys.NYT_TOP_STORIES, section.getValue());
+    return service.getTopStores(section.getValue(), APIKeys.NYT_TOP_STORIES);
   }
 
   private interface NewYorkTimesAPI {
-    @GET("topstories/v1/{section}.json?api-key={APIKey}")
-    Call<TopStories> getTopStores(@Path("APIKey") String APIKey, @Path("section") String section);
+    @GET("topstories/v1/{section}.json")
+    Call<TopStories> getTopStores(@Path("section") String section, @Query("api-key") String APIKey);
   }
 }
 
