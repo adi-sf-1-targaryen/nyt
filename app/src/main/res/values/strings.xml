@@ -1,8 +1,10 @@
 <resources>
-    <string name="app_name">New York Times</string>
+    <string name="app_name">New York Times Latest News</string>
     <string name="article_title">Title:</string>
     <string name="article_date">Date:</string>
     <string name="article_author">Author</string>
     <string name="article_content">Content</string>
     <string name="facebook_app_id">524135594459226</string>
+    <string name="logo_desc">App logo</string>
 </resources>
+
