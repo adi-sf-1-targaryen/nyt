@@ -68,7 +68,6 @@ public class FacebookActivity extends AppCompatActivity {
           .setVideo(video)
           .build();
         return content;
-
     }
 
     //Set multimedia function
@@ -76,9 +75,23 @@ public class FacebookActivity extends AppCompatActivity {
   /**
    * Creates the share dialog interface that publishes to facebook.
    * This will be in an activity or fragment it is called from.
+   * https://developers.facebook.com/docs/sharing/android#share_dialog
+   * for reference
    */
 //    private void setShareDialog() {
 //        ShareDialog shareDialog = new ShareDialog(MainActivity.class);
 //        shareDialog.show(contentFromThisActivity, mode);
 //    }
+
+  //        shareDialog = new ShareDialog(this);
+//        if(shareButton != null) {
+//            if(ShareDialog.canShow(ShareLinkContent.class)) {
+//                ShareLinkContent content = new ShareLinkContent.Builder()
+//                  .setContentTitle("Testing")
+//                  .setContentDescription("This is my test share from app")
+//                  .setContentUrl(Uri.parse("https://developers.facebook.com"))
+//                  .build();
+//                shareDialog.show(content);
+//            }
+//        }
 }
