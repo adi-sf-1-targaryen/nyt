@@ -49,10 +49,10 @@ public class Story {
   private String[] orgFacet; // @todo Find better name.
 
   @SerializedName("per_facet")
-  private String perFacet; // @todo Find better name.
+  private String[] perFacet; // @todo Find better name.
 
   @SerializedName("geo_facet")
-  private String geoFacet; // @todo Find better name.
+  private String[] geoFacet; // @todo Find better name.
 
   @SerializedName("multimedia")
   private Media[] media;
@@ -113,11 +113,11 @@ public class Story {
     return orgFacet;
   }
 
-  public String getPerFacet() {
+  public String[] getPerFacet() {
     return perFacet;
   }
 
-  public String getGeoFacet() {
+  public String[] getGeoFacet() {
     return geoFacet;
   }
 
