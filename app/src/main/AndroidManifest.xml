@@ -10,7 +10,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
 
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
@@ -23,6 +29,7 @@
         <provider android:authorities="com.facebook.app.FacebookContentProvider524135594459226"
             android:name="com.facebook.FacebookContentProvider"
             android:exported="true" />
+
 
     </application>
 
