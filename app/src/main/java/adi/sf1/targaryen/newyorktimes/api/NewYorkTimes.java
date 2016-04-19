@@ -54,7 +54,7 @@ public class NewYorkTimes {
     service = retrofit.create(NewYorkTimesAPI.class);
   }
 
-  public Call<MostPopular> getMostPopular(TopStories.Section section) {
+  public Call<MostPopular> getMostPopular() {
     return service.getMostPopular(APIKeys.NYT_TOP_STORIES);
   }
 
