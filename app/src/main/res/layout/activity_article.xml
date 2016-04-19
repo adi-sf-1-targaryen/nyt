@@ -46,6 +46,21 @@
             android:id="@+id/facebook_share_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/tw__post_tweet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/tw__btn_composer_tweet"/>
+
+        <com.twitter.sdk.android.core.identity.TwitterLoginButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+
+            />
+
+
+
     </LinearLayout>
 
 

@@ -10,9 +10,13 @@ import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
+
+import java.net.URL;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -29,6 +33,7 @@ public class TwitterActivity extends AppCompatActivity {
 
     TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
     Fabric.with(this, new Twitter(authConfig));
+    Fabric.with(this, new TwitterCore(authConfig), new TweetComposer());
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_twitter);
 
