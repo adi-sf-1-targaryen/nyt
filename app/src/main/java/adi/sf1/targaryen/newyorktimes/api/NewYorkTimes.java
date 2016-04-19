@@ -73,6 +73,10 @@ public class NewYorkTimes {
   }
 
   public Call<MostPopular> getMostPopular(Type type, MostPopular.Section section, ShareType[] shareTypes, Time time) {
+    if (shareTypes.length == 0) {
+      return getMostPopular(type, section, time);
+    }
+
     String[] shareValues = new String[shareTypes.length];
 
     for (int i = 0; i < shareValues.length; ++i) {
