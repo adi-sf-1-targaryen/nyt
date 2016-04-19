@@ -1,11 +1,14 @@
 package adi.sf1.targaryen.newyorktimes.recyclerAdapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import adi.sf1.targaryen.newyorktimes.R;
 import adi.sf1.targaryen.newyorktimes.api.Story;
@@ -49,8 +52,11 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     Story story = feedList[position];
     Story.Media[] media = story.getMedia();
     if (media != null && media.length > 0 ) {
-      // TODO: 4/19/16 THIS IS FOR GETTING THE IMAGE FOR THE FEED - USE PICASSO
 //        holder.image.setBackgroundResource(media[0].getUrl());
+
+      Context context = holder.image.getContext();
+      Picasso.with(context).load("http://www.freelargeimages.com/wp-content/uploads/2015/06/Grumpy_Cat_No_02.jpg")
+        .into(holder.image);
     }
     holder.title.setText(story.getTitle());
     holder.author.setText(story.getByLine());
