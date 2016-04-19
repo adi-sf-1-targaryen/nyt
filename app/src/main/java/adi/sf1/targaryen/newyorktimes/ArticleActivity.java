@@ -18,6 +18,8 @@ import com.facebook.login.widget.LoginButton;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
 
+import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
+import adi.sf1.targaryen.newyorktimes.api.Story;
 import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
 
 /**
@@ -35,11 +37,13 @@ public class ArticleActivity extends AppCompatActivity {
   String author;
   String date;
   String content;
-  String url;
+  String urlForArticle;
+  String urlForImage;
 
   ShareButton shareButton;
   LoginButton loginButton;
   CallbackManager callbackManager;
+  Story story;
 
 
   @Override
@@ -114,7 +118,8 @@ public class ArticleActivity extends AppCompatActivity {
   }
 
   private void getIntentFromFeedFragment() {
-    url = getIntent().getStringExtra(ArticleFeedFragment.URL_EXTRA_KEY);
+    urlForArticle = getIntent().getStringExtra(ArticleFeedFragment.URL_EXTRA_KEY);
+    story = NewYorkTimes.getInstance().getStory(urlForArticle);
   }
 
 }
