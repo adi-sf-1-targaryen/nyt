@@ -49,28 +49,5 @@ public class ArticleFeedFragment extends Fragment{
   private void setFeedList() {
     //Where the api calls happen
 
-    ArticleFeed story1 = new ArticleFeed();
-    story1.setAuthor("ME");
-    story1.setDate("Today");
-    story1.setSnippet("Text Text Text");
-    story1.setTitle("Awesome Title");
-    story1.setImage(R.drawable.targaryen);
-    feedList.add(story1);
-
-    ArticleFeed story2 = new ArticleFeed();
-    story1.setAuthor("ME");
-    story1.setDate("Today");
-    story1.setSnippet("Text Text Text");
-    story1.setTitle("Awesome Title");
-    story1.setImage(R.drawable.targaryen);
-    feedList.add(story2);
-
-    ArticleFeed story3 = new ArticleFeed();
-    story1.setAuthor("ME");
-    story1.setDate("Today");
-    story1.setSnippet("Text Text Text");
-    story1.setTitle("Awesome Title");
-    story1.setImage(R.drawable.targaryen);
-    feedList.add(story3);
   }
 }
