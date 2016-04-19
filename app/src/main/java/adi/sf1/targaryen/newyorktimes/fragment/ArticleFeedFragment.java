@@ -34,7 +34,7 @@ public class ArticleFeedFragment extends Fragment{
   }
   private void setArticleFeedAdapter() {
     articleFeedAdapter = new ArticleFeedAdapter(feedList);
-    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext()); //getApplicationContext ask Jayme
+    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext()); 
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setAdapter(articleFeedAdapter);
 
