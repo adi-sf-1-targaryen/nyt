@@ -1,5 +1,7 @@
 package adi.sf1.targaryen.newyorktimes.api;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
@@ -9,6 +11,9 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
+import adi.sf1.targaryen.newyorktimes.api.MostPopular.ShareType;
+import adi.sf1.targaryen.newyorktimes.api.MostPopular.Time;
+import adi.sf1.targaryen.newyorktimes.api.MostPopular.Type;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -54,8 +59,29 @@ public class NewYorkTimes {
     service = retrofit.create(NewYorkTimesAPI.class);
   }
 
-  public Call<MostPopular> getMostPopular(MostPopular.Type type) {
-    return service.getMostPopular(type.getValue(), APIKeys.NYT_MOST_POPULAR);
+  public Call<MostPopular> getMostPopular(Type type, MostPopular.Section section, Time time) {
+    if (type == Type.SHARED) {
+      ShareType[] shareTypes = new ShareType[]{
+        ShareType.FACEBOOK,
+        ShareType.TWITTER
+      };
+
+      return getMostPopular(type, section, shareTypes, time);
+    } else {
+      return service.getMostPopular(type.getValue(), section.getValue(), time.getValue(), APIKeys.NYT_MOST_POPULAR);
+    }
+  }
+
+  public Call<MostPopular> getMostPopular(Type type, MostPopular.Section section, ShareType[] shareTypes, Time time) {
+    String[] shareValues = new String[shareTypes.length];
+
+    for (int i = 0; i < shareValues.length; ++i) {
+      shareValues[i] = shareTypes[i].getValue();
+    }
+
+    String share = TextUtils.join(";", shareValues);
+
+    return service.getMostPopular(type.getValue(), section.getValue(), share, time.getValue(), APIKeys.NYT_MOST_POPULAR);
   }
 
   public Call<TopStories> getTopStories(TopStories.Section section) {
@@ -64,10 +90,26 @@ public class NewYorkTimes {
 
   private interface NewYorkTimesAPI {
     @GET("topstories/v1/{section}.json")
-    Call<TopStories> getTopStores(@Path("section") String section, @Query("api-key") String APIKey);
+    Call<TopStories> getTopStores(
+      @Path("section") String section,
+      @Query("api-key") String APIKey
+    );
 
-    @GET("mostpopular/v2/{type}.json")
-    Call<MostPopular> getMostPopular(@Path("type") String type, @Query("api-key") String APIKey);
+    @GET("mostpopular/v2/{type}/{section}/{time}.json")
+    Call<MostPopular> getMostPopular(
+      @Path("type") String type,
+      @Path("section") String section,
+      @Path("time") int time,
+      @Query("api-key") String APIKey
+    );
+
+    @GET("mostpopular/v2/{type}/{section}/{share}/{time}.json")
+    Call<MostPopular> getMostPopular(
+      @Path("type") String type,
+      @Path("section") String section,
+      @Path("share") String share,
+      @Path("time") int time,
+      @Query("api-key") String APIKey);
   }
 
   // @todo Find better way to compact all of our ArrayTypeAdapters.
