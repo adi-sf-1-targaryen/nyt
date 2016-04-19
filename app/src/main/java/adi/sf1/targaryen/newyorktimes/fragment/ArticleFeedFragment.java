@@ -14,12 +14,12 @@ import android.widget.Toast;
 
 import adi.sf1.targaryen.newyorktimes.ArticleActivity;
 import adi.sf1.targaryen.newyorktimes.R;
+import adi.sf1.targaryen.newyorktimes.api.Call;
+import adi.sf1.targaryen.newyorktimes.api.Callback;
 import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
 import adi.sf1.targaryen.newyorktimes.api.Story;
 import adi.sf1.targaryen.newyorktimes.api.TopStories;
 import adi.sf1.targaryen.newyorktimes.recyclerAdapter.ArticleFeedAdapter;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 /**

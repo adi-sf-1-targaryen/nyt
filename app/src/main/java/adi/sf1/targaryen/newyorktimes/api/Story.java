@@ -125,6 +125,20 @@ public class Story {
     return media;
   }
 
+  public Media getFirstPicture() {
+    if (media == null) {
+      return null;
+    }
+
+    for (Media item : media) {
+      if (item.type.equals("image")) {
+        return item;
+      }
+    }
+
+    return null;
+  }
+
   /**
    * Created by moltendorf on 16/4/17.
    */
