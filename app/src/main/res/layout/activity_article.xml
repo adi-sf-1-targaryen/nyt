@@ -34,7 +34,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:orientation="horizontal">
 
         <com.facebook.login.widget.LoginButton
@@ -48,16 +48,16 @@
             android:layout_height="wrap_content"/>
 
         <Button
-            android:id="@+id/tw__post_tweet"
+            android:id="@+id/twitter_share_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:src="@drawable/tw__btn_composer_tweet"/>
 
         <com.twitter.sdk.android.core.identity.TwitterLoginButton
-            android:layout_height="wrap_content"
+            android:id="@+id/twitter_login_button"
             android:layout_width="wrap_content"
-
-            />
+            android:layout_height="wrap_content"
+            android:layout_weight="3.0"/>
 
 
 

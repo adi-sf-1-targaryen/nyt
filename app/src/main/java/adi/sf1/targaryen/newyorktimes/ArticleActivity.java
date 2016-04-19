@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import io.fabric.sdk.android.Fabric;
@@ -56,6 +58,7 @@ public class ArticleActivity extends AppCompatActivity {
   CallbackManager callbackManager;
   Button twitterShareButton;
   TwitterLoginButton twitterLoginButton;
+
   private static final String TWITTER_KEY = "PQd385fJYKJ3lhTGtpSuYe3Cy";
   private static final String TWITTER_SECRET = "1zQcUDzK5wFqgh2FalcXMjVwWYzXgacEO43JI9OjqOLe0cUjUi";
 
@@ -83,6 +86,7 @@ public class ArticleActivity extends AppCompatActivity {
     shareButton = (ShareButton) findViewById(R.id.facebook_share_button);
     loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
     twitterLoginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
+    twitterShareButton = (Button) findViewById(R.id.twitter_share_button);
   }
 
   private void twitterIntergrationMethods() {
@@ -96,6 +100,8 @@ public class ArticleActivity extends AppCompatActivity {
         // with your app's user model
         String msg = "@" + session.getUserName() + " logged in! (#" + session.getUserId() + ")";
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+
+
       }
 
       @Override
@@ -104,11 +110,27 @@ public class ArticleActivity extends AppCompatActivity {
       }
     });
 
-    TweetComposer.Builder builder = new TweetComposer.Builder(this)
-      .text("Tweet this article:")
-      .url(URL url = new URL(getString(R.string.))
-      ;
-    builder.show();
+
+
+    twitterShareButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+//        Intent shareIntent = new Intent();
+//        shareIntent.setAction(Intent.ACTION_SEND);
+
+
+
+        TweetComposer.Builder builder = null;
+        try {
+          builder = new TweetComposer.Builder(ArticleActivity.this)
+            .text("Tweet this article:")
+            .url(new URL("http://www.nfl.com/"));
+        } catch (MalformedURLException e) {
+          e.printStackTrace();
+        }
+        builder.show();
+      }
+    });
   }
 
 
