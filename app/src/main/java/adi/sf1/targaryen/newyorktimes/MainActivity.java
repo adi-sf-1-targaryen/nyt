@@ -19,7 +19,6 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
 
-
   SectionsPagerAdapter mSectionsPagerAdapter;
   ViewPager mViewPager;
   static final String LOG_TAG = "SlidingTabsBasicFragment";
@@ -47,10 +46,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     mSlidingTabLayout.setViewPager(mViewPager);
 
 
-
-
   }
-
 
 
   @Override
@@ -169,3 +165,4 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     }
   }
 }
+
