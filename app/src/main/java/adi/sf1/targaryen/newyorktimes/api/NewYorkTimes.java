@@ -54,6 +54,10 @@ public class NewYorkTimes {
     service = retrofit.create(NewYorkTimesAPI.class);
   }
 
+  public Call<MostPopular> getMostPopular(TopStories.Section section) {
+    return service.getMostPopular(APIKeys.NYT_TOP_STORIES);
+  }
+
   public Call<TopStories> getTopStories(TopStories.Section section) {
     return service.getTopStores(section.getValue(), APIKeys.NYT_TOP_STORIES);
   }
@@ -61,6 +65,9 @@ public class NewYorkTimes {
   private interface NewYorkTimesAPI {
     @GET("topstories/v1/{section}.json")
     Call<TopStories> getTopStores(@Path("section") String section, @Query("api-key") String APIKey);
+
+    @GET("topstories/v1/{section}.json")
+    Call<MostPopular> getMostPopular(@Query("api-key") String APIKey);
   }
 
   // @todo Find better way to compact all of our ArrayTypeAdapters.
