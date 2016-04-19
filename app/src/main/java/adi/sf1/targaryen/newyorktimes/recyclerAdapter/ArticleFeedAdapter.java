@@ -7,17 +7,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
-
 import adi.sf1.targaryen.newyorktimes.R;
-import adi.sf1.targaryen.newyorktimes.model.ArticleFeed;
+import adi.sf1.targaryen.newyorktimes.api.Story;
 
 /**
  * Created by Raiders on 4/18/16.
  */
 public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.ArticleFeedViewHolder> {
 
-  private List<ArticleFeed> feedList;
+  private Story[] feedList = null;
+
 
   public class ArticleFeedViewHolder extends RecyclerView.ViewHolder {
 
@@ -26,16 +25,16 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
 
     public ArticleFeedViewHolder(View itemView) {
       super(itemView);
-      image = (ImageView) itemView.findViewById(R.id.image_recycler);
-      title = (TextView) itemView.findViewById(R.id.title_text_recycler);
-      author = (TextView) itemView.findViewById(R.id.author_text_recycler);
-      date = (TextView) itemView.findViewById(R.id.date_text_recycler);
-      snippet = (TextView) itemView.findViewById(R.id.snippet_text_recycler);
+      image = (ImageView) itemView.findViewById(R.id.image_article);
+      title = (TextView) itemView.findViewById(R.id.title_text_article);
+      author = (TextView) itemView.findViewById(R.id.author_text_article);
+      date = (TextView) itemView.findViewById(R.id.date_text_article);
+      snippet = (TextView) itemView.findViewById(R.id.content_text_article);
     }
   }
 
-  public ArticleFeedAdapter(List<ArticleFeed> feedList) {
-    this.feedList = feedList;
+  public ArticleFeedAdapter() {
+
   }
 
   @Override
@@ -46,16 +45,27 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
 
   @Override
   public void onBindViewHolder(ArticleFeedViewHolder holder, int position) {
-    ArticleFeed articleFeed = feedList.get(position);
-    holder.image.setBackgroundResource(articleFeed.getImage());
-    holder.title.setText(articleFeed.getTitle());
-    holder.author.setText(articleFeed.getAuthor());
-    holder.date.setText(articleFeed.getDate());
-    holder.snippet.setText(articleFeed.getSnippet());
+
+    Story story = feedList[position];
+    Story.Media[] media = story.getMedia();
+    if (media != null && media.length > 0 ) {
+      // TODO: 4/19/16 THIS IS FOR GETTING THE IMAGE FOR THE FEED - USE PICASSO
+//        holder.image.setBackgroundResource(media[0].getUrl());
+    }
+    holder.title.setText(story.getTitle());
+    holder.author.setText(story.getByLine());
+    holder.date.setText(story.getPublished());
+    holder.snippet.setText(story.getSummary());
+
   }
 
   @Override
   public int getItemCount() {
-    return feedList.size();
+    return feedList == null? 0: feedList.length;
+  }
+
+  public void changeDataSet(Story[] feedList) {
+    this.feedList = feedList;
+    notifyDataSetChanged();
   }
 }

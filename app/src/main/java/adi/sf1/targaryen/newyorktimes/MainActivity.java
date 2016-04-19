@@ -1,6 +1,5 @@
 package adi.sf1.targaryen.newyorktimes;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -9,14 +8,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
 import java.util.Locale;
 
+import adi.sf1.targaryen.newyorktimes.api.TopStories;
 import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
+import adi.sf1.targaryen.newyorktimes.fragment.MostPopularFeedFragment;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
@@ -94,42 +93,53 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     @Override
     public Fragment getItem(int position) {
+      Bundle bundle = new Bundle();
+      TopStories.Section section = TopStories.Section.HOME;
+
       Fragment fragment = null;
       switch (position) {
         case 0:
           fragment = new ArticleFeedFragment();
+          section = TopStories.Section.HOME;
           break;
         case 1:
-          fragment = new ArticleFeedFragment();
+          fragment = new MostPopularFeedFragment();
           break;
         case 2:
           fragment = new ArticleFeedFragment();
+          section = TopStories.Section.OPINION;
           break;
         case 3:
           fragment = new ArticleFeedFragment();
+          section = TopStories.Section.WORLD;
           break;
         case 4:
           fragment = new ArticleFeedFragment();
+          section = TopStories.Section.NATIONAL;
           break;
         case 5:
           fragment = new ArticleFeedFragment();
+          section = TopStories.Section.BUSINESS;
           break;
         case 6:
           fragment = new ArticleFeedFragment();
+          section = TopStories.Section.SPORTS;
           break;
         case 7:
           fragment = new ArticleFeedFragment();
+          section = TopStories.Section.ARTS;
           break;
         case 8:
           fragment = new ArticleFeedFragment();
+          section = TopStories.Section.NYREGION;
           break;
         case 9:
           fragment = new ArticleFeedFragment();
-          break;
-        case 10:
-          fragment = new ArticleFeedFragment();
+          section = TopStories.Section.MAGAZINE;
           break;
       }
+      bundle.putString(ArticleFeedFragment.EXTRA_SECTION, section.name());
+      fragment.setArguments(bundle);
       return fragment;
     }
 
@@ -143,25 +153,25 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
       Locale l = Locale.getDefault();
       switch (position) {
         case 0:
-          return "Top Stories".toUpperCase(l);
+          return getString(R.string.top_stories).toUpperCase(l);
         case 1:
-          return "Most Popular".toUpperCase(l);
+          return getString(R.string.most_popular).toUpperCase(l);
         case 2:
-          return "Opinion".toUpperCase(l);
+          return getString(R.string.opinion).toUpperCase(l);
         case 3:
-          return "World".toUpperCase(l);
+          return getString(R.string.world).toUpperCase(l);
         case 4:
-          return "U.S.".toUpperCase(l);
+          return getString(R.string.us).toUpperCase(l);
         case 5:
-          return "Business Day".toUpperCase(l);
+          return getString(R.string.business_day).toUpperCase(l);
         case 6:
-          return "Sports".toUpperCase(l);
+          return getString(R.string.sports).toUpperCase(l);
         case 7:
-          return "Arts".toUpperCase(l);
+          return getString(R.string.arts).toUpperCase(l);
         case 8:
-          return "New York".toUpperCase(l);
+          return getString(R.string.new_york).toUpperCase(l);
         case 9:
-          return "Magazine".toUpperCase(l);
+          return getString(R.string.magazine).toUpperCase(l);
       }
       return null;
     }

@@ -7,5 +7,15 @@
     <string name="facebook_app_id">524135594459226</string>
     <string name="logo_desc">App logo</string>
     <string name="snippet">Snippet</string>
+    <string name="top_stories">Top Stories</string>
+    <string name="most_popular">Most Popular</string>
+    <string name="opinion">Opinion</string>
+    <string name="world">World</string>
+    <string name="us">U.S.</string>
+    <string name="business_day">Business Day</string>
+    <string name="sports">Sports</string>
+    <string name="arts">Arts</string>
+    <string name="new_york">New York</string>
+    <string name="magazine">Magazine</string>
 </resources>
 
