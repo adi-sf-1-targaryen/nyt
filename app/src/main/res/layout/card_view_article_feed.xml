@@ -18,7 +18,7 @@
             >
 
             <ImageView
-                android:id="@+id/image_recycler"
+                android:id="@+id/image_article"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -27,36 +27,36 @@
                 />
 
             <TextView
-                android:id="@+id/title_text_recycler"
+                android:id="@+id/title_text_article"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/image_recycler"
+                android:layout_below="@+id/image_article"
                 android:text="@string/article_title"
                 />
 
             <TextView
-                android:id="@+id/author_text_recycler"
+                android:id="@+id/author_text_article"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/title_text_recycler"
+                android:layout_below="@+id/title_text_article"
                 android:hint="@string/article_author"
                 />
 
             <TextView
-                android:id="@+id/date_text_recycler"
+                android:id="@+id/date_text_article"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/title_text_recycler"
+                android:layout_below="@+id/title_text_article"
                 android:layout_marginLeft="50sp"
-                android:layout_toEndOf="@id/author_text_recycler"
+                android:layout_toEndOf="@id/author_text_article"
                 android:hint="@string/article_date"
                 />
 
             <TextView
-                android:id="@+id/snippet_text_recycler"
+                android:id="@+id/content_text_article"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/author_text_recycler"
+                android:layout_below="@+id/author_text_article"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/snippet"

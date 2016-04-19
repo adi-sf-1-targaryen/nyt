@@ -13,13 +13,13 @@
 
         <ImageView
 
-            android:id="@+id/image_recycler"
+            android:id="@+id/image_article"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:scaleType="centerCrop" />
         <TextView
-            android:id="@+id/title_text_recycler"
+            android:id="@+id/title_text_article"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -34,7 +34,7 @@
 
 
     <TextView
-        android:id="@+id/date_text_recycler"
+        android:id="@+id/date_text_article"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
@@ -43,7 +43,7 @@
 
 
     <TextView
-        android:id="@+id/author_text_recycler"
+        android:id="@+id/author_text_article"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
@@ -54,7 +54,7 @@
 
 
     <TextView
-        android:id="@+id/snippet_text_recycler"
+        android:id="@+id/content_text_article"
         android:text="CONTENT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
