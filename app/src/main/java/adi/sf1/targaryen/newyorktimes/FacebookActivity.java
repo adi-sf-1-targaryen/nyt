@@ -84,8 +84,8 @@ public class FacebookActivity extends AppCompatActivity {
     }
 
   private void facebookIntegrationMethods() {
-    shareButton = (ShareButton) findViewById(R.id.fb_share_button);
-    loginButton = (LoginButton) findViewById(R.id.fb_login_button);
+//    shareButton = (ShareButton) findViewById(R.id.fb_share_button);
+//    loginButton = (LoginButton) findViewById(R.id.fb_login_button);
 
     /**
      * Methods for logging in
