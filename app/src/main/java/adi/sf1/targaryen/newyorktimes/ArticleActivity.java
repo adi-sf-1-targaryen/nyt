@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +21,20 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by Raiders on 4/19/16.
@@ -39,17 +56,25 @@ public class ArticleActivity extends AppCompatActivity {
   ShareButton shareButton;
   LoginButton loginButton;
   CallbackManager callbackManager;
+  Button twitterShareButton;
+  TwitterLoginButton twitterLoginButton;
 
+  private static final String TWITTER_KEY = "PQd385fJYKJ3lhTGtpSuYe3Cy";
+  private static final String TWITTER_SECRET = "1zQcUDzK5wFqgh2FalcXMjVwWYzXgacEO43JI9OjqOLe0cUjUi";
 
   @Override
   public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
     super.onCreate(savedInstanceState, persistentState);
     //Initialize Facebook SDK
     FacebookSdk.sdkInitialize(getApplicationContext());
+    TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+    Fabric.with(this, new Twitter(authConfig));
+    Fabric.with(this, new TwitterCore(authConfig), new TweetComposer());
     setContentView(R.layout.activity_article);
 
     setViews();
     facebookIntegrationMethods();
+    twitterIntergrationMethods();
   }
 
   private void setViews() {
@@ -60,7 +85,54 @@ public class ArticleActivity extends AppCompatActivity {
     articleContent = (TextView) findViewById(R.id.content_text_article);
     shareButton = (ShareButton) findViewById(R.id.facebook_share_button);
     loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+    twitterLoginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
+    twitterShareButton = (Button) findViewById(R.id.twitter_share_button);
   }
+
+  private void twitterIntergrationMethods() {
+    twitterLoginButton.setCallback(new Callback<TwitterSession>() {
+      @Override
+      public void success(Result<TwitterSession> result) {
+        // The TwitterSession is also available through:
+        // Twitter.getInstance().core.getSessionManager().getActiveSession()
+        TwitterSession session = result.data;
+        //
+        // with your app's user model
+        String msg = "@" + session.getUserName() + " logged in! (#" + session.getUserId() + ")";
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+
+
+      }
+
+      @Override
+      public void failure(TwitterException exception) {
+        Log.d("TwitterKit", "Login with Twitter failure", exception);
+      }
+    });
+
+
+
+    twitterShareButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+//        Intent shareIntent = new Intent();
+//        shareIntent.setAction(Intent.ACTION_SEND);
+
+
+
+        TweetComposer.Builder builder = null;
+        try {
+          builder = new TweetComposer.Builder(ArticleActivity.this)
+            .text("Tweet this article:")
+            .url(new URL("http://www.nfl.com/"));
+        } catch (MalformedURLException e) {
+          e.printStackTrace();
+        }
+        builder.show();
+      }
+    });
+  }
+
 
   /**
    * Methods taken from Facebook SDK to be able to log in or out of facebook and then post this article
@@ -108,6 +180,7 @@ public class ArticleActivity extends AppCompatActivity {
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
+    twitterLoginButton.onActivityResult(requestCode, resultCode, data);
     callbackManager.onActivityResult(requestCode, resultCode, data);
   }
 
