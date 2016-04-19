@@ -6,20 +6,29 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
+import io.fabric.sdk.android.Fabric;
+
 public class TwitterActivity extends AppCompatActivity {
 
+  private static final String TWITTER_KEY = "PQd385fJYKJ3lhTGtpSuYe3Cy";
+  private static final String TWITTER_SECRET = "1zQcUDzK5wFqgh2FalcXMjVwWYzXgacEO43JI9OjqOLe0cUjUi";
 
   private TwitterLoginButton loginButton;
 
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+
+    TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+    Fabric.with(this, new Twitter(authConfig));
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_twitter);
 
