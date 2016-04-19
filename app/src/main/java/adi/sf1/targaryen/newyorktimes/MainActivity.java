@@ -1,5 +1,6 @@
 package adi.sf1.targaryen.newyorktimes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -8,162 +9,202 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+
 import io.fabric.sdk.android.Fabric;
+
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
-    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "PQd385fJYKJ3lhTGtpSuYe3Cy";
-    private static final String TWITTER_SECRET = "1zQcUDzK5wFqgh2FalcXMjVwWYzXgacEO43JI9OjqOLe0cUjUi";
+  // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
+  private static final String TWITTER_KEY = "PQd385fJYKJ3lhTGtpSuYe3Cy";
+  private static final String TWITTER_SECRET = "1zQcUDzK5wFqgh2FalcXMjVwWYzXgacEO43JI9OjqOLe0cUjUi";
+  private TwitterLoginButton loginButton;
 
 
-    SectionsPagerAdapter mSectionsPagerAdapter;
-    ViewPager mViewPager;
-    static final String LOG_TAG = "SlidingTabsBasicFragment";
-    private SlidingTabLayout mSlidingTabLayout;
+  SectionsPagerAdapter mSectionsPagerAdapter;
+  ViewPager mViewPager;
+  static final String LOG_TAG = "SlidingTabsBasicFragment";
+  private SlidingTabLayout mSlidingTabLayout;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
-        setContentView(R.layout.activity_main);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+    Fabric.with(this, new Twitter(authConfig));
+    setContentView(R.layout.activity_main);
 
-        Toolbar topToolBar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(topToolBar);
-        topToolBar.setLogo(R.drawable.nyt_logo);
-        topToolBar.setLogoDescription(getResources().getString(R.string.logo_desc));
+    Toolbar topToolBar = (Toolbar) findViewById(R.id.toolbar);
+    setSupportActionBar(topToolBar);
+    topToolBar.setLogo(R.drawable.nyt_logo);
+    topToolBar.setLogoDescription(getResources().getString(R.string.logo_desc));
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+    mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+    mViewPager = (ViewPager) findViewById(R.id.pager);
 
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+    mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+    mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
 
-        mSlidingTabLayout.setViewPager(mViewPager);
-    }
+    mSlidingTabLayout.setViewPager(mViewPager);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+
+    loginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
+    loginButton.setCallback(new Callback<TwitterSession>() {
+      @Override
+      public void success(Result<TwitterSession> result) {
+        // The TwitterSession is also available through:
+        // Twitter.getInstance().core.getSessionManager().getActiveSession()
+        TwitterSession session = result.data;
+        // TODO: Remove toast and use the TwitterSession's userID
+        // with your app's user model
+        String msg = "@" + session.getUserName() + " logged in! (#" + session.getUserId() + ")";
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+      }
+
+      @Override
+      public void failure(TwitterException exception) {
+        Log.d("TwitterKit", "Login with Twitter failure", exception);
+      }
+    });
+
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    // Make sure that the loginButton hears the result from any
+    // Activity that it triggered.
+    loginButton.onActivityResult(requestCode, resultCode, data);
+
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
 // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+    getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        return true;
-    }
+    return true;
+  }
 
-    @Override
+  @Override
 
-    public boolean onOptionsItemSelected(MenuItem item) {
+  public boolean onOptionsItemSelected(MenuItem item) {
 // Handle action bar item clicks here. The action bar will
 // automatically handle clicks on the Home/Up button, so long
 // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    int id = item.getItemId();
 //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    if (id == R.id.action_settings) {
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
+  }
+
+  @Override
+  public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+    mViewPager.setCurrentItem(tab.getPosition());
+  }
+
+  @Override
+  public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+  }
+
+  @Override
+  public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+  }
+
+  public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public SectionsPagerAdapter(android.support.v4.app.FragmentManager fm) {
+      super(fm);
+    }
+
+
+    @Override
+    public Fragment getItem(int position) {
+      Fragment fragment = null;
+      switch (position) {
+        case 0:
+          fragment = new GeneralFragment();
+          break;
+        case 1:
+          fragment = new GeneralFragment();
+          break;
+        case 2:
+          fragment = new GeneralFragment();
+          break;
+        case 3:
+          fragment = new GeneralFragment();
+          break;
+        case 4:
+          fragment = new GeneralFragment();
+          break;
+        case 5:
+          fragment = new GeneralFragment();
+          break;
+        case 6:
+          fragment = new GeneralFragment();
+          break;
+        case 7:
+          fragment = new GeneralFragment();
+          break;
+        case 8:
+          fragment = new GeneralFragment();
+          break;
+        case 9:
+          fragment = new GeneralFragment();
+          break;
+        case 10:
+          fragment = new GeneralFragment();
+          break;
+      }
+      return fragment;
     }
 
     @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-        mViewPager.setCurrentItem(tab.getPosition());
+    public int getCount() {
+      return 10;
     }
 
     @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+    public CharSequence getPageTitle(int position) {
+      Locale l = Locale.getDefault();
+      switch (position) {
+        case 0:
+          return "Top Stories".toUpperCase(l);
+        case 1:
+          return "Most Popular".toUpperCase(l);
+        case 2:
+          return "Opinion".toUpperCase(l);
+        case 3:
+          return "World".toUpperCase(l);
+        case 4:
+          return "U.S.".toUpperCase(l);
+        case 5:
+          return "Business Day".toUpperCase(l);
+        case 6:
+          return "Sports".toUpperCase(l);
+        case 7:
+          return "Arts".toUpperCase(l);
+        case 8:
+          return "New York".toUpperCase(l);
+        case 9:
+          return "Magazine".toUpperCase(l);
+      }
+      return null;
     }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-    }
-
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-        public SectionsPagerAdapter(android.support.v4.app.FragmentManager fm) {
-            super(fm);
-        }
-
-
-
-        @Override
-        public Fragment getItem(int position) {
-            Fragment fragment = null;
-            switch (position) {
-                case 0:
-                    fragment = new GeneralFragment();
-                    break;
-                case 1:
-                    fragment = new GeneralFragment();
-                    break;
-                case 2:
-                    fragment = new GeneralFragment();
-                    break;
-                case 3:
-                    fragment = new GeneralFragment();
-                    break;
-                case 4:
-                    fragment = new GeneralFragment();
-                    break;
-                case 5:
-                    fragment = new GeneralFragment();
-                    break;
-                case 6:
-                    fragment = new GeneralFragment();
-                    break;
-                case 7:
-                    fragment = new GeneralFragment();
-                    break;
-                case 8:
-                    fragment = new GeneralFragment();
-                    break;
-                case 9:
-                    fragment = new GeneralFragment();
-                    break;
-                case 10:
-                    fragment = new GeneralFragment();
-                    break;
-            }
-            return fragment;
-        }
-        @Override
-        public int getCount() {
-            return 10;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return "Top Stories".toUpperCase(l);
-                case 1:
-                    return "Most Popular".toUpperCase(l);
-                case 2:
-                    return "Opinion".toUpperCase(l);
-                case 3:
-                    return "World".toUpperCase(l);
-                case 4:
-                    return "U.S.".toUpperCase(l);
-                case 5:
-                    return "Business Day".toUpperCase(l);
-                case 6:
-                    return "Sports".toUpperCase(l);
-                case 7:
-                    return "Arts".toUpperCase(l);
-                case 8:
-                    return "New York".toUpperCase(l);
-                case 9:
-                    return "Magazine".toUpperCase(l);
-            }
-            return null;
-        }
-    }
+  }
 }
