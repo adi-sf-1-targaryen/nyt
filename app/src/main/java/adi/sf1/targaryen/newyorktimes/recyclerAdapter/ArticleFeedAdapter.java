@@ -25,11 +25,11 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
 
     public ArticleFeedViewHolder(View itemView) {
       super(itemView);
-      image = (ImageView) itemView.findViewById(R.id.image_recycler);
-      title = (TextView) itemView.findViewById(R.id.title_text_recycler);
-      author = (TextView) itemView.findViewById(R.id.author_text_recycler);
-      date = (TextView) itemView.findViewById(R.id.date_text_recycler);
-      snippet = (TextView) itemView.findViewById(R.id.snippet_text_recycler);
+      image = (ImageView) itemView.findViewById(R.id.image_article);
+      title = (TextView) itemView.findViewById(R.id.title_text_article);
+      author = (TextView) itemView.findViewById(R.id.author_text_article);
+      date = (TextView) itemView.findViewById(R.id.date_text_article);
+      snippet = (TextView) itemView.findViewById(R.id.content_text_article);
     }
   }
 
