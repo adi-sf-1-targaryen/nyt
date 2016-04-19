@@ -49,14 +49,14 @@
                 android:hint="@string/article_author"
                 />
             <TextView
-                android:id="@+id/text_view_content"
+                android:id="@+id/text_view_snippet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/image_view_article"
                 android:layout_below="@+id/text_view_author"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:text="@string/article_content"
+                android:text="@string/snippet"
                 />
 
         </RelativeLayout>

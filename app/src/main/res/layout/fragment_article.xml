@@ -54,7 +54,7 @@
 
 
     <TextView
-        android:id="@+id/text_view_content"
+        android:id="@+id/text_view_snippet"
         android:text="CONTENT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
