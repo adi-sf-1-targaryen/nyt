@@ -18,6 +18,8 @@ import com.facebook.login.widget.LoginButton;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
 
+import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
+
 /**
  * Created by Raiders on 4/19/16.
  */
@@ -48,6 +50,7 @@ public class ArticleActivity extends AppCompatActivity {
     setContentView(R.layout.activity_article);
 
     setViews();
+    getIntentFromFeedFragment();
     facebookIntegrationMethods();
   }
 
@@ -108,6 +111,10 @@ public class ArticleActivity extends AppCompatActivity {
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     callbackManager.onActivityResult(requestCode, resultCode, data);
+  }
+
+  private void getIntentFromFeedFragment() {
+    url = getIntent().getStringExtra(ArticleFeedFragment.URL_EXTRA_KEY);
   }
 
 }

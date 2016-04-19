@@ -1,6 +1,5 @@
 package adi.sf1.targaryen.newyorktimes.recyclerAdapter;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import adi.sf1.targaryen.newyorktimes.ArticleActivity;
 import adi.sf1.targaryen.newyorktimes.R;
 import adi.sf1.targaryen.newyorktimes.api.Story;
 
@@ -18,6 +16,7 @@ import adi.sf1.targaryen.newyorktimes.api.Story;
 public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.ArticleFeedViewHolder> {
 
   private Story[] feedList = null;
+  private OnItemClickListener listener;
 
 
   public class ArticleFeedViewHolder extends RecyclerView.ViewHolder {
@@ -33,21 +32,24 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
       date = (TextView) itemView.findViewById(R.id.date_text_article);
       snippet = (TextView) itemView.findViewById(R.id.content_text_article);
     }
+
+    public void setOnClickListener(final Story story, final OnItemClickListener listener) {
+      itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          listener.onItemClick(story);
+        }
+      });
+    }
   }
 
-  public ArticleFeedAdapter() {
-
+  public ArticleFeedAdapter(OnItemClickListener listener) {
+    this.listener = listener;
   }
 
   @Override
   public ArticleFeedViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
     View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_article_feed, parent, false);
-    itemView.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Intent articleIntent = new Intent(parent.getContext(), ArticleActivity.class);
-      }
-    });
     return new ArticleFeedViewHolder(itemView);
   }
 
@@ -64,7 +66,7 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     holder.author.setText(story.getByLine());
     holder.date.setText(story.getPublished());
     holder.snippet.setText(story.getSummary());
-
+    holder.setOnClickListener(feedList[position], listener);
   }
 
   @Override
@@ -76,4 +78,9 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     this.feedList = feedList;
     notifyDataSetChanged();
   }
+
+  public interface OnItemClickListener {
+    void onItemClick(Story story);
+  }
+
 }

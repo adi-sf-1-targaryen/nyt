@@ -1,6 +1,7 @@
 package adi.sf1.targaryen.newyorktimes.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import adi.sf1.targaryen.newyorktimes.ArticleActivity;
 import adi.sf1.targaryen.newyorktimes.R;
 import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
+import adi.sf1.targaryen.newyorktimes.api.Story;
 import adi.sf1.targaryen.newyorktimes.api.TopStories;
 import adi.sf1.targaryen.newyorktimes.recyclerAdapter.ArticleFeedAdapter;
 import retrofit2.Call;
@@ -22,13 +25,14 @@ import retrofit2.Response;
 /**
  * Created by Raiders on 4/18/16.
  */
-public class ArticleFeedFragment extends Fragment{
+public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.OnItemClickListener{
 
   protected Context context;
 //  private List<ArticleFeed> feedList = new ArrayList<>();
   private RecyclerView recyclerView;
   protected ArticleFeedAdapter articleFeedAdapter;
   public static final String EXTRA_SECTION = "section";
+  public static final String URL_EXTRA_KEY = "urlExtraKey";
   private TopStories.Section section = TopStories.Section.HOME;
 
   @Override
@@ -54,7 +58,7 @@ public class ArticleFeedFragment extends Fragment{
     return view;
   }
   private void setArticleFeedAdapter() {
-    articleFeedAdapter = new ArticleFeedAdapter(/*feedList*/);
+    articleFeedAdapter = new ArticleFeedAdapter(this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setAdapter(articleFeedAdapter);
@@ -75,4 +79,10 @@ public class ArticleFeedFragment extends Fragment{
     });
   }
 
+  @Override
+  public void onItemClick(Story story) {
+    Intent articleActivityIntent = new Intent(context, ArticleActivity.class);
+    articleActivityIntent.putExtra(URL_EXTRA_KEY, story.getUrl());
+    startActivity(articleActivityIntent);
+  }
 }
