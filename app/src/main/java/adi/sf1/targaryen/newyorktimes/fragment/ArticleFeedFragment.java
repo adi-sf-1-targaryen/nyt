@@ -73,7 +73,6 @@ public class ArticleFeedFragment extends Fragment{
         Toast.makeText(context, "Could not retrieve Top Stories", Toast.LENGTH_SHORT).show();
       }
     });
-
-
   }
+
 }
