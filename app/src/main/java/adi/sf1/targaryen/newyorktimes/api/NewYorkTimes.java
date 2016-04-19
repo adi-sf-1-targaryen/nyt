@@ -11,10 +11,10 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
+import adi.sf1.targaryen.newyorktimes.api.MostPopular.Section;
 import adi.sf1.targaryen.newyorktimes.api.MostPopular.ShareType;
 import adi.sf1.targaryen.newyorktimes.api.MostPopular.Time;
 import adi.sf1.targaryen.newyorktimes.api.MostPopular.Type;
-import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
@@ -59,22 +59,30 @@ public class NewYorkTimes {
     service = retrofit.create(NewYorkTimesAPI.class);
   }
 
-  public Call<MostPopular> getMostPopular(Type type, MostPopular.Section section, Time time) {
+  public Call<MostPopular> getMostPopular(Type type, Section section, Time time) {
+    return getMostPopular(type, section, time, true);
+  }
+
+  public Call<MostPopular> getMostPopular(Type type, Section section, Time time, boolean cache) {
     if (type == Type.SHARED) {
       ShareType[] shareTypes = new ShareType[]{
         ShareType.FACEBOOK,
         ShareType.TWITTER
       };
 
-      return getMostPopular(type, section, shareTypes, time);
+      return getMostPopular(type, section, shareTypes, time, cache);
     } else {
-      return service.getMostPopular(type.getValue(), section.getValue(), time.getValue(), APIKeys.NYT_MOST_POPULAR);
+      return new Call<>(service.getMostPopular(type.getValue(), section.getValue(), time.getValue(), APIKeys.NYT_MOST_POPULAR));
     }
   }
 
-  public Call<MostPopular> getMostPopular(Type type, MostPopular.Section section, ShareType[] shareTypes, Time time) {
+  public Call<MostPopular> getMostPopular(Type type, Section section, ShareType[] shareTypes, Time time) {
+    return getMostPopular(type, section, shareTypes, time, true);
+  }
+
+  public Call<MostPopular> getMostPopular(Type type, Section section, ShareType[] shareTypes, Time time, boolean cache) {
     if (shareTypes.length == 0) {
-      return getMostPopular(type, section, time);
+      return getMostPopular(type, section, time, cache);
     }
 
     String[] shareValues = new String[shareTypes.length];
@@ -85,22 +93,28 @@ public class NewYorkTimes {
 
     String share = TextUtils.join(";", shareValues);
 
-    return service.getMostPopular(type.getValue(), section.getValue(), share, time.getValue(), APIKeys.NYT_MOST_POPULAR);
+    return new Call<>(service.getMostPopular(
+      type.getValue(),
+      section.getValue(),
+      share,
+      time.getValue(),
+      APIKeys.NYT_MOST_POPULAR)
+    );
   }
 
   public Call<TopStories> getTopStories(TopStories.Section section) {
-    return service.getTopStores(section.getValue(), APIKeys.NYT_TOP_STORIES);
+    return new Call<>(service.getTopStores(section.getValue(), APIKeys.NYT_TOP_STORIES));
   }
 
   private interface NewYorkTimesAPI {
     @GET("topstories/v1/{section}.json")
-    Call<TopStories> getTopStores(
+    retrofit2.Call<TopStories> getTopStores(
       @Path("section") String section,
       @Query("api-key") String APIKey
     );
 
     @GET("mostpopular/v2/{type}/{section}/{time}.json")
-    Call<MostPopular> getMostPopular(
+    retrofit2.Call<MostPopular> getMostPopular(
       @Path("type") String type,
       @Path("section") String section,
       @Path("time") int time,
@@ -108,7 +122,7 @@ public class NewYorkTimes {
     );
 
     @GET("mostpopular/v2/{type}/{section}/{share}/{time}.json")
-    Call<MostPopular> getMostPopular(
+    retrofit2.Call<MostPopular> getMostPopular(
       @Path("type") String type,
       @Path("section") String section,
       @Path("share") String share,
