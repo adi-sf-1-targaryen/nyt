@@ -55,6 +55,8 @@ public class ArticleActivity extends AppCompatActivity {
 
     setViews();
     getIntentFromFeedFragment();
+    setArticleObjects();
+    fillViews();
     facebookIntegrationMethods();
   }
 
@@ -100,7 +102,7 @@ public class ArticleActivity extends AppCompatActivity {
      * Dummy content to post to facebook wall
      */
     ShareLinkContent shareLinkContent = new ShareLinkContent.Builder()
-      .setContentUrl(Uri.parse("http://www.nfl.com/"))
+      .setContentUrl(Uri.parse(urlForArticle))
       .setContentTitle("NFL")
       .setContentDescription("This is the football")
       .build();
@@ -122,4 +124,17 @@ public class ArticleActivity extends AppCompatActivity {
     story = NewYorkTimes.getInstance().getStory(urlForArticle);
   }
 
+  private void setArticleObjects() {
+    title = story.getTitle();
+    author = story.getByLine();
+    date = story.getPublished();
+    content = story.getSummary();
+  }
+
+  private void fillViews() {
+    articleTitle.setText(title);
+    articleAuthor.setText(author);
+    articleDate.setText(date);
+    articleContent.setText(content);
+  }
 }
