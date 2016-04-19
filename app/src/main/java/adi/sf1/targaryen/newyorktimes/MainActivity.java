@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         Toolbar topToolBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
         topToolBar.setLogo(R.drawable.nyt_logo);
-        topToolBar.setLogoDescription(getResources().getString(R.string.logo_desc));
+        topToolBar.setLogoDescription(getResources().getString(R.string.app_name));
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         public SectionsPagerAdapter(android.support.v4.app.FragmentManager fm) {
             super(fm);
         }
-
 
 
         @Override

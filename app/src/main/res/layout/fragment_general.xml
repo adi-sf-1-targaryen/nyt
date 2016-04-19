@@ -6,7 +6,10 @@ android:layout_height="match_parent"
 android:background="@color/white_color"
 tools:context="adi.sf1.targaryen.newyorktimes.GeneralFragment">
 
-
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="YO"/>
 
 
 </RelativeLayout>
