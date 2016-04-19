@@ -13,6 +13,8 @@ import android.view.MenuItem;
 
 import java.util.Locale;
 
+import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
+
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
     SectionsPagerAdapter mSectionsPagerAdapter;
@@ -88,37 +90,37 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
             Fragment fragment = null;
             switch (position) {
                 case 0:
-                    fragment = new GeneralFragment();
+                    fragment = new ArticleFeedFragment();
                     break;
                 case 1:
-                    fragment = new GeneralFragment();
+                    fragment = new ArticleFeedFragment();
                     break;
                 case 2:
-                    fragment = new GeneralFragment();
+                    fragment = new ArticleFeedFragment();
                     break;
                 case 3:
-                    fragment = new GeneralFragment();
+                    fragment = new ArticleFeedFragment();
                     break;
                 case 4:
-                    fragment = new GeneralFragment();
+                    fragment = new ArticleFeedFragment();
                     break;
                 case 5:
-                    fragment = new GeneralFragment();
+                    fragment = new ArticleFeedFragment();
                     break;
                 case 6:
-                    fragment = new GeneralFragment();
+                    fragment = new ArticleFeedFragment();
                     break;
                 case 7:
-                    fragment = new GeneralFragment();
+                    fragment = new ArticleFeedFragment();
                     break;
                 case 8:
-                    fragment = new GeneralFragment();
+                    fragment = new ArticleFeedFragment();
                     break;
                 case 9:
-                    fragment = new GeneralFragment();
+                    fragment = new ArticleFeedFragment();
                     break;
                 case 10:
-                    fragment = new GeneralFragment();
+                    fragment = new ArticleFeedFragment();
                     break;
             }
             return fragment;

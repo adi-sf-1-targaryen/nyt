@@ -26,11 +26,11 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
 
     public ArticleFeedViewHolder(View itemView) {
       super(itemView);
-      image = (ImageView) itemView.findViewById(R.id.image_view_recycler);
-      title = (TextView) itemView.findViewById(R.id.text_view_title);
-      author = (TextView) itemView.findViewById(R.id.author_text_view_recycler);
-      date = (TextView) itemView.findViewById(R.id.date_text_view_recycler);
-      snippet = (TextView) itemView.findViewById(R.id.snippet_text_view_recycler);
+      image = (ImageView) itemView.findViewById(R.id.image_recycler);
+      title = (TextView) itemView.findViewById(R.id.title_text_recycler);
+      author = (TextView) itemView.findViewById(R.id.author_text_recycler);
+      date = (TextView) itemView.findViewById(R.id.date_text_recycler);
+      snippet = (TextView) itemView.findViewById(R.id.snippet_text_recycler);
     }
   }
 
@@ -40,7 +40,7 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
 
   @Override
   public ArticleFeedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
+    View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_article_feed, parent, false);
     return new ArticleFeedViewHolder(itemView);
   }
 

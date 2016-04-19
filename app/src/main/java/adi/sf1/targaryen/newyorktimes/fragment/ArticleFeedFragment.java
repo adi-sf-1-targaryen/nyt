@@ -1,5 +1,6 @@
 package adi.sf1.targaryen.newyorktimes.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,20 +22,25 @@ import adi.sf1.targaryen.newyorktimes.recyclerAdapter.ArticleFeedAdapter;
  */
 public class ArticleFeedFragment extends Fragment{
 
+  private Context context;
   private List<ArticleFeed> feedList = new ArrayList<>();
   private RecyclerView recyclerView;
   private ArticleFeedAdapter articleFeedAdapter;
+
 
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_feed, container, false);
     recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+    context = getContext();
+    setFeedList();
+    setArticleFeedAdapter();
     return view;
   }
   private void setArticleFeedAdapter() {
     articleFeedAdapter = new ArticleFeedAdapter(feedList);
-    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setAdapter(articleFeedAdapter);
 
@@ -42,5 +48,29 @@ public class ArticleFeedFragment extends Fragment{
 
   private void setFeedList() {
     //Where the api calls happen
+
+    ArticleFeed story1 = new ArticleFeed();
+    story1.setAuthor("ME");
+    story1.setDate("Today");
+    story1.setSnippet("Text Text Text");
+    story1.setTitle("Awesome Title");
+    story1.setImage(R.drawable.targaryen);
+    feedList.add(story1);
+
+    ArticleFeed story2 = new ArticleFeed();
+    story1.setAuthor("ME");
+    story1.setDate("Today");
+    story1.setSnippet("Text Text Text");
+    story1.setTitle("Awesome Title");
+    story1.setImage(R.drawable.targaryen);
+    feedList.add(story2);
+
+    ArticleFeed story3 = new ArticleFeed();
+    story1.setAuthor("ME");
+    story1.setDate("Today");
+    story1.setSnippet("Text Text Text");
+    story1.setTitle("Awesome Title");
+    story1.setImage(R.drawable.targaryen);
+    feedList.add(story3);
   }
 }
