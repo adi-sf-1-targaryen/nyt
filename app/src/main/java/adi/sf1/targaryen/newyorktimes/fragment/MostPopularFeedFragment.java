@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import adi.sf1.targaryen.newyorktimes.api.Call;
+import adi.sf1.targaryen.newyorktimes.api.Callback;
 import adi.sf1.targaryen.newyorktimes.api.MostPopular;
 import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
