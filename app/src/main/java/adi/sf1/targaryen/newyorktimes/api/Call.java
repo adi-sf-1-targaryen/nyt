@@ -28,6 +28,10 @@ public class Call<T> {
     return null;
   }
 
+  public void enqueue(final Callback<T> callback) {
+    enqueue(callback, true);
+  }
+
   public void enqueue(final Callback<T> callback, boolean cache) {
     final HttpUrl url = parent.request().url();
     Response response = responses.get(url);
