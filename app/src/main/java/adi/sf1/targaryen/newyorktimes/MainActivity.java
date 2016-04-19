@@ -15,6 +15,7 @@ import java.util.Locale;
 
 import adi.sf1.targaryen.newyorktimes.api.TopStories;
 import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
+import adi.sf1.targaryen.newyorktimes.fragment.MostPopularFeedFragment;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
@@ -102,8 +103,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
           section = TopStories.Section.HOME;
           break;
         case 1:
-          fragment = new ArticleFeedFragment();
-          section = TopStories.Section.HOME;
+          fragment = new MostPopularFeedFragment();
           break;
         case 2:
           fragment = new ArticleFeedFragment();

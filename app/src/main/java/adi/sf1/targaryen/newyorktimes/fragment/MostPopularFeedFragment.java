@@ -18,12 +18,13 @@ public class MostPopularFeedFragment extends ArticleFeedFragment {
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
     // TODO: 4/19/16 DO STUFF HERE MAYBE (MAYBE NOT)
   }
 
   @Override
   protected void setFeedList() {
-    NewYorkTimes.getInstance().getMostPopular(MostPopular.Type.VIEWED).enqueue(new Callback<MostPopular>() {
+    NewYorkTimes.getInstance().getMostPopular(MostPopular.Type.SHARED, MostPopular.Section.ALL, MostPopular.Time.DAY).enqueue(new Callback<MostPopular>() {
       @Override
       public void onResponse(Call<MostPopular> call, Response<MostPopular> response) {
         articleFeedAdapter.changeDataSet(response.body().getResults());

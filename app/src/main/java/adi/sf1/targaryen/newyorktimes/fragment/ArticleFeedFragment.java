@@ -33,6 +33,7 @@ public class ArticleFeedFragment extends Fragment{
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
     Bundle bundle = getArguments();
     if (bundle != null) {
       String section = bundle.getString(EXTRA_SECTION);
