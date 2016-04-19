@@ -16,6 +16,7 @@ import retrofit2.Response;
 public class Call<T> {
   private static final String TAG = "Call";
 
+  // @todo Fix memory leak!
   private static Map<HttpUrl, Response> responses = new HashMap<>();
 
   private retrofit2.Call<T> parent;

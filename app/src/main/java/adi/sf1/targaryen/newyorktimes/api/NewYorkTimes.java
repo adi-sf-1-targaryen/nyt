@@ -143,6 +143,7 @@ public class NewYorkTimes {
   }
 
   private static class StoryTypeAdapter extends TypeAdapter<Story> {
+    // @todo Fix memory leak!
     private static Map<String, Story> stories = new HashMap<>();
 
     private TypeAdapter<Story> base;
