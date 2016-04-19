@@ -55,7 +55,7 @@ public class NewYorkTimes {
   }
 
   public Call<MostPopular> getMostPopular(MostPopular.Type type) {
-    return service.getMostPopular(type.getValue(), APIKeys.NYT_TOP_STORIES);
+    return service.getMostPopular(type.getValue(), APIKeys.NYT_MOST_POPULAR);
   }
 
   public Call<TopStories> getTopStories(TopStories.Section section) {
