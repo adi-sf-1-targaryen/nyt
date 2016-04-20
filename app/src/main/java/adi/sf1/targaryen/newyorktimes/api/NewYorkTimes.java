@@ -129,8 +129,24 @@ public class NewYorkTimes {
   }
 
   // @todo Use callback mechanism to allow for asynchronous request when the story does not exist.
-  public Story getStory(String url) {
-    return (Story) CacheTypeAdapter.objectCache.get(url);
+  public Story getStory(final String url) {
+    return (Story) CacheTypeAdapter.objectCache.get(new Object() {
+      @Override
+      public int hashCode() {
+        return url.hashCode();
+      }
+
+      @Override
+      public boolean equals(Object o) {
+        if (o instanceof Story) {
+          Story story = (Story) o;
+
+          return url.equals(story.getUrl());
+        }
+
+        return false;
+      }
+    });
   }
 
   private interface NewYorkTimesAPI {
