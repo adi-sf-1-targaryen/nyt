@@ -10,6 +10,8 @@
 
     <item android1:id="@+id/search_articles"
           android1:title="@string/search_articles"
-          app:showAsAction="never"/>
+          app:actionViewClass="android.support.v7.widget.SearchView"
+          android1:icon="@android:drawable/ic_menu_search"
+          app:showAsAction="always"/>
 
 </menu>

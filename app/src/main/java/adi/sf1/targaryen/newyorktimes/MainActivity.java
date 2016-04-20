@@ -1,5 +1,8 @@
 package adi.sf1.targaryen.newyorktimes;
 
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -48,12 +52,36 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     mSlidingTabLayout.setViewPager(mViewPager);
 
+    handleIntent(getIntent());
+  }
+
+  @Override
+  protected void onNewIntent(Intent intent) {
+    handleIntent(intent);
+  }
+
+  private void handleIntent(Intent intent) {
+
+    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+      String query = intent.getStringExtra(SearchManager.QUERY);
+      Toast.makeText(MainActivity.this,"Searching for "+query, Toast.LENGTH_SHORT).show();
+
+
+    }
   }
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
 // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.menu_main, menu);
+
+    // Associate searchable configuration with the SearchView
+    SearchManager searchManager =
+      (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+    android.support.v7.widget.SearchView searchView =
+      ( android.support.v7.widget.SearchView) menu.findItem(R.id.search_articles).getActionView();
+    searchView.setSearchableInfo(
+      searchManager.getSearchableInfo(getComponentName()));
 
     return true;
   }
@@ -70,6 +98,9 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 //        Intent preferencesIntent = new Intent(MainActivity.this, NotificationPreferencesActivity.class);
 //        startActivity(preferencesIntent);
         return true;
+      case R.id.search_articles:
+        Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
+        startActivity(searchIntent);
     }
 
     return super.onOptionsItemSelected(item);
