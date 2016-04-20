@@ -136,7 +136,7 @@ abstract public class Story {
 
   public abstract Media[] getMedia();
 
-  public Media getFirstPicture() {
+  public Media getFirstImage() {
     Media[] media = getMedia();
 
     if (media == null) {
