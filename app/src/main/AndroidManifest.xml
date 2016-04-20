@@ -25,8 +25,6 @@
             android:name="io.fabric.ApiKey"
             android:value="58313590833b89579ffaad39c93c66d5665bd3d1"/>
 
-        <activity android:name=".TwitterActivity"/>
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges=

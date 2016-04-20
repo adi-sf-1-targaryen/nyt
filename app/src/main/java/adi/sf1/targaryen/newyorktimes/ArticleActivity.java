@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -18,17 +18,14 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
 import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
+
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.net.MalformedURLException;
@@ -48,27 +45,21 @@ import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
  */
 public class ArticleActivity extends AppCompatActivity {
 
-  ImageView articleImage;
-  TextView articleTitle;
-  TextView articleAuthor;
-  TextView articleDate;
-  TextView articleContent;
+
+  WebView articleBrowser;
+
   ImageButton shareAcrossAllButton;
+  ImageButton twitterShareButton;
 
   String title;
-  String author;
-  String date;
-  String content;
+
   String urlForArticle;
-  String urlForImage;
+
 
   ShareButton shareButton;
-  LoginButton loginButton;
+
   CallbackManager callbackManager;
   Story story;
-  Button twitterShareButton;
-  TwitterLoginButton twitterLoginButton;
-
 
   private static final String TWITTER_KEY = "PQd385fJYKJ3lhTGtpSuYe3Cy";
   private static final String TWITTER_SECRET = "1zQcUDzK5wFqgh2FalcXMjVwWYzXgacEO43JI9OjqOLe0cUjUi";
@@ -85,7 +76,6 @@ public class ArticleActivity extends AppCompatActivity {
 
     setViews();
     getIntentFromFeedFragment();
-    setArticleObjects();
     fillViews();
     setShareAcrossAllButton();
     facebookIntegrationMethods();
@@ -93,47 +83,21 @@ public class ArticleActivity extends AppCompatActivity {
   }
 
   private void setViews() {
-    articleImage = (ImageView) findViewById(R.id.image_article);
-    articleTitle = (TextView) findViewById(R.id.title_text_article);
-    articleAuthor = (TextView) findViewById(R.id.author_text_article);
-    articleDate = (TextView) findViewById(R.id.date_text_article);
-    articleContent = (TextView) findViewById(R.id.content_text_article);
+
+    articleBrowser = (WebView) findViewById(R.id.article_web_view);
+
+
     shareButton = (ShareButton) findViewById(R.id.facebook_share_button);
-    loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
-    twitterLoginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
-    twitterShareButton = (Button) findViewById(R.id.twitter_share_button);
+    twitterShareButton = (ImageButton) findViewById(R.id.twitter_share_button);
     shareAcrossAllButton = (ImageButton) findViewById(R.id.shareButton);
   }
 
   private void twitterIntergrationMethods() {
-    twitterLoginButton.setCallback(new Callback<TwitterSession>() {
-      @Override
-      public void success(Result<TwitterSession> result) {
-        // The TwitterSession is also available through:
-        // Twitter.getInstance().core.getSessionManager().getActiveSession()
-        TwitterSession session = result.data;
-        //
-        // with your app's user model
-        String msg = "@" + session.getUserName() + " logged in! (#" + session.getUserId() + ")";
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-
-
-      }
-
-      @Override
-      public void failure(TwitterException exception) {
-        Log.d("TwitterKit", "Login with Twitter failure", exception);
-      }
-    });
-
 
 
     twitterShareButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-//        Intent shareIntent = new Intent();
-//        shareIntent.setAction(Intent.ACTION_SEND);
-
 
 
         TweetComposer.Builder builder = null;
@@ -196,7 +160,6 @@ public class ArticleActivity extends AppCompatActivity {
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    twitterLoginButton.onActivityResult(requestCode, resultCode, data);
     callbackManager.onActivityResult(requestCode, resultCode, data);
   }
 
@@ -208,28 +171,13 @@ public class ArticleActivity extends AppCompatActivity {
     urlForArticle = getIntent().getStringExtra(ArticleFeedFragment.URL_EXTRA_KEY);
     story = NewYorkTimes.getInstance().getStory(urlForArticle);
   }
+  
 
-  /**
-   * Sets article details from the story object for the article
-   */
-  private void setArticleObjects() {
-    title = story.getTitle();
-    author = story.getByLine();
-    String fullDate = story.getPublished();
-    date = fullDate.substring(0, 10);
-    content = story.getSummary();
-    Story.Media media = story.getFirstImage();
-    urlForImage = media != null ? media.getUrl() : null;
-  }
-
-  /**
-   * Places the article details in their views
-   */
   private void fillViews() {
-    articleTitle.setText(title);
-    articleAuthor.setText(author);
-    articleDate.setText(date);
-    articleContent.setText(content);
+
+    articleBrowser.setWebViewClient(new WebViewClient());
+    articleBrowser.loadUrl(urlForArticle);
+
   }
 
   /**

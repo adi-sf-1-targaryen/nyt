@@ -1,105 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:stretchColumns="0,1,2" >
 
-
-
-    <FrameLayout
+    <TableRow
+        android:id="@+id/tableRow1"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@android:color/darker_gray">
-
-        <ImageView
-
-            android:id="@+id/image_article"
+        android:layout_height="match_parent"
+        android:layout_weight="1"  >
+        <WebView
+            android:id="@+id/article_web_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop" />
-        <TextView
-            android:id="@+id/title_text_article"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_gravity="start|bottom"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:layout_margin="12dp"
-            android:text="TITLE"/>
+            android:layout_weight="1"
+            android:layout_span="3" />
+    </TableRow>
 
-
-    </FrameLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:orientation="horizontal">
-
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/facebook_login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+       >
 
         <com.facebook.share.widget.ShareButton
             android:id="@+id/facebook_share_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/twitter_share_button"
-            android:layout_width="wrap_content"
+            android:layout_column="0"
             android:layout_height="match_parent"
-            android:src="@drawable/tw__btn_composer_tweet"/>
+            android:background="@color/com_facebook_blue"
+            />
+        <ImageButton
+            android:id="@+id/twitter_share_button"
+            android:layout_column="1"
+            android:layout_height="match_parent"
+            android:src="@drawable/tw__btn_composer_tweet"
+            android:background="@color/tw__composer_blue"
+            />
 
-        <com.twitter.sdk.android.core.identity.TwitterLoginButton
-            android:id="@+id/twitter_login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="3.0"/>
-
-
-
-    </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/shareButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_share"/>
-
-
-    <TextView
-        android:id="@+id/date_text_article"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:layout_margin="10dp"
-        android:text="DATE"/>
+        <ImageButton
+            android:id="@+id/shareButton"
+            android:layout_column="2"
+            android:src="@android:drawable/ic_menu_share"
+            android:background="@android:color/holo_blue_light"
+            android:layout_height="match_parent"
+            />
 
 
-    <TextView
-        android:id="@+id/author_text_article"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:text="AUTHOR"
-        android:layout_margin="10dp"
-        />
-
-
-
-    <TextView
-        android:id="@+id/content_text_article"
-        android:text="CONTENT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:textStyle="italic"
-        android:layout_margin="10dp"
-        android:layout_weight="0.10" />
-
-
-
-</LinearLayout>
+    </TableRow>
+</TableLayout>
