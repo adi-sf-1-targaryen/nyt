@@ -210,6 +210,7 @@ public class NewYorkTimes {
 
   /**
    * TypeAdapter implementation that caches all objects and discards duplicates.
+   *
    * @param <T>
    */
   private static class CacheTypeAdapter<T> extends TypeAdapter<T> {
@@ -248,6 +249,7 @@ public class NewYorkTimes {
 
   /**
    * TypeAdapter that returns null when a value is not an array.
+   *
    * @param <T> An array type.
    */
   private static class ArrayTypeAdapter<T> extends TypeAdapter<T> {
