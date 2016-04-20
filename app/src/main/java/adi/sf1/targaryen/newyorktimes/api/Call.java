@@ -38,11 +38,11 @@ public class Call<T> {
     Response response = responseCache.get(url);
 
     if (cache && response != null) {
-      Log.d(TAG, "enqueue: Cache HIT");
+      Log.d(TAG, "enqueue: responseCache Cache HIT");
 
       callback.onResponse(this, response); // Our API wrapper should never mix URLs up.
     } else {
-      Log.d(TAG, "enqueue: Cache MISS");
+      Log.d(TAG, "enqueue: responseCache Cache MISS");
 
       parent.enqueue(new retrofit2.Callback<T>() {
         @Override
