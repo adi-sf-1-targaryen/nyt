@@ -133,7 +133,7 @@ public class ArticleActivity extends AppCompatActivity {
         try {
           builder = new TweetComposer.Builder(ArticleActivity.this)
             .text("Tweet this article:")
-            .url(new URL("http://www.nfl.com/"));
+            .url(new URL(urlForArticle));
         } catch (MalformedURLException e) {
           e.printStackTrace();
         }
@@ -176,8 +176,8 @@ public class ArticleActivity extends AppCompatActivity {
      */
     ShareLinkContent shareLinkContent = new ShareLinkContent.Builder()
       .setContentUrl(Uri.parse(urlForArticle))
-      .setContentTitle("NFL")
-      .setContentDescription("This is the football")
+      .setContentTitle(title)
+      .setContentDescription(story.getSummary())
       .build();
 
     /**
@@ -201,7 +201,8 @@ public class ArticleActivity extends AppCompatActivity {
   private void setArticleObjects() {
     title = story.getTitle();
     author = story.getByLine();
-    date = story.getPublished();
+    String fullDate = story.getPublished();
+    date = fullDate.substring(0, 10);
     content = story.getSummary();
   }
 
