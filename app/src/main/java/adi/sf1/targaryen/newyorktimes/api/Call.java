@@ -17,7 +17,7 @@ public class Call<T> {
   private static final String TAG = "Call";
 
   // @todo Fix memory leak!
-  private static Map<HttpUrl, Response> responses = new HashMap<>();
+  private static Map<HttpUrl, Response> responseCache = new HashMap<>();
 
   private retrofit2.Call<T> parent;
 
@@ -35,7 +35,7 @@ public class Call<T> {
 
   public void enqueue(final Callback<T> callback, boolean cache) {
     final HttpUrl url = parent.request().url();
-    Response response = responses.get(url);
+    Response response = responseCache.get(url);
 
     if (cache && response != null) {
       Log.d(TAG, "enqueue: Cache HIT");
@@ -48,7 +48,7 @@ public class Call<T> {
         @Override
         public void onResponse(retrofit2.Call<T> call, Response<T> response) {
           if (response.isSuccessful()) {
-            responses.put(url, response);
+            responseCache.put(url, response);
           }
 
           callback.onResponse(Call.this, response);

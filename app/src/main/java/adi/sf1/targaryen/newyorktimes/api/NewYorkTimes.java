@@ -118,7 +118,7 @@ public class NewYorkTimes {
 
   // @todo Use callback mechanism to allow for asynchronous request when the story does not exist.
   public Story getStory(String url) {
-    return (Story) CacheTypeAdapter.stories.get(url);
+    return (Story) CacheTypeAdapter.objectCache.get(url);
   }
 
   private interface NewYorkTimesAPI {
@@ -147,7 +147,7 @@ public class NewYorkTimes {
 
   private static class CacheTypeAdapter<T> extends TypeAdapter<T> {
     // @todo Fix memory leak!
-    private static Map stories = new HashMap();
+    private static Map objectCache = new HashMap();
 
     private TypeAdapter<T> base;
 
@@ -164,11 +164,11 @@ public class NewYorkTimes {
     public T read(JsonReader in) throws IOException {
       T result = base.read(in);
 
-      Object cached = stories.get(result);
+      Object cached = objectCache.get(result);
 
       if (cached == null) {
         Log.d(TAG, "read: Cache MISS");
-        stories.put(result, result);
+        objectCache.put(result, result);
 
         return result;
       }
