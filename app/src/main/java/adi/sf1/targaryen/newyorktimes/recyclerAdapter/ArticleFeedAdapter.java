@@ -19,6 +19,7 @@ import adi.sf1.targaryen.newyorktimes.api.Story;
 public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.ArticleFeedViewHolder> {
 
   private Story[] feedList = null;
+  private OnItemClickListener listener;
 
 
   public class ArticleFeedViewHolder extends RecyclerView.ViewHolder {
@@ -34,13 +35,22 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
       date = (TextView) itemView.findViewById(R.id.date_text_article);
       snippet = (TextView) itemView.findViewById(R.id.content_text_article);
     }
+
+    public void setOnClickListener(final Story story, final OnItemClickListener listener) {
+      itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          listener.onItemClick(story);
+        }
+      });
+    }
   }
 
-  public ArticleFeedAdapter() {
-
+  public ArticleFeedAdapter(OnItemClickListener listener) {
+    this.listener = listener;
   }
 
-  @Override
+
   public int getItemViewType(int position) {
 
     if (position == 0) {
@@ -78,9 +88,11 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     }
     holder.title.setText(story.getTitle());
     holder.author.setText(story.getByLine());
-    holder.date.setText(story.getPublished());
+    String largeDate = story.getPublished();
+    String alteredDate = largeDate.substring(0, 10);
+    holder.date.setText(alteredDate);
     holder.snippet.setText(story.getSummary());
-
+    holder.setOnClickListener(feedList[position], listener);
   }
 
   @Override
@@ -92,4 +104,21 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     this.feedList = feedList;
     notifyDataSetChanged();
   }
+
+  public interface OnItemClickListener {
+    void onItemClick(Story story);
+  }
+
+//  // Clean all elements of the recycler
+//  public void clear() {
+//    feedList.clear();
+//    notifyDataSetChanged();
+//  }
+//
+//  // Add a list of items
+//  public void addAll(List<list> list) {
+//    feedList.addAll(list);
+//    notifyDataSetChanged();
+//  }
+
 }

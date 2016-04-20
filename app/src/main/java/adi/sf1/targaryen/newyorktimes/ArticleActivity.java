@@ -3,7 +3,6 @@ package adi.sf1.targaryen.newyorktimes;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +35,10 @@ import java.net.URL;
 
 import io.fabric.sdk.android.Fabric;
 
+import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
+import adi.sf1.targaryen.newyorktimes.api.Story;
+import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
+
 /**
  * Created by Raiders on 4/19/16.
  */
@@ -51,20 +54,23 @@ public class ArticleActivity extends AppCompatActivity {
   String author;
   String date;
   String content;
-  String url;
+  String urlForArticle;
+  String urlForImage;
 
   ShareButton shareButton;
   LoginButton loginButton;
   CallbackManager callbackManager;
+  Story story;
   Button twitterShareButton;
   TwitterLoginButton twitterLoginButton;
+
 
   private static final String TWITTER_KEY = "PQd385fJYKJ3lhTGtpSuYe3Cy";
   private static final String TWITTER_SECRET = "1zQcUDzK5wFqgh2FalcXMjVwWYzXgacEO43JI9OjqOLe0cUjUi";
 
   @Override
-  public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-    super.onCreate(savedInstanceState, persistentState);
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
     //Initialize Facebook SDK
     FacebookSdk.sdkInitialize(getApplicationContext());
     TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
@@ -73,6 +79,9 @@ public class ArticleActivity extends AppCompatActivity {
     setContentView(R.layout.activity_article);
 
     setViews();
+    getIntentFromFeedFragment();
+    setArticleObjects();
+    fillViews();
     facebookIntegrationMethods();
     twitterIntergrationMethods();
   }
@@ -124,7 +133,7 @@ public class ArticleActivity extends AppCompatActivity {
         try {
           builder = new TweetComposer.Builder(ArticleActivity.this)
             .text("Tweet this article:")
-            .url(new URL("http://www.nfl.com/"));
+            .url(new URL(urlForArticle));
         } catch (MalformedURLException e) {
           e.printStackTrace();
         }
@@ -166,9 +175,9 @@ public class ArticleActivity extends AppCompatActivity {
      * Dummy content to post to facebook wall
      */
     ShareLinkContent shareLinkContent = new ShareLinkContent.Builder()
-      .setContentUrl(Uri.parse("http://www.nfl.com/"))
-      .setContentTitle("NFL")
-      .setContentDescription("This is the football")
+      .setContentUrl(Uri.parse(urlForArticle))
+      .setContentTitle(title)
+      .setContentDescription(story.getSummary())
       .build();
 
     /**
@@ -184,4 +193,23 @@ public class ArticleActivity extends AppCompatActivity {
     callbackManager.onActivityResult(requestCode, resultCode, data);
   }
 
+  private void getIntentFromFeedFragment() {
+    urlForArticle = getIntent().getStringExtra(ArticleFeedFragment.URL_EXTRA_KEY);
+    story = NewYorkTimes.getInstance().getStory(urlForArticle);
+  }
+
+  private void setArticleObjects() {
+    title = story.getTitle();
+    author = story.getByLine();
+    String fullDate = story.getPublished();
+    date = fullDate.substring(0, 10);
+    content = story.getSummary();
+  }
+
+  private void fillViews() {
+    articleTitle.setText(title);
+    articleAuthor.setText(author);
+    articleDate.setText(date);
+    articleContent.setText(content);
+  }
 }
