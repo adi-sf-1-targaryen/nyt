@@ -152,6 +152,34 @@ abstract public class Story {
     return null;
   }
 
+  public Media getLastImage() {
+    Media[] media = getMedia();
+
+    if (media == null) {
+      return null;
+    }
+
+    for (int i = media.length - 1; i >= 0; --i) {
+      Media item = media[i];
+
+      if (item.type.equals("image")) {
+        if (item instanceof Media.MostPopular) {
+          Media.MostPopular.Metadata meta = ((Media.MostPopular) item).getLastMetadata();
+
+          if (meta == null) {
+            continue;
+          }
+
+          return new Media.TopStory((Media.MostPopular) item, meta);
+        }
+
+        return item;
+      }
+    }
+
+    return null;
+  }
+
   public static class TopStory extends Story {
     @SerializedName("multimedia")
     private Media.TopStory[] media;
@@ -177,16 +205,16 @@ abstract public class Story {
    */
   abstract public static class Media {
     @SerializedName("type")
-    private String type;
+    protected String type;
 
     @SerializedName("subtype")
-    private String subType;
+    protected String subType;
 
     @SerializedName("caption")
-    private String caption;
+    protected String caption;
 
     @SerializedName("copyright")
-    private String copyright;
+    protected String copyright;
 
     public abstract String getUrl();
 
@@ -224,6 +252,17 @@ abstract public class Story {
 
       @SerializedName("width")
       private int width;
+
+      TopStory(MostPopular base, MostPopular.Metadata meta) {
+        type = base.getType();
+        subType = base.getSubType();
+        caption = base.getSubType();
+        copyright = base.getSubType();
+        url = meta.getUrl();
+        format = meta.getFormat();
+        height = meta.getHeight();
+        width = meta.getWidth();
+      }
 
       @Override
       public String getUrl() {
@@ -284,6 +323,14 @@ abstract public class Story {
         }
 
         return null;
+      }
+
+      public Metadata getLastMetadata() {
+        if (metadata == null) {
+          return null;
+        }
+
+        return metadata[metadata.length - 1];
       }
 
       public static class Metadata {
