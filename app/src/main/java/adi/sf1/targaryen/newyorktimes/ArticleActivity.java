@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,9 @@ import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
 
 /**
  * Created by Raiders on 4/19/16.
+ * Creates activity for the clicked article.
+ * Allows you to share the article on social media and email/text
+ * Grabs article data from the article url passed in an intent from article feed
  */
 public class ArticleActivity extends AppCompatActivity {
 
@@ -49,6 +53,7 @@ public class ArticleActivity extends AppCompatActivity {
   TextView articleAuthor;
   TextView articleDate;
   TextView articleContent;
+  ImageButton shareAcrossAllButton;
 
   String title;
   String author;
@@ -82,6 +87,7 @@ public class ArticleActivity extends AppCompatActivity {
     getIntentFromFeedFragment();
     setArticleObjects();
     fillViews();
+    setShareAcrossAllButton();
     facebookIntegrationMethods();
     twitterIntergrationMethods();
   }
@@ -96,6 +102,7 @@ public class ArticleActivity extends AppCompatActivity {
     loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
     twitterLoginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
     twitterShareButton = (Button) findViewById(R.id.twitter_share_button);
+    shareAcrossAllButton = (ImageButton) findViewById(R.id.shareButton);
   }
 
   private void twitterIntergrationMethods() {
@@ -172,7 +179,7 @@ public class ArticleActivity extends AppCompatActivity {
     });
 
     /**
-     * Dummy content to post to facebook wall
+     * Content to post to facebook wall
      */
     ShareLinkContent shareLinkContent = new ShareLinkContent.Builder()
       .setContentUrl(Uri.parse(urlForArticle))
@@ -193,23 +200,50 @@ public class ArticleActivity extends AppCompatActivity {
     callbackManager.onActivityResult(requestCode, resultCode, data);
   }
 
+  /**
+   * Grabs the intent from ArticleFeedFragment
+   * Takes url of article and creates the story object with for the corresponding article
+   */
   private void getIntentFromFeedFragment() {
     urlForArticle = getIntent().getStringExtra(ArticleFeedFragment.URL_EXTRA_KEY);
     story = NewYorkTimes.getInstance().getStory(urlForArticle);
   }
 
+  /**
+   * Sets article details from the story object for the article
+   */
   private void setArticleObjects() {
     title = story.getTitle();
     author = story.getByLine();
     String fullDate = story.getPublished();
     date = fullDate.substring(0, 10);
     content = story.getSummary();
+    urlForImage = story.getMedia()[0].getUrl();
   }
 
+  /**
+   * Places the article details in their views
+   */
   private void fillViews() {
     articleTitle.setText(title);
     articleAuthor.setText(author);
     articleDate.setText(date);
     articleContent.setText(content);
+  }
+
+  /**
+   * Sets up Share button to allow user to share article on various mediums
+   */
+  private void setShareAcrossAllButton() {
+    shareAcrossAllButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, urlForArticle);
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Check out this site!");
+        startActivity(Intent.createChooser(intent, "Share"));
+      }
+    });
   }
 }

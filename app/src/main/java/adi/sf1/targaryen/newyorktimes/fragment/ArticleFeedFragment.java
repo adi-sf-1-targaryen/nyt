@@ -29,7 +29,6 @@ import retrofit2.Response;
 public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.OnItemClickListener{
 
   protected Context context;
-//  private List<ArticleFeed> feedList = new ArrayList<>();
   private RecyclerView recyclerView;
   protected ArticleFeedAdapter articleFeedAdapter;
   public static final String EXTRA_SECTION = "section";
@@ -49,12 +48,19 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
     }
   }
 
+  /**
+   * Sets the views for the fragment and implements the various methods
+   * @param inflater
+   * @param container
+   * @param savedInstanceState
+   * @return
+   */
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_feed, container, false);
     recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-    swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+//    swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
     context = getContext();
     setArticleFeedAdapter();
     setFeedList();
@@ -75,6 +81,10 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
 
     return view;
   }
+
+  /**
+   * Sets the recycler view and adapter for recycler view into the fragment
+   */
   private void setArticleFeedAdapter() {
     articleFeedAdapter = new ArticleFeedAdapter(this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
@@ -83,6 +93,10 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
 
   }
 
+  /**
+   * Calls the NY Times API and grabs the needed data depending on the query made.
+   * This data is placed in the recycler view
+   */
   protected void setFeedList() {
     NewYorkTimes.getInstance().getTopStories(section).enqueue(new Callback<TopStories>() {
       @Override
@@ -97,6 +111,13 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
     });
   }
 
+  /**
+   * Overrides onItemClick method for the recycler view
+   * Sends the user to the article activity
+   * Sends an intent with the article url to the article activity
+   * The url is used to grab all of the article's details from the story object
+   * @param story
+   */
   @Override
   public void onItemClick(Story story) {
     Intent articleActivityIntent = new Intent(context, ArticleActivity.class);
