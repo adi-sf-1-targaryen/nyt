@@ -82,29 +82,21 @@ public class NewYorkTimes {
   }
 
   public Call<MostPopular> getMostPopular(Type type, Section section, Time time) {
-    return getMostPopular(type, section, time, true);
-  }
-
-  public Call<MostPopular> getMostPopular(Type type, Section section, Time time, boolean cache) {
     if (type == Type.SHARED) {
       ShareType[] shareTypes = new ShareType[]{
         ShareType.FACEBOOK,
         ShareType.TWITTER
       };
 
-      return getMostPopular(type, section, shareTypes, time, cache);
+      return getMostShared(section, shareTypes, time);
     } else {
       return new Call<>(service.getMostPopular(type.getValue(), section.getValue(), time.getValue(), APIKeys.NYT_MOST_POPULAR));
     }
   }
 
-  public Call<MostPopular> getMostPopular(Type type, Section section, ShareType[] shareTypes, Time time) {
-    return getMostPopular(type, section, shareTypes, time, true);
-  }
-
-  public Call<MostPopular> getMostPopular(Type type, Section section, ShareType[] shareTypes, Time time, boolean cache) {
+  public Call<MostPopular> getMostShared(Section section, ShareType[] shareTypes, Time time) {
     if (shareTypes.length == 0) {
-      return getMostPopular(type, section, time, cache);
+      return getMostPopular(Type.SHARED, section, time);
     }
 
     String[] shareValues = new String[shareTypes.length];
@@ -116,7 +108,7 @@ public class NewYorkTimes {
     String share = TextUtils.join(";", shareValues);
 
     return new Call<>(service.getMostPopular(
-      type.getValue(),
+      Type.SHARED.getValue(),
       section.getValue(),
       share,
       time.getValue(),
