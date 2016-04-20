@@ -24,7 +24,7 @@ public class MostPopularFeedFragment extends ArticleFeedFragment {
 
   @Override
   protected void setFeedList() {
-    NewYorkTimes.getInstance().getMostPopular(MostPopular.Type.SHARED, MostPopular.Section.ALL, MostPopular.Time.DAY).enqueue(new Callback<MostPopular>() {
+    NewYorkTimes.getInstance().getMostPopular(MostPopular.Type.EMAILED, MostPopular.Section.ALL, MostPopular.Time.DAY).enqueue(new Callback<MostPopular>() {
       @Override
       public void onResponse(Call<MostPopular> call, Response<MostPopular> response) {
         articleFeedAdapter.changeDataSet(response.body().getResults());
