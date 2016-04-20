@@ -100,6 +100,16 @@ public class NewYorkTimes {
   }
 
   /**
+   * Get stories from the Article Search API.
+   *
+   * @param query search query
+   * @return
+   */
+  public Call<TopStories> articleSearch(String query) {
+    return new Call<>(service.articleSearch(query, APIKeys.NYT_ARTICLE_SEARCH));
+  }
+
+  /**
    * Get stories from the Most Popular API.
    *
    * @param type    Type of most popular stories; most emailed, most shared, most viewed.
@@ -185,9 +195,9 @@ public class NewYorkTimes {
    * Interface used for retrofit2.
    */
   private interface NewYorkTimesAPI {
-    @GET("topstories/v1/{section}.json")
-    retrofit2.Call<TopStories> getTopStores(
-      @Path("section") String section,
+    @GET("search/v2/articlesearch.json")
+    retrofit2.Call<TopStories> articleSearch(
+      @Query("q") String query,
       @Query("api-key") String APIKey
     );
 
@@ -206,6 +216,12 @@ public class NewYorkTimes {
       @Path("share") String share,
       @Path("time") int time,
       @Query("api-key") String APIKey);
+
+    @GET("topstories/v1/{section}.json")
+    retrofit2.Call<TopStories> getTopStores(
+      @Path("section") String section,
+      @Query("api-key") String APIKey
+    );
   }
 
   /**
