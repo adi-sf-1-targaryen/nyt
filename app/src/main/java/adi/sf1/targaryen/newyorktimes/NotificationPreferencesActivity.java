@@ -58,81 +58,88 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
    * the sections if they are checked
    * @param view
    */
-  private void onCheckboxClicked(View view) {
-    boolean checked = ((CheckBox) view).isChecked();
+  private void onCheckboxClicked(final View view) {
 
-    switch (view.getId()) {
-      case R.id.checkbox_top_stories:
-        if (checked) {
-          TopStories.Section section = TopStories.Section.HOME;
-          getTopArticleForSection(section);
-          createNotifications();
-        }
-        break;
-      case R.id.checkbox_most_popular:
-        if (checked) {
+    view.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        boolean checked = ((CheckBox) view).isChecked();
+        switch (view.getId()) {
+          case R.id.checkbox_top_stories:
+            if (checked) {
+              TopStories.Section section = TopStories.Section.HOME;
+              getTopArticleForSection(section);
+              createNotifications();
+            }
+            break;
+          case R.id.checkbox_most_popular:
+            if (checked) {
+
+            }
+            break;
+          case R.id.checkbox_opinion:
+            if (checked) {
+              TopStories.Section section = TopStories.Section.OPINION;
+              getTopArticleForSection(section);
+              createNotifications();
+            }
+            break;
+          case R.id.checkbox_world:
+            if (checked) {
+              TopStories.Section section = TopStories.Section.WORLD;
+              getTopArticleForSection(section);
+              createNotifications();
+            }
+            break;
+          case R.id.checkbox_us:
+            if (checked) {
+              TopStories.Section section = TopStories.Section.NATIONAL;
+              getTopArticleForSection(section);
+              createNotifications();
+            }
+            break;
+          case R.id.checkbox_business_day:
+            if (checked) {
+              TopStories.Section section = TopStories.Section.BUSINESS;
+              getTopArticleForSection(section);
+              createNotifications();
+            }
+            break;
+          case R.id.checkbox_sports:
+            if (checked) {
+              TopStories.Section section = TopStories.Section.SPORTS;
+              getTopArticleForSection(section);
+              createNotifications();
+            }
+            break;
+          case R.id.checkbox_arts:
+            if (checked) {
+              TopStories.Section section = TopStories.Section.ARTS;
+              getTopArticleForSection(section);
+              createNotifications();
+            }
+            break;
+          case R.id.checkbox_ny:
+            if (checked) {
+              TopStories.Section section = TopStories.Section.NYREGION;
+              getTopArticleForSection(section);
+              createNotifications();
+            }
+            break;
+          case R.id.checkbox_magazine:
+            if (checked) {
+              TopStories.Section section = TopStories.Section.MAGAZINE;
+              getTopArticleForSection(section);
+              createNotifications();
+            }
+            break;
+          default:
 
         }
-        break;
-      case R.id.checkbox_opinion:
-        if (checked) {
-          TopStories.Section section = TopStories.Section.OPINION;
-          getTopArticleForSection(section);
-          createNotifications();
-        }
-        break;
-      case R.id.checkbox_world:
-        if (checked) {
-          TopStories.Section section = TopStories.Section.WORLD;
-          getTopArticleForSection(section);
-          createNotifications();
-        }
-        break;
-      case R.id.checkbox_us:
-        if (checked) {
-          TopStories.Section section = TopStories.Section.NATIONAL;
-          getTopArticleForSection(section);
-          createNotifications();
-        }
-        break;
-      case R.id.checkbox_business_day:
-        if (checked) {
-          TopStories.Section section = TopStories.Section.BUSINESS;
-          getTopArticleForSection(section);
-          createNotifications();
-        }
-        break;
-      case R.id.checkbox_sports:
-        if (checked) {
-          TopStories.Section section = TopStories.Section.SPORTS;
-          getTopArticleForSection(section);
-          createNotifications();
-        }
-        break;
-      case R.id.checkbox_arts:
-        if (checked) {
-          TopStories.Section section = TopStories.Section.ARTS;
-          getTopArticleForSection(section);
-          createNotifications();
-        }
-        break;
-      case R.id.checkbox_ny:
-        if (checked) {
-          TopStories.Section section = TopStories.Section.NYREGION;
-          getTopArticleForSection(section);
-          createNotifications();
-        }
-        break;
-      case R.id.checkbox_magazine:
-        if (checked) {
-          TopStories.Section section = TopStories.Section.MAGAZINE;
-          getTopArticleForSection(section);
-          createNotifications();
-        }
-        break;
-      default:
+      }
+    });
 
-    }
+
   }
 
   /**
