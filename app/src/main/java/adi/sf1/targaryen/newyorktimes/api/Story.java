@@ -61,7 +61,7 @@ abstract public class Story {
 
   @Override
   public boolean equals(Object o) {
-    if (o instanceof Story) {
+    if (getClass() == o.getClass()) {
       Story story = (Story) o;
 
       return url.equals(story.url);
