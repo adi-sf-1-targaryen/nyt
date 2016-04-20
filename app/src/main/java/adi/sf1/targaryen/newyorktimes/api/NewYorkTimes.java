@@ -46,23 +46,31 @@ public class NewYorkTimes {
     Gson base = new Gson();
 
     Gson media = new GsonBuilder()
-      .registerTypeHierarchyAdapter(Story.Media.MostPopular.Metadata[].class, new ArrayTypeAdapter<>(base.getAdapter(Story.Media.MostPopular.Metadata[].class)))
+      .registerTypeHierarchyAdapter(Story.Media.MostPopular.Metadata[].class,
+        new ArrayTypeAdapter<>(base.getAdapter(Story.Media.MostPopular.Metadata[].class)))
       .create();
 
     Gson story = new GsonBuilder()
-      .registerTypeHierarchyAdapter(Story.Media.TopStory[].class, new ArrayTypeAdapter<>(media.getAdapter(Story.Media.TopStory[].class)))
-      .registerTypeHierarchyAdapter(Story.Media.MostPopular[].class, new ArrayTypeAdapter<>(media.getAdapter(Story.Media.MostPopular[].class)))
-      .registerTypeHierarchyAdapter(String[].class, new ArrayTypeAdapter(media.getAdapter(String[].class)))
+      .registerTypeHierarchyAdapter(Story.Media.TopStory[].class,
+        new ArrayTypeAdapter<>(media.getAdapter(Story.Media.TopStory[].class)))
+      .registerTypeHierarchyAdapter(Story.Media.MostPopular[].class,
+        new ArrayTypeAdapter<>(media.getAdapter(Story.Media.MostPopular[].class)))
+      .registerTypeHierarchyAdapter(String[].class,
+        new ArrayTypeAdapter(media.getAdapter(String[].class)))
       .create();
 
     Gson storyCache = new GsonBuilder()
-      .registerTypeHierarchyAdapter(Story.TopStory.class, new CacheTypeAdapter<>(story.getAdapter(Story.TopStory.class)))
-      .registerTypeHierarchyAdapter(Story.MostPopular.class, new CacheTypeAdapter<>(story.getAdapter(Story.MostPopular.class)))
+      .registerTypeHierarchyAdapter(Story.TopStory.class,
+        new CacheTypeAdapter<>(story.getAdapter(Story.TopStory.class)))
+      .registerTypeHierarchyAdapter(Story.MostPopular.class,
+        new CacheTypeAdapter<>(story.getAdapter(Story.MostPopular.class)))
       .create();
 
     Gson root = new GsonBuilder()
-      .registerTypeHierarchyAdapter(Story.TopStory[].class, new ArrayTypeAdapter<>(storyCache.getAdapter(Story.TopStory[].class)))
-      .registerTypeHierarchyAdapter(Story.MostPopular[].class, new ArrayTypeAdapter<>(storyCache.getAdapter(Story.MostPopular[].class)))
+      .registerTypeHierarchyAdapter(Story.TopStory[].class,
+        new ArrayTypeAdapter<>(storyCache.getAdapter(Story.TopStory[].class)))
+      .registerTypeHierarchyAdapter(Story.MostPopular[].class,
+        new ArrayTypeAdapter<>(storyCache.getAdapter(Story.MostPopular[].class)))
       .create();
 
     Retrofit retrofit = new Retrofit.Builder()
