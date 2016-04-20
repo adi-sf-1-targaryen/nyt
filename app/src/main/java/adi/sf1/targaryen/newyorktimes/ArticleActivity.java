@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -48,12 +48,16 @@ import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
  */
 public class ArticleActivity extends AppCompatActivity {
 
+
+  WebView articleBrowser;
   ImageView articleImage;
-  TextView articleTitle;
-  TextView articleAuthor;
-  TextView articleDate;
-  TextView articleContent;
+
+  /*  TextView articleTitle;
+    TextView articleAuthor;
+    TextView articleDate;
+    TextView articleContent;*/
   ImageButton shareAcrossAllButton;
+  ImageButton twitterShareButton;
 
   String title;
   String author;
@@ -64,11 +68,9 @@ public class ArticleActivity extends AppCompatActivity {
 
   ShareButton shareButton;
   LoginButton loginButton;
+  TwitterLoginButton twitterLoginButton;
   CallbackManager callbackManager;
   Story story;
-  Button twitterShareButton;
-  TwitterLoginButton twitterLoginButton;
-
 
   private static final String TWITTER_KEY = "PQd385fJYKJ3lhTGtpSuYe3Cy";
   private static final String TWITTER_SECRET = "1zQcUDzK5wFqgh2FalcXMjVwWYzXgacEO43JI9OjqOLe0cUjUi";
@@ -85,7 +87,7 @@ public class ArticleActivity extends AppCompatActivity {
 
     setViews();
     getIntentFromFeedFragment();
-    setArticleObjects();
+//    setArticleObjects();
     fillViews();
     setShareAcrossAllButton();
     facebookIntegrationMethods();
@@ -93,31 +95,31 @@ public class ArticleActivity extends AppCompatActivity {
   }
 
   private void setViews() {
-    articleImage = (ImageView) findViewById(R.id.image_article);
+
+    articleBrowser = (WebView) findViewById(R.id.article_web_view);
+
+   /* articleImage = (ImageView) findViewById(R.id.image_article);
     articleTitle = (TextView) findViewById(R.id.title_text_article);
     articleAuthor = (TextView) findViewById(R.id.author_text_article);
     articleDate = (TextView) findViewById(R.id.date_text_article);
-    articleContent = (TextView) findViewById(R.id.content_text_article);
+    articleContent = (TextView) findViewById(R.id.content_text_article);*/
+
     shareButton = (ShareButton) findViewById(R.id.facebook_share_button);
-    loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+    //loginButton = (LoginButton) findViewById(R.id.facebook_);
     twitterLoginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
-    twitterShareButton = (Button) findViewById(R.id.twitter_share_button);
+    twitterShareButton = (ImageButton) findViewById(R.id.twitter_share_button);
     shareAcrossAllButton = (ImageButton) findViewById(R.id.shareButton);
   }
 
   private void twitterIntergrationMethods() {
-    twitterLoginButton.setCallback(new Callback<TwitterSession>() {
+   /* twitterLoginButton.setCallback(new Callback<TwitterSession>() {
       @Override
       public void success(Result<TwitterSession> result) {
-        // The TwitterSession is also available through:
-        // Twitter.getInstance().core.getSessionManager().getActiveSession()
+
         TwitterSession session = result.data;
-        //
-        // with your app's user model
+
         String msg = "@" + session.getUserName() + " logged in! (#" + session.getUserId() + ")";
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-
-
       }
 
       @Override
@@ -125,16 +127,12 @@ public class ArticleActivity extends AppCompatActivity {
         Log.d("TwitterKit", "Login with Twitter failure", exception);
       }
     });
-
-
-
+*/
     twitterShareButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
 //        Intent shareIntent = new Intent();
 //        shareIntent.setAction(Intent.ACTION_SEND);
-
-
 
         TweetComposer.Builder builder = null;
         try {
@@ -207,12 +205,14 @@ public class ArticleActivity extends AppCompatActivity {
   private void getIntentFromFeedFragment() {
     urlForArticle = getIntent().getStringExtra(ArticleFeedFragment.URL_EXTRA_KEY);
     story = NewYorkTimes.getInstance().getStory(urlForArticle);
+
   }
 
   /**
    * Sets article details from the story object for the article
    */
-  private void setArticleObjects() {
+ /* private void setArticleObjects() {
+    articleBrowser = story.getUrl();
     title = story.getTitle();
     author = story.getByLine();
     String fullDate = story.getPublished();
@@ -220,15 +220,19 @@ public class ArticleActivity extends AppCompatActivity {
     content = story.getSummary();
     urlForImage = story.getMedia()[0].getUrl();
   }
-
+*/
   /**
    * Places the article details in their views
    */
+
   private void fillViews() {
-    articleTitle.setText(title);
-    articleAuthor.setText(author);
-    articleDate.setText(date);
-    articleContent.setText(content);
+
+    articleBrowser.setWebViewClient(new WebViewClient());
+    articleBrowser.loadUrl(urlForArticle);
+//    articleTitle.setText(title);
+//    articleAuthor.setText(author);
+//    articleDate.setText(date);
+//    articleContent.setText(content);
   }
 
   /**

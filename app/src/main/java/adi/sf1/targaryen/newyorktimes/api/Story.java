@@ -1,5 +1,7 @@
 package adi.sf1.targaryen.newyorktimes.api;
 
+import android.webkit.WebView;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
