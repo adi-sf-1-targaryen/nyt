@@ -25,11 +25,10 @@ import retrofit2.Response;
 public class NotificationPreferencesActivity extends AppCompatActivity {
 
   CheckBox topStories, mostPopular, opinion, world, us, businessDay, sports, arts, ny, magazine;
-  private static final String TAG = "Notification Preferences Activity";
-  private static final int NOTIFICATION_ID = 98;
   private String title;
   private String snippet;
   private String urlForArticle;
+  NotificationManager mNotificationManager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +36,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
     setContentView(R.layout.activity_preferences);
 
     setViews();
+    mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     setCheckboxClicks();
   }
 
@@ -66,75 +66,102 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
         boolean checked = ((CheckBox) view).isChecked();
         switch (view.getId()) {
           case R.id.checkbox_top_stories:
+            int NOTIFICATION_ID1 = 1;
             if (checked) {
               TopStories.Section section = TopStories.Section.HOME;
               getTopArticleForSection(section);
-              createNotifications();
+              createNotifications(NOTIFICATION_ID1);
+            } else {
+              mNotificationManager.cancel(NOTIFICATION_ID1);
             }
             break;
           case R.id.checkbox_most_popular:
+            int NOTIFICATION_ID2 = 2;
             if (checked) {
 
             }
             break;
           case R.id.checkbox_opinion:
+            int NOTIFICATION_ID3 = 3;
             if (checked) {
               TopStories.Section section = TopStories.Section.OPINION;
               getTopArticleForSection(section);
-              createNotifications();
+              createNotifications(NOTIFICATION_ID3);
+            } else {
+              mNotificationManager.cancel(NOTIFICATION_ID3);
             }
             break;
           case R.id.checkbox_world:
+            int NOTIFICATION_ID4 = 4;
             if (checked) {
               TopStories.Section section = TopStories.Section.WORLD;
               getTopArticleForSection(section);
-              createNotifications();
+              createNotifications(NOTIFICATION_ID4);
+            } else {
+              mNotificationManager.cancel(NOTIFICATION_ID4);
             }
             break;
           case R.id.checkbox_us:
+            int NOTIFICATION_ID5 = 5;
             if (checked) {
               TopStories.Section section = TopStories.Section.NATIONAL;
               getTopArticleForSection(section);
-              createNotifications();
+              createNotifications(NOTIFICATION_ID5);
+            } else {
+              mNotificationManager.cancel(NOTIFICATION_ID5);
             }
             break;
           case R.id.checkbox_business_day:
+            int NOTIFICATION_ID6 = 6;
             if (checked) {
               TopStories.Section section = TopStories.Section.BUSINESS;
               getTopArticleForSection(section);
-              createNotifications();
+              createNotifications(NOTIFICATION_ID6);
+            } else {
+              mNotificationManager.cancel(NOTIFICATION_ID6);
             }
             break;
           case R.id.checkbox_sports:
+            int NOTIFICATION_ID7 = 7;
             if (checked) {
               TopStories.Section section = TopStories.Section.SPORTS;
               getTopArticleForSection(section);
-              createNotifications();
+              createNotifications(NOTIFICATION_ID7);
+            } else {
+              mNotificationManager.cancel(NOTIFICATION_ID7);
             }
             break;
           case R.id.checkbox_arts:
+            int NOTIFICATION_ID8 = 8;
             if (checked) {
               TopStories.Section section = TopStories.Section.ARTS;
               getTopArticleForSection(section);
-              createNotifications();
+              createNotifications(NOTIFICATION_ID8);
+            } else {
+              mNotificationManager.cancel(NOTIFICATION_ID8);
             }
             break;
           case R.id.checkbox_ny:
+            int NOTIFICATION_ID9 = 9;
             if (checked) {
               TopStories.Section section = TopStories.Section.NYREGION;
               getTopArticleForSection(section);
-              createNotifications();
+              createNotifications(NOTIFICATION_ID9);
+            } else {
+              mNotificationManager.cancel(NOTIFICATION_ID9);
             }
             break;
           case R.id.checkbox_magazine:
+            int NOTIFICATION_ID10 = 10;
             if (checked) {
               TopStories.Section section = TopStories.Section.MAGAZINE;
               getTopArticleForSection(section);
-              createNotifications();
+              createNotifications(NOTIFICATION_ID10);
+            } else {
+              mNotificationManager.cancel(NOTIFICATION_ID10);
             }
             break;
           default:
-
         }
       }
     });
@@ -183,7 +210,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
    * Creates notifications for top article of selected category
    * If the notification is clicked on, the user will be taken to the article
    */
-  private void createNotifications() {
+  private void createNotifications(int notificationID) {
     Intent intent = new Intent(this, ArticleActivity.class);
     intent.putExtra(ArticleFeedFragment.URL_EXTRA_KEY, urlForArticle);
     PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
@@ -196,7 +223,6 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
     mBuilder.setPriority(Notification.PRIORITY_DEFAULT);
     mBuilder.setAutoCancel(true);
 
-    NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-    mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+    mNotificationManager.notify(notificationID, mBuilder.build());
   }
 }
