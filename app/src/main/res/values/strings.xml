@@ -17,5 +17,8 @@
     <string name="arts">Arts</string>
     <string name="new_york">New York</string>
     <string name="magazine">Magazine</string>
+    <string name="notification_preferences">Notification Preferences</string>
+    <string name="preferences">Preferences</string>
+    <string name="search_articles">Search Articles</string>
 </resources>
 

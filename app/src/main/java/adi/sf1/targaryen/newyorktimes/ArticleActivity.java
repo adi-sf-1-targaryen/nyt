@@ -172,14 +172,7 @@ public class ArticleActivity extends AppCompatActivity {
     story = NewYorkTimes.getInstance().getStory(urlForArticle);
 
   }
-
-  /**
-   * Sets article details from the story object for the article
-   */
-
-  /**
-   * Places the article details in their views
-   */
+  
 
   private void fillViews() {
 
