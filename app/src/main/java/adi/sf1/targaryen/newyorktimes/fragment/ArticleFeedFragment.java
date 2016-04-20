@@ -54,7 +54,7 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_feed, container, false);
     recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-    swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+//    swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
     context = getContext();
     setArticleFeedAdapter();
     setFeedList();

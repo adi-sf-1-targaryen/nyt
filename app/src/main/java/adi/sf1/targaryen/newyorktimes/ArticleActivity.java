@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,7 @@ public class ArticleActivity extends AppCompatActivity {
   TextView articleAuthor;
   TextView articleDate;
   TextView articleContent;
+  ImageButton shareAcrossAllButton;
 
   String title;
   String author;
@@ -82,6 +84,7 @@ public class ArticleActivity extends AppCompatActivity {
     getIntentFromFeedFragment();
     setArticleObjects();
     fillViews();
+    setShareAcrossAllButton();
     facebookIntegrationMethods();
     twitterIntergrationMethods();
   }
@@ -96,6 +99,7 @@ public class ArticleActivity extends AppCompatActivity {
     loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
     twitterLoginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
     twitterShareButton = (Button) findViewById(R.id.twitter_share_button);
+    shareAcrossAllButton = (ImageButton) findViewById(R.id.shareButton);
   }
 
   private void twitterIntergrationMethods() {
@@ -204,6 +208,7 @@ public class ArticleActivity extends AppCompatActivity {
     String fullDate = story.getPublished();
     date = fullDate.substring(0, 10);
     content = story.getSummary();
+
   }
 
   private void fillViews() {
@@ -211,5 +216,18 @@ public class ArticleActivity extends AppCompatActivity {
     articleAuthor.setText(author);
     articleDate.setText(date);
     articleContent.setText(content);
+  }
+
+  private void setShareAcrossAllButton() {
+    shareAcrossAllButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, urlForArticle);
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Check out this site!");
+        startActivity(Intent.createChooser(intent, "Share"));
+      }
+    });
   }
 }
