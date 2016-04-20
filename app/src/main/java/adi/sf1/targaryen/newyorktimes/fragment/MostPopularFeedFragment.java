@@ -27,11 +27,12 @@ public class MostPopularFeedFragment extends ArticleFeedFragment {
    * Makes the api call for the the most popular stories on the NY times
    */
   @Override
-  protected void setFeedList() {
+  protected void setFeedList(boolean cache) {
     NewYorkTimes.getInstance().getMostPopular(MostPopular.Type.EMAILED, MostPopular.Section.ALL, MostPopular.Time.DAY).enqueue(new Callback<MostPopular>() {
       @Override
       public void onResponse(Call<MostPopular> call, Response<MostPopular> response) {
         articleFeedAdapter.changeDataSet(response.body().getResults());
+        swipeContainer.setRefreshing(false);
       }
 
       @Override
@@ -39,6 +40,6 @@ public class MostPopularFeedFragment extends ArticleFeedFragment {
         Toast.makeText(context, "Could not retrieve Most Popular Stories", Toast.LENGTH_SHORT).show();
         Log.w(TAG, "onFailure: ", t);
       }
-    });
+    }, cache);
   }
 }
