@@ -1,11 +1,14 @@
 package adi.sf1.targaryen.newyorktimes.recyclerAdapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import adi.sf1.targaryen.newyorktimes.R;
 import adi.sf1.targaryen.newyorktimes.api.Story;
@@ -47,9 +50,24 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     this.listener = listener;
   }
 
+
+  public int getItemViewType(int position) {
+
+    if (position == 0) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
   @Override
-  public ArticleFeedViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-    View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_article_feed, parent, false);
+  public ArticleFeedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    View itemView;
+    if (viewType == 0) {
+      itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_article_feed, parent, false);
+    } else {
+      itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_article_feed_first, parent, false);
+    }
     return new ArticleFeedViewHolder(itemView);
   }
 
@@ -57,10 +75,16 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
   public void onBindViewHolder(ArticleFeedViewHolder holder, int position) {
 
     Story story = feedList[position];
-    Story.Media[] media = story.getMedia();
-    if (media != null && media.length > 0 ) {
-      // TODO: 4/19/16 THIS IS FOR GETTING THE IMAGE FOR THE FEED - USE PICASSO
-//        holder.image.setBackgroundResource(media[0].getUrl());
+    Story.Media media = story.getFirstPicture();
+    if (media != null) {
+      Context context = holder.image.getContext();
+      Picasso.with(context).load(media.getUrl())
+        .into(holder.image);
+      holder.image.setVisibility(View.VISIBLE);
+//      holder.image.getLayoutParams().height
+    } else {
+      holder.image.setImageResource(android.R.color.transparent);
+      holder.image.setVisibility(View.GONE);
     }
     holder.title.setText(story.getTitle());
     holder.author.setText(story.getByLine());
