@@ -45,10 +45,14 @@ public class NewYorkTimes {
   NewYorkTimes() {
     Gson base = new Gson();
 
+    Gson media = new GsonBuilder()
+      .registerTypeHierarchyAdapter(Story.Media.MostPopular.Metadata[].class, new ArrayTypeAdapter<>(base.getAdapter(Story.Media.MostPopular.Metadata[].class)))
+      .create();
+
     Gson story = new GsonBuilder()
-      .registerTypeHierarchyAdapter(Story.Media.TopStory[].class, new ArrayTypeAdapter<>(base.getAdapter(Story.Media.TopStory[].class)))
-      .registerTypeHierarchyAdapter(Story.Media.MostPopular[].class, new ArrayTypeAdapter<>(base.getAdapter(Story.Media.MostPopular[].class)))
-      .registerTypeHierarchyAdapter(String[].class, new ArrayTypeAdapter(base.getAdapter(String[].class)))
+      .registerTypeHierarchyAdapter(Story.Media.TopStory[].class, new ArrayTypeAdapter<>(media.getAdapter(Story.Media.TopStory[].class)))
+      .registerTypeHierarchyAdapter(Story.Media.MostPopular[].class, new ArrayTypeAdapter<>(media.getAdapter(Story.Media.MostPopular[].class)))
+      .registerTypeHierarchyAdapter(String[].class, new ArrayTypeAdapter(media.getAdapter(String[].class)))
       .create();
 
     Gson storyCache = new GsonBuilder()
