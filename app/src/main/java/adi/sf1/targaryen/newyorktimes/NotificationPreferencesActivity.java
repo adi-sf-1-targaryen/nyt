@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import adi.sf1.targaryen.newyorktimes.api.Call;
 import adi.sf1.targaryen.newyorktimes.api.Callback;
+import adi.sf1.targaryen.newyorktimes.api.MostPopular;
 import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
 import adi.sf1.targaryen.newyorktimes.api.TopStories;
 import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
@@ -69,8 +70,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
             int NOTIFICATION_ID1 = 1;
             if (checked) {
               TopStories.Section section = TopStories.Section.HOME;
-              getTopArticleForSection(section);
-              createNotifications(NOTIFICATION_ID1);
+              getTopArticleForSection(section, NOTIFICATION_ID1);
             } else {
               mNotificationManager.cancel(NOTIFICATION_ID1);
             }
@@ -78,15 +78,16 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
           case R.id.checkbox_most_popular:
             int NOTIFICATION_ID2 = 2;
             if (checked) {
-
+              getMostPopularArticles(NOTIFICATION_ID2);
+            } else {
+              mNotificationManager.cancel(NOTIFICATION_ID2);
             }
             break;
           case R.id.checkbox_opinion:
             int NOTIFICATION_ID3 = 3;
             if (checked) {
               TopStories.Section section = TopStories.Section.OPINION;
-              getTopArticleForSection(section);
-              createNotifications(NOTIFICATION_ID3);
+              getTopArticleForSection(section, NOTIFICATION_ID3);
             } else {
               mNotificationManager.cancel(NOTIFICATION_ID3);
             }
@@ -95,8 +96,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
             int NOTIFICATION_ID4 = 4;
             if (checked) {
               TopStories.Section section = TopStories.Section.WORLD;
-              getTopArticleForSection(section);
-              createNotifications(NOTIFICATION_ID4);
+              getTopArticleForSection(section, NOTIFICATION_ID4);
             } else {
               mNotificationManager.cancel(NOTIFICATION_ID4);
             }
@@ -105,8 +105,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
             int NOTIFICATION_ID5 = 5;
             if (checked) {
               TopStories.Section section = TopStories.Section.NATIONAL;
-              getTopArticleForSection(section);
-              createNotifications(NOTIFICATION_ID5);
+              getTopArticleForSection(section, NOTIFICATION_ID5);
             } else {
               mNotificationManager.cancel(NOTIFICATION_ID5);
             }
@@ -115,8 +114,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
             int NOTIFICATION_ID6 = 6;
             if (checked) {
               TopStories.Section section = TopStories.Section.BUSINESS;
-              getTopArticleForSection(section);
-              createNotifications(NOTIFICATION_ID6);
+              getTopArticleForSection(section, NOTIFICATION_ID6);
             } else {
               mNotificationManager.cancel(NOTIFICATION_ID6);
             }
@@ -125,8 +123,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
             int NOTIFICATION_ID7 = 7;
             if (checked) {
               TopStories.Section section = TopStories.Section.SPORTS;
-              getTopArticleForSection(section);
-              createNotifications(NOTIFICATION_ID7);
+              getTopArticleForSection(section, NOTIFICATION_ID7);
             } else {
               mNotificationManager.cancel(NOTIFICATION_ID7);
             }
@@ -135,8 +132,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
             int NOTIFICATION_ID8 = 8;
             if (checked) {
               TopStories.Section section = TopStories.Section.ARTS;
-              getTopArticleForSection(section);
-              createNotifications(NOTIFICATION_ID8);
+              getTopArticleForSection(section, NOTIFICATION_ID8);
             } else {
               mNotificationManager.cancel(NOTIFICATION_ID8);
             }
@@ -145,8 +141,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
             int NOTIFICATION_ID9 = 9;
             if (checked) {
               TopStories.Section section = TopStories.Section.NYREGION;
-              getTopArticleForSection(section);
-              createNotifications(NOTIFICATION_ID9);
+              getTopArticleForSection(section, NOTIFICATION_ID9);
             } else {
               mNotificationManager.cancel(NOTIFICATION_ID9);
             }
@@ -155,8 +150,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
             int NOTIFICATION_ID10 = 10;
             if (checked) {
               TopStories.Section section = TopStories.Section.MAGAZINE;
-              getTopArticleForSection(section);
-              createNotifications(NOTIFICATION_ID10);
+              getTopArticleForSection(section, NOTIFICATION_ID10);
             } else {
               mNotificationManager.cancel(NOTIFICATION_ID10);
             }
@@ -189,13 +183,14 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
    * Queries top stories api for first article in the selected category
    * @param section
    */
-  private void getTopArticleForSection(TopStories.Section section) {
+  private void getTopArticleForSection(TopStories.Section section, final int notificationID) {
     NewYorkTimes.getInstance().getTopStories(section).enqueue(new Callback<TopStories>() {
       @Override
       public void onResponse(Call<TopStories> call, Response<TopStories> response) {
         title = response.body().getResults()[0].getTitle();
         snippet = response.body().getResults()[0].getSummary();
         urlForArticle = response.body().getResults()[0].getUrl();
+        createNotifications(notificationID);
       }
 
       @Override
@@ -204,6 +199,28 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
           .show();
       }
     });
+  }
+
+  /**
+   * Queries most popular api for first article
+   */
+  private void getMostPopularArticles(final int notificationID) {
+    NewYorkTimes.getInstance().getMostPopular(MostPopular.Type.EMAILED, MostPopular.Section.ALL, MostPopular.Time.DAY)
+      .enqueue(new Callback<MostPopular>() {
+        @Override
+        public void onResponse(Call<MostPopular> call, Response<MostPopular> response) {
+          title = response.body().getResults()[0].getTitle();
+          snippet = response.body().getResults()[0].getSummary();
+          urlForArticle = response.body().getResults()[0].getUrl();
+          createNotifications(notificationID);
+        }
+
+        @Override
+        public void onFailure(Call<MostPopular> call, Throwable t) {
+          Toast.makeText(NotificationPreferencesActivity.this, "Could not retrieve Most Popular Stories", Toast.LENGTH_SHORT)
+            .show();
+        }
+      });
   }
 
   /**
