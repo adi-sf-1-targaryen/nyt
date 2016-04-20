@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="adi.sf1.targaryen.newyorktimes">
 
-
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -17,8 +16,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
 
+            <meta-data android:name="android.app.searchable"
+                       android:resource="@xml/searchable" />
+        </activity>
         <activity android:name=".ArticleActivity"/>
 
         <meta-data
@@ -27,8 +31,7 @@
 
         <activity
             android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
@@ -41,7 +44,11 @@
             android:authorities="com.facebook.app.FacebookContentProvider524135594459226"
             android:exported="true"/>
 
+        <activity android:name=".SearchActivity">
+        </activity>
+
         <activity android:name=".NotificationPreferencesActivity"/>
+
 
 
     </application>
