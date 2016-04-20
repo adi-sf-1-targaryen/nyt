@@ -2,6 +2,7 @@ package adi.sf1.targaryen.newyorktimes.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import adi.sf1.targaryen.newyorktimes.api.Call;
@@ -14,7 +15,7 @@ import retrofit2.Response;
  * Created by nicolassaad on 4/19/16.
  */
 public class MostPopularFeedFragment extends ArticleFeedFragment {
-
+  private static final String TAG = "MostPopularFeedFragment";
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class MostPopularFeedFragment extends ArticleFeedFragment {
       @Override
       public void onFailure(Call<MostPopular> call, Throwable t) {
         Toast.makeText(context, "Could not retrieve Most Popular Stories", Toast.LENGTH_SHORT).show();
+        Log.w(TAG, "onFailure: ", t);
       }
     });
   }

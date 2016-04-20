@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import retrofit2.Response;
  * Created by Raiders on 4/18/16.
  */
 public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.OnItemClickListener{
+  private static final String TAG = "ArticleFeedFragment";
 
   protected Context context;
   private RecyclerView recyclerView;
@@ -107,6 +109,7 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
       @Override
       public void onFailure(Call<TopStories> call, Throwable t) {
         Toast.makeText(context, "Could not retrieve Top Stories", Toast.LENGTH_SHORT).show();
+        Log.w(TAG, "onFailure: ", t);
       }
     });
   }
