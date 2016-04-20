@@ -25,13 +25,20 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
- * Created by moltendorf on 16/4/15.
+ * Main retrofit2 New York Times API wrapper.
+ * <p/>
+ * Singleton.
  */
 public class NewYorkTimes {
   private static final String TAG = "NewYorkTimes";
 
   private static NewYorkTimes instance;
 
+  /**
+   * Get the singleton's instance.
+   *
+   * @return
+   */
   public static NewYorkTimes getInstance() {
     if (instance == null) {
       instance = new NewYorkTimes();
@@ -40,16 +47,25 @@ public class NewYorkTimes {
     return instance;
   }
 
+  /**
+   * Interface built by retrofit2.
+   */
   private NewYorkTimesAPI service;
 
+  /**
+   * Constructor.
+   */
   NewYorkTimes() {
+    // Used for all base types.
     Gson base = new Gson();
 
+    // Used to safely ignore invalid types for Metadata arrays in Most Popular API. It's ignored in Top Stories.
     Gson media = new GsonBuilder()
       .registerTypeHierarchyAdapter(Story.Media.MostPopular.Metadata[].class,
         new ArrayTypeAdapter<>(base.getAdapter(Story.Media.MostPopular.Metadata[].class)))
       .create();
 
+    // Used to safely ignore invalid types for Media and String arrays in Most Popular and Top Stories API.
     Gson story = new GsonBuilder()
       .registerTypeHierarchyAdapter(Story.Media.TopStory[].class,
         new ArrayTypeAdapter<>(media.getAdapter(Story.Media.TopStory[].class)))
@@ -59,6 +75,7 @@ public class NewYorkTimes {
         new ArrayTypeAdapter(media.getAdapter(String[].class)))
       .create();
 
+    // Used to cache Most Popular and Top Stories story objects.
     Gson storyCache = new GsonBuilder()
       .registerTypeHierarchyAdapter(Story.TopStory.class,
         new CacheTypeAdapter<>(story.getAdapter(Story.TopStory.class)))
@@ -66,6 +83,7 @@ public class NewYorkTimes {
         new CacheTypeAdapter<>(story.getAdapter(Story.MostPopular.class)))
       .create();
 
+    // Used to safely ignore invalid types for Story arrays in Most Popular and Top Stories API.
     Gson root = new GsonBuilder()
       .registerTypeHierarchyAdapter(Story.TopStory[].class,
         new ArrayTypeAdapter<>(storyCache.getAdapter(Story.TopStory[].class)))
@@ -81,6 +99,14 @@ public class NewYorkTimes {
     service = retrofit.create(NewYorkTimesAPI.class);
   }
 
+  /**
+   * Get stories from the Most Popular API.
+   *
+   * @param type    Type of most popular stories; most emailed, most shared, most viewed.
+   * @param section Section to find stories within.
+   * @param time    Max age of the stories.
+   * @return
+   */
   public Call<MostPopular> getMostPopular(Type type, Section section, Time time) {
     if (type == Type.SHARED) {
       ShareType[] shareTypes = new ShareType[]{
@@ -94,6 +120,14 @@ public class NewYorkTimes {
     }
   }
 
+  /**
+   * Get most shared stories from the Most Popular API.
+   *
+   * @param section    Section to find stories within.
+   * @param shareTypes Only return articles shared in specific ways (email, facebook, twitter)
+   * @param time       Max age of the stories.
+   * @return
+   */
   public Call<MostPopular> getMostShared(Section section, ShareType[] shareTypes, Time time) {
     if (shareTypes.length == 0) {
       return getMostPopular(Type.SHARED, section, time);
@@ -116,6 +150,12 @@ public class NewYorkTimes {
     );
   }
 
+  /**
+   * Get stories from the Top Stories API.
+   *
+   * @param section Section to find stories within.
+   * @return
+   */
   public Call<TopStories> getTopStories(TopStories.Section section) {
     return new Call<>(service.getTopStores(section.getValue(), APIKeys.NYT_TOP_STORIES));
   }
@@ -141,6 +181,9 @@ public class NewYorkTimes {
     });
   }
 
+  /**
+   * Interface used for retrofit2.
+   */
   private interface NewYorkTimesAPI {
     @GET("topstories/v1/{section}.json")
     retrofit2.Call<TopStories> getTopStores(
@@ -165,6 +208,10 @@ public class NewYorkTimes {
       @Query("api-key") String APIKey);
   }
 
+  /**
+   * TypeAdapter implementation that caches all objects and discards duplicates.
+   * @param <T>
+   */
   private static class CacheTypeAdapter<T> extends TypeAdapter<T> {
     // @todo Fix memory leak!
     private static Map objectCache = new HashMap();
@@ -199,6 +246,10 @@ public class NewYorkTimes {
     }
   }
 
+  /**
+   * TypeAdapter that returns null when a value is not an array.
+   * @param <T> An array type.
+   */
   private static class ArrayTypeAdapter<T> extends TypeAdapter<T> {
     TypeAdapter<T> base;
 
