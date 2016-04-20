@@ -1,5 +1,6 @@
 package adi.sf1.targaryen.newyorktimes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
   ViewPager mViewPager;
   static final String LOG_TAG = "SlidingTabsBasicFragment";
   private SlidingTabLayout mSlidingTabLayout;
+  private MenuItem searchArticles;
+  private MenuItem preferences;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     mSlidingTabLayout.setViewPager(mViewPager);
 
-
   }
 
 
@@ -64,11 +66,14 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 // Handle action bar item clicks here. The action bar will
 // automatically handle clicks on the Home/Up button, so long
 // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
-//noinspection SimplifiableIfStatement
-    if (id == R.id.action_settings) {
-      return true;
+ 
+    switch (item.getItemId()) {
+      case R.id.preferences:
+        Intent preferencesIntent = new Intent(MainActivity.this, NotificationPreferencesActivity.class);
+        startActivity(preferencesIntent);
+        return true;
     }
+
     return super.onOptionsItemSelected(item);
   }
 
