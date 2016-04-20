@@ -29,7 +29,6 @@ import retrofit2.Response;
 public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.OnItemClickListener{
 
   protected Context context;
-//  private List<ArticleFeed> feedList = new ArrayList<>();
   private RecyclerView recyclerView;
   protected ArticleFeedAdapter articleFeedAdapter;
   public static final String EXTRA_SECTION = "section";
@@ -97,6 +96,13 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
     });
   }
 
+  /**
+   * Overrides onItemClick method for the recycler view
+   * Sends the user to the article activity
+   * Sends an intent with the article url to the article activity
+   * The url is used to grab all of the article's details from the story object
+   * @param story
+   */
   @Override
   public void onItemClick(Story story) {
     Intent articleActivityIntent = new Intent(context, ArticleActivity.class);

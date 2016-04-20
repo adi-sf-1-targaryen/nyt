@@ -42,6 +42,9 @@ import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
 
 /**
  * Created by Raiders on 4/19/16.
+ * Creates activity for the clicked article.
+ * Allows you to share the article on social media and email/text
+ * Grabs article data from the article url passed in an intent from article feed
  */
 public class ArticleActivity extends AppCompatActivity {
 
@@ -176,7 +179,7 @@ public class ArticleActivity extends AppCompatActivity {
     });
 
     /**
-     * Dummy content to post to facebook wall
+     * Content to post to facebook wall
      */
     ShareLinkContent shareLinkContent = new ShareLinkContent.Builder()
       .setContentUrl(Uri.parse(urlForArticle))
@@ -197,20 +200,30 @@ public class ArticleActivity extends AppCompatActivity {
     callbackManager.onActivityResult(requestCode, resultCode, data);
   }
 
+  /**
+   * Grabs the intent from ArticleFeedFragment
+   * Takes url of article and creates the story object with for the corresponding article
+   */
   private void getIntentFromFeedFragment() {
     urlForArticle = getIntent().getStringExtra(ArticleFeedFragment.URL_EXTRA_KEY);
     story = NewYorkTimes.getInstance().getStory(urlForArticle);
   }
 
+  /**
+   * Sets article details from the story object for the article
+   */
   private void setArticleObjects() {
     title = story.getTitle();
     author = story.getByLine();
     String fullDate = story.getPublished();
     date = fullDate.substring(0, 10);
     content = story.getSummary();
-
+    urlForImage = story.getMedia()[0].getUrl();
   }
 
+  /**
+   * Places the article details in their views
+   */
   private void fillViews() {
     articleTitle.setText(title);
     articleAuthor.setText(author);
@@ -218,6 +231,9 @@ public class ArticleActivity extends AppCompatActivity {
     articleContent.setText(content);
   }
 
+  /**
+   * Sets up Share button to allow user to share article on various mediums
+   */
   private void setShareAcrossAllButton() {
     shareAcrossAllButton.setOnClickListener(new View.OnClickListener() {
       @Override

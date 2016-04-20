@@ -36,6 +36,11 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
       snippet = (TextView) itemView.findViewById(R.id.content_text_article);
     }
 
+    /**
+     * Sets a click listener on the recycler view cards
+     * @param story
+     * @param listener
+     */
     public void setOnClickListener(final Story story, final OnItemClickListener listener) {
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -105,6 +110,9 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     notifyDataSetChanged();
   }
 
+  /**
+   * Creates public interface for item click listener
+   */
   public interface OnItemClickListener {
     void onItemClick(Story story);
   }
