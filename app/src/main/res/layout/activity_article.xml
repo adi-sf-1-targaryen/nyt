@@ -34,7 +34,6 @@
             android:id="@+id/twitter_share_button"
             android:layout_column="1"
             android:layout_height="match_parent"
-
             android:src="@drawable/tw__btn_composer_tweet"
             android:background="@color/tw__composer_blue"
             />

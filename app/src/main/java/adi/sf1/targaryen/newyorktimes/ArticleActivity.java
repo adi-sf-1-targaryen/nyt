@@ -18,17 +18,14 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
 import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
+
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.net.MalformedURLException;
@@ -50,25 +47,17 @@ public class ArticleActivity extends AppCompatActivity {
 
 
   WebView articleBrowser;
-  ImageView articleImage;
 
-  /*  TextView articleTitle;
-    TextView articleAuthor;
-    TextView articleDate;
-    TextView articleContent;*/
   ImageButton shareAcrossAllButton;
   ImageButton twitterShareButton;
 
   String title;
-  String author;
-  String date;
-  String content;
+
   String urlForArticle;
-  String urlForImage;
+
 
   ShareButton shareButton;
-  LoginButton loginButton;
-  TwitterLoginButton twitterLoginButton;
+
   CallbackManager callbackManager;
   Story story;
 
@@ -87,7 +76,6 @@ public class ArticleActivity extends AppCompatActivity {
 
     setViews();
     getIntentFromFeedFragment();
-//    setArticleObjects();
     fillViews();
     setShareAcrossAllButton();
     facebookIntegrationMethods();
@@ -98,41 +86,19 @@ public class ArticleActivity extends AppCompatActivity {
 
     articleBrowser = (WebView) findViewById(R.id.article_web_view);
 
-   /* articleImage = (ImageView) findViewById(R.id.image_article);
-    articleTitle = (TextView) findViewById(R.id.title_text_article);
-    articleAuthor = (TextView) findViewById(R.id.author_text_article);
-    articleDate = (TextView) findViewById(R.id.date_text_article);
-    articleContent = (TextView) findViewById(R.id.content_text_article);*/
 
     shareButton = (ShareButton) findViewById(R.id.facebook_share_button);
-    //loginButton = (LoginButton) findViewById(R.id.facebook_);
-    twitterLoginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
     twitterShareButton = (ImageButton) findViewById(R.id.twitter_share_button);
     shareAcrossAllButton = (ImageButton) findViewById(R.id.shareButton);
   }
 
   private void twitterIntergrationMethods() {
-   /* twitterLoginButton.setCallback(new Callback<TwitterSession>() {
-      @Override
-      public void success(Result<TwitterSession> result) {
 
-        TwitterSession session = result.data;
 
-        String msg = "@" + session.getUserName() + " logged in! (#" + session.getUserId() + ")";
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-      }
-
-      @Override
-      public void failure(TwitterException exception) {
-        Log.d("TwitterKit", "Login with Twitter failure", exception);
-      }
-    });
-*/
     twitterShareButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-//        Intent shareIntent = new Intent();
-//        shareIntent.setAction(Intent.ACTION_SEND);
+
 
         TweetComposer.Builder builder = null;
         try {
@@ -194,7 +160,6 @@ public class ArticleActivity extends AppCompatActivity {
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    twitterLoginButton.onActivityResult(requestCode, resultCode, data);
     callbackManager.onActivityResult(requestCode, resultCode, data);
   }
 
@@ -211,16 +176,7 @@ public class ArticleActivity extends AppCompatActivity {
   /**
    * Sets article details from the story object for the article
    */
- /* private void setArticleObjects() {
-    articleBrowser = story.getUrl();
-    title = story.getTitle();
-    author = story.getByLine();
-    String fullDate = story.getPublished();
-    date = fullDate.substring(0, 10);
-    content = story.getSummary();
-    urlForImage = story.getMedia()[0].getUrl();
-  }
-*/
+
   /**
    * Places the article details in their views
    */
@@ -229,10 +185,7 @@ public class ArticleActivity extends AppCompatActivity {
 
     articleBrowser.setWebViewClient(new WebViewClient());
     articleBrowser.loadUrl(urlForArticle);
-//    articleTitle.setText(title);
-//    articleAuthor.setText(author);
-//    articleDate.setText(date);
-//    articleContent.setText(content);
+
   }
 
   /**
