@@ -23,7 +23,7 @@ import com.facebook.share.model.ShareVideoContent;
 import com.facebook.share.widget.ShareButton;
 
 /**
- * This activity uses Facebook sdk tools to get content, pictures or videos from a url or specified location.
+ * This activity uses Facebook sdk tools to get content, pictures or videos from a urlForArticle or specified location.
  * These methods are called in an activity or fragment and then can be posted on facebook.
  * Created by Raiders on 4/18/16.
  */

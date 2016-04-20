@@ -95,5 +95,6 @@ public class TopStories {
     public String getValue() {
       return value;
     }
+
   }
 }
