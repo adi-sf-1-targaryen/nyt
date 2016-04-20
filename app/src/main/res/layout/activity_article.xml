@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" 
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -70,35 +71,6 @@
         android:src="@android:drawable/ic_menu_share"/>
 
 
-    <TextView
-        android:id="@+id/date_text_article"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:layout_margin="10dp"
-        android:text="DATE"/>
-
-
-    <TextView
-        android:id="@+id/author_text_article"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:text="AUTHOR"
-        android:layout_margin="10dp"
-        />
-
-
-
-    <TextView
-        android:id="@+id/content_text_article"
-        android:text="CONTENT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:textStyle="italic"
-        android:layout_margin="10dp"
-        android:layout_weight="0.10" />
 
 
 
