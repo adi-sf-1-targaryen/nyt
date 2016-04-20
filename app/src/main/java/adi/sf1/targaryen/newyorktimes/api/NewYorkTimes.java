@@ -46,16 +46,19 @@ public class NewYorkTimes {
     Gson base = new Gson();
 
     Gson story = new GsonBuilder()
-      .registerTypeHierarchyAdapter(Story.Media[].class, new MediaArrayTypeAdapter(base))
-      .registerTypeHierarchyAdapter(String[].class, new StringArrayTypeAdapter(base))
+      .registerTypeHierarchyAdapter(Story.Media.TopStory[].class, new ArrayTypeAdapter<>(base.getAdapter(Story.Media.TopStory[].class)))
+      .registerTypeHierarchyAdapter(Story.Media.MostPopular[].class, new ArrayTypeAdapter<>(base.getAdapter(Story.Media.MostPopular[].class)))
+      .registerTypeHierarchyAdapter(String[].class, new ArrayTypeAdapter(base.getAdapter(String[].class)))
       .create();
 
     Gson storyCache = new GsonBuilder()
-      .registerTypeHierarchyAdapter(Story.class, new StoryTypeAdapter(story))
+      .registerTypeHierarchyAdapter(Story.TopStory.class, new CacheTypeAdapter<>(story.getAdapter(Story.TopStory.class)))
+      .registerTypeHierarchyAdapter(Story.MostPopular.class, new CacheTypeAdapter<>(story.getAdapter(Story.MostPopular.class)))
       .create();
 
     Gson root = new GsonBuilder()
-      .registerTypeAdapter(Story[].class, new StoryArrayTypeAdapter(storyCache))
+      .registerTypeHierarchyAdapter(Story.TopStory[].class, new ArrayTypeAdapter<>(storyCache.getAdapter(Story.TopStory[].class)))
+      .registerTypeHierarchyAdapter(Story.MostPopular[].class, new ArrayTypeAdapter<>(storyCache.getAdapter(Story.MostPopular[].class)))
       .create();
 
     Retrofit retrofit = new Retrofit.Builder()
@@ -115,7 +118,7 @@ public class NewYorkTimes {
 
   // @todo Use callback mechanism to allow for asynchronous request when the story does not exist.
   public Story getStory(String url) {
-    return StoryTypeAdapter.stories.get(url);
+    return (Story) CacheTypeAdapter.stories.get(url);
   }
 
   private interface NewYorkTimesAPI {
@@ -142,106 +145,54 @@ public class NewYorkTimes {
       @Query("api-key") String APIKey);
   }
 
-  private static class StoryTypeAdapter extends TypeAdapter<Story> {
+  private static class CacheTypeAdapter<T> extends TypeAdapter<T> {
     // @todo Fix memory leak!
-    private static Map<String, Story> stories = new HashMap<>();
+    private static Map stories = new HashMap();
 
-    private TypeAdapter<Story> base;
+    private TypeAdapter<T> base;
 
-    public StoryTypeAdapter(Gson gson) {
-      base = gson.getAdapter(Story.class);
+    public CacheTypeAdapter(TypeAdapter<T> base) {
+      this.base = base;
     }
 
     @Override
-    public void write(JsonWriter out, Story value) throws IOException {
+    public void write(JsonWriter out, T value) throws IOException {
       base.write(out, value);
     }
 
     @Override
-    public Story read(JsonReader in) throws IOException {
-      Story story = base.read(in);
-      String url = story.getUrl();
+    public T read(JsonReader in) throws IOException {
+      T result = base.read(in);
 
-      Story cached = stories.get(url);
+      Object cached = stories.get(result);
 
       if (cached == null) {
         Log.d(TAG, "read: Cache MISS");
-        stories.put(url, story);
+        stories.put(result, result);
 
-        return story;
+        return result;
       }
 
       Log.d(TAG, "read: Cache HIT");
 
-      return cached;
+      return (T) cached;
     }
   }
 
-  // @todo Find better way to compact all of our ArrayTypeAdapters.
-  private static class StoryArrayTypeAdapter extends TypeAdapter<Story[]> {
-    TypeAdapter<Story[]> base;
+  private static class ArrayTypeAdapter<T> extends TypeAdapter<T> {
+    TypeAdapter<T> base;
 
-    public StoryArrayTypeAdapter(Gson gson) {
-      base = gson.getAdapter(Story[].class);
+    public ArrayTypeAdapter(TypeAdapter<T> base) {
+      this.base = base;
     }
 
     @Override
-    public void write(JsonWriter out, Story[] value) throws IOException {
+    public void write(JsonWriter out, T value) throws IOException {
       base.write(out, value);
     }
 
     @Override
-    public Story[] read(JsonReader in) throws IOException {
-      if (in.peek() == JsonToken.BEGIN_ARRAY) {
-        return base.read(in);
-      } else {
-        in.skipValue();
-
-        return null;
-      }
-    }
-  }
-
-  // @todo Find better way to compact all of our ArrayTypeAdapters.
-  private static class MediaArrayTypeAdapter extends TypeAdapter<Story.Media[]> {
-    TypeAdapter<Story.Media[]> base;
-
-    public MediaArrayTypeAdapter(Gson gson) {
-      base = gson.getAdapter(Story.Media[].class);
-    }
-
-    @Override
-    public void write(JsonWriter out, Story.Media[] value) throws IOException {
-      base.write(out, value);
-    }
-
-    @Override
-    public Story.Media[] read(JsonReader in) throws IOException {
-      if (in.peek() == JsonToken.BEGIN_ARRAY) {
-        return base.read(in);
-      } else {
-        in.skipValue();
-
-        return null;
-      }
-    }
-  }
-
-  // @todo Find better way to compact all of our ArrayTypeAdapters.
-  private static class StringArrayTypeAdapter extends TypeAdapter<String[]> {
-    TypeAdapter<String[]> base;
-
-    public StringArrayTypeAdapter(Gson gson) {
-      base = gson.getAdapter(String[].class);
-    }
-
-    @Override
-    public void write(JsonWriter out, String[] value) throws IOException {
-      base.write(out, value);
-    }
-
-    @Override
-    public String[] read(JsonReader in) throws IOException {
+    public T read(JsonReader in) throws IOException {
       if (in.peek() == JsonToken.BEGIN_ARRAY) {
         return base.read(in);
       } else {
