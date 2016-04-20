@@ -6,6 +6,8 @@
               android:orientation="vertical"
               tools:context="adi.sf1.targaryen.newyorktimes.MainActivity">
 
+
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -15,10 +17,11 @@
 
 
     <adi.sf1.targaryen.newyorktimes.SlidingTabLayout
-    android:id="@+id/sliding_tabs"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+        android:id="@+id/sliding_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     </adi.sf1.targaryen.newyorktimes.SlidingTabLayout>
+
 
     <android.support.v4.view.ViewPager xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/pager"

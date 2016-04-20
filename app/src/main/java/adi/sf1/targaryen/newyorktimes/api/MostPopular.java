@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class MostPopular {
   @SerializedName("results")
-  private Story[] results;
+  private Story.MostPopular[] results;
 
   public Story[] getResults() {
     return results;

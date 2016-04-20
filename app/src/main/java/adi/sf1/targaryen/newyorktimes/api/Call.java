@@ -16,7 +16,8 @@ import retrofit2.Response;
 public class Call<T> {
   private static final String TAG = "Call";
 
-  private static Map<HttpUrl, Response> responses = new HashMap<>();
+  // @todo Fix memory leak!
+  private static Map<HttpUrl, Response> responseCache = new HashMap<>();
 
   private retrofit2.Call<T> parent;
 
@@ -34,20 +35,20 @@ public class Call<T> {
 
   public void enqueue(final Callback<T> callback, boolean cache) {
     final HttpUrl url = parent.request().url();
-    Response response = responses.get(url);
+    Response response = responseCache.get(url);
 
     if (cache && response != null) {
-      Log.d(TAG, "enqueue: Cache HIT");
+      Log.d(TAG, "enqueue: responseCache Cache HIT");
 
       callback.onResponse(this, response); // Our API wrapper should never mix URLs up.
     } else {
-      Log.d(TAG, "enqueue: Cache MISS");
+      Log.d(TAG, "enqueue: responseCache Cache MISS");
 
       parent.enqueue(new retrofit2.Callback<T>() {
         @Override
         public void onResponse(retrofit2.Call<T> call, Response<T> response) {
           if (response.isSuccessful()) {
-            responses.put(url, response);
+            responseCache.put(url, response);
           }
 
           callback.onResponse(Call.this, response);

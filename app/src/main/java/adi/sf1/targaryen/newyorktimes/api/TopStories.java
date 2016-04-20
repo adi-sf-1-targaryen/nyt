@@ -16,7 +16,7 @@ public class TopStories {
   private String updated;
 
   @SerializedName("results")
-  private Story[] results;
+  private Story.TopStory[] results;
 
   public String getCopyright() {
     return copyright;
