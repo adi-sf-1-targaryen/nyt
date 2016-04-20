@@ -54,6 +54,22 @@ abstract public class Story {
   @SerializedName("geo_facet")
   private String[] geoFacet; // @todo Find better name.
 
+  @Override
+  public int hashCode() {
+    return url.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o instanceof Story) {
+      Story story = (Story) o;
+
+      return url.equals(story.url);
+    }
+
+    return false;
+  }
+
   public String getSection() {
     return section;
   }
