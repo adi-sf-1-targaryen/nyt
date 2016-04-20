@@ -218,7 +218,8 @@ public class ArticleActivity extends AppCompatActivity {
     String fullDate = story.getPublished();
     date = fullDate.substring(0, 10);
     content = story.getSummary();
-    urlForImage = story.getMedia()[0].getUrl();
+    Story.Media media = story.getFirstPicture();
+    urlForImage = media != null ? media.getUrl() : null;
   }
 
   /**
