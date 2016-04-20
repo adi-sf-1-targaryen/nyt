@@ -15,18 +15,25 @@ import adi.sf1.targaryen.newyorktimes.api.Story;
 
 /**
  * Created by Raiders on 4/18/16.
+ * Adapter for the recycler view that shows the article feed.
  */
 public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.ArticleFeedViewHolder> {
 
   private Story[] feedList = null;
   private OnItemClickListener listener;
 
-
+  /**
+   * View Holder for the custom views in the article feed
+   */
   public class ArticleFeedViewHolder extends RecyclerView.ViewHolder {
 
     public ImageView image;
     public TextView title, author, date, snippet;
 
+    /**
+     * Sets the views for the article feed
+     * @param itemView
+     */
     public ArticleFeedViewHolder(View itemView) {
       super(itemView);
       image = (ImageView) itemView.findViewById(R.id.image_article);
@@ -51,6 +58,11 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     }
   }
 
+  /**
+   * Constructor for the adapter
+   * Implements an onItemClickListener to allow user to click each article in the feed
+   * @param listener
+   */
   public ArticleFeedAdapter(OnItemClickListener listener) {
     this.listener = listener;
   }
@@ -65,6 +77,12 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     }
   }
 
+  /**
+   * Creates the views in the view holder
+   * @param parent
+   * @param viewType
+   * @return
+   */
   @Override
   public ArticleFeedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     View itemView;
@@ -76,6 +94,11 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     return new ArticleFeedViewHolder(itemView);
   }
 
+  /**
+   * Places the appropriate data into the views for the feed
+   * @param holder
+   * @param position
+   */
   @Override
   public void onBindViewHolder(ArticleFeedViewHolder holder, int position) {
 
@@ -100,11 +123,19 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     holder.setOnClickListener(feedList[position], listener);
   }
 
+  /**
+   * Tells the adapter how many items will need to be in the feed, if applicable
+   * @return
+   */
   @Override
   public int getItemCount() {
     return feedList == null? 0: feedList.length;
   }
 
+  /**
+   * Changes the data in the feed
+   * @param feedList
+   */
   public void changeDataSet(Story[] feedList) {
     this.feedList = feedList;
     notifyDataSetChanged();
