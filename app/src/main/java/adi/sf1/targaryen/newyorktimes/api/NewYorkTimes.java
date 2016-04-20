@@ -195,13 +195,13 @@ public class NewYorkTimes {
       Object cached = objectCache.get(result);
 
       if (cached == null) {
-        Log.d(TAG, "read: Cache MISS");
+        Log.d(TAG, "read: objectCache Cache MISS");
         objectCache.put(result, result);
 
         return result;
       }
 
-      Log.d(TAG, "read: Cache HIT");
+      Log.d(TAG, "read: objectCache Cache HIT");
 
       return (T) cached;
     }
