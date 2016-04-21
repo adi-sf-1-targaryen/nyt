@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.util.Log;
 import android.widget.Toast;
 
 import adi.sf1.targaryen.newyorktimes.MainActivity;
@@ -24,6 +25,7 @@ import retrofit2.Response;
 
 
 public class SearchFragment extends ArticleFeedFragment {
+  private static final String TAG = "SearchFragment";
 
   RecyclerView recyclerViewSearch;
   String searchArticleQuery;
@@ -72,7 +74,7 @@ public class SearchFragment extends ArticleFeedFragment {
       @Override
       public void onFailure(Call<ArticleSearch> call, Throwable t) {
         Toast.makeText(context, "Could not retrive Search Result", Toast.LENGTH_LONG).show();
-
+        Log.w(TAG, "onFailure: ", t);
       }
     });
 
