@@ -8,9 +8,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import adi.sf1.targaryen.newyorktimes.MainActivity;
 import adi.sf1.targaryen.newyorktimes.R;
+import adi.sf1.targaryen.newyorktimes.api.Call;
+import adi.sf1.targaryen.newyorktimes.api.Callback;
+import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
+import adi.sf1.targaryen.newyorktimes.api.result.ArticleSearch;
+import retrofit2.Response;
 
 /**
  * Created by emiliaaxen on 16-04-21.
@@ -56,6 +62,20 @@ public class SearchFragment extends ArticleFeedFragment {
 
   @Override
   protected void setFeedList(boolean cache) {
+    NewYorkTimes.getInstance().articleSearch(searchArticleQuery).enqueue(new Callback<ArticleSearch>() {
+      @Override
+      public void onResponse(Call<ArticleSearch> call, Response<ArticleSearch> response) {
+        articleFeedAdapter.changeDataSet(response.body().getResults());
+        swipeContainer.setRefreshing(false);
+      }
+
+      @Override
+      public void onFailure(Call<ArticleSearch> call, Throwable t) {
+        Toast.makeText(context, "Could not retrive Search Result", Toast.LENGTH_LONG).show();
+
+      }
+    });
+
   }
 
 }

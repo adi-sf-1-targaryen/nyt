@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
   public final static String  SEARCH_KEY = "searchKey";
   public final static String MY_PREF_KEY = "myPrefKey";
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
