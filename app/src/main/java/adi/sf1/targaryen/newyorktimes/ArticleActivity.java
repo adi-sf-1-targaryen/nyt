@@ -38,7 +38,6 @@ import adi.sf1.targaryen.newyorktimes.api.Story;
 import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
 
 /**
- * Created by Raiders on 4/19/16.
  * Creates activity for the clicked article.
  * Allows you to share the article on social media and email/text
  * Grabs article data from the article url passed in an intent from article feed

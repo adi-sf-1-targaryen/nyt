@@ -20,9 +20,6 @@ import adi.sf1.targaryen.newyorktimes.api.TopStories;
 import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
 import retrofit2.Response;
 
-/**
- * Created by Raiders on 4/20/16.
- */
 public class NotificationPreferencesActivity extends AppCompatActivity {
 
   CheckBox topStories, mostPopular, opinion, world, us, businessDay, sports, arts, ny, magazine;

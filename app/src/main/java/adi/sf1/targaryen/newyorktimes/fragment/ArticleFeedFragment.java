@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import adi.sf1.targaryen.newyorktimes.ArticleActivity;
+import adi.sf1.targaryen.newyorktimes.CheckInternetConnection;
 import adi.sf1.targaryen.newyorktimes.R;
 import adi.sf1.targaryen.newyorktimes.api.Call;
 import adi.sf1.targaryen.newyorktimes.api.Callback;
@@ -24,9 +25,7 @@ import adi.sf1.targaryen.newyorktimes.api.TopStories;
 import adi.sf1.targaryen.newyorktimes.recyclerAdapter.ArticleFeedAdapter;
 import retrofit2.Response;
 
-/**
- * Created by Raiders on 4/18/16.
- */
+
 public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.OnItemClickListener{
   private static final String TAG = "ArticleFeedFragment";
 
@@ -100,6 +99,8 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
    * This data is placed in the recycler view
    */
   protected void setFeedList() {
+
+    if (CheckInternetConnection.isOnline(this.context)){
     NewYorkTimes.getInstance().getTopStories(section).enqueue(new Callback<TopStories>() {
       @Override
       public void onResponse(Call<TopStories> call, Response<TopStories> response) {
@@ -111,7 +112,9 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
         Toast.makeText(context, "Could not retrieve Top Stories", Toast.LENGTH_SHORT).show();
         Log.w(TAG, "onFailure: ", t);
       }
-    });
+    });} else {
+      Toast.makeText(context, "No Internet Connections", Toast.LENGTH_SHORT).show();
+    }
   }
 
   /**
