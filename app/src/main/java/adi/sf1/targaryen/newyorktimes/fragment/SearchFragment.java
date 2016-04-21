@@ -76,8 +76,7 @@ public class SearchFragment extends ArticleFeedFragment {
         Toast.makeText(context, "Could not retrive Search Result", Toast.LENGTH_LONG).show();
         Log.w(TAG, "onFailure: ", t);
       }
-    });
-
+    }, cache);
   }
 
 }
