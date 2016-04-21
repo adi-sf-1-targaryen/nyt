@@ -106,11 +106,11 @@ public class MostPopular implements ResultInterface {
 
   public static class StoryArrayTypeAdapter extends NewYorkTimes.CacheArrayTypeAdapter<Story[]> {
     public StoryArrayTypeAdapter() {
-      super(NewYorkTimes.getInstance().getGson().getAdapter(Story[].class), new Story[0]);
+      super(new Story[0]);
     }
   }
 
-  public static class Story implements StoryInterface {
+  public static class Story extends AbstractStory {
     private String _section;
     private String _subsection;
     private String _title;
@@ -138,22 +138,6 @@ public class MostPopular implements ResultInterface {
 
     @JsonAdapter(MediaArrayTypeAdapter.class)
     private Media[] _media;
-
-    @Override
-    public int hashCode() {
-      return _url.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      if (getClass() == o.getClass()) {
-        Story story = (Story) o;
-
-        return _url.equals(story._url);
-      }
-
-      return false;
-    }
 
     @Override
     public String getSection() {
@@ -283,7 +267,7 @@ public class MostPopular implements ResultInterface {
 
     public static class MediaArrayTypeAdapter extends NewYorkTimes.ArrayTypeAdapter<Media[]> {
       public MediaArrayTypeAdapter() {
-        super(NewYorkTimes.getInstance().getGson().getAdapter(Media[].class), new Media[0]);
+        super(new Media[0]);
       }
     }
 
@@ -344,7 +328,7 @@ public class MostPopular implements ResultInterface {
 
       public static class MetadataArrayTypeAdapter extends NewYorkTimes.ArrayTypeAdapter<Metadata[]> {
         public MetadataArrayTypeAdapter() {
-          super(NewYorkTimes.getInstance().getGson().getAdapter(Metadata[].class), new Metadata[0]);
+          super(new Metadata[0]);
         }
       }
 

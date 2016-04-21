@@ -5,23 +5,6 @@ package adi.sf1.targaryen.newyorktimes.api.result;
  */
 public interface StoryInterface {
   /**
-   * This is overridden to allow this object to be used as a key in a HashMap.
-   *
-   * @return
-   */
-  @Override
-  int hashCode();
-
-  /**
-   * This is overridden to allow this object to be used as a key in a HashMap.
-   *
-   * @param o
-   * @return
-   */
-  @Override
-  boolean equals(Object o);
-
-  /**
    * Get the section this story is found in.
    *
    * @return section
