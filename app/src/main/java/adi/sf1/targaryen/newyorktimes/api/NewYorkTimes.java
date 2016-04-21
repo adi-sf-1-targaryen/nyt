@@ -49,7 +49,7 @@ public class NewYorkTimes {
     return instance;
   }
 
-  private Gson gson = new GsonBuilder()
+  private static Gson gson = new GsonBuilder()
     .setFieldNamingStrategy(new FieldNamingStrategy() {
       @Override
       public String translateName(Field f) {
@@ -167,15 +167,6 @@ public class NewYorkTimes {
   }
 
   /**
-   * Get the Gson instance we use for parsing results.
-   *
-   * @return
-   */
-  public Gson getGson() {
-    return gson;
-  }
-
-  /**
    * Interface used for retrofit2.
    */
   private interface NewYorkTimesAPI {
@@ -210,7 +201,7 @@ public class NewYorkTimes {
 
   public static class StringArrayTypeAdapter extends ArrayTypeAdapter<String[]> {
     public StringArrayTypeAdapter() {
-      super(getInstance().getGson().getAdapter(String[].class), new String[0]);
+      super(new String[0]);
     }
   }
 
@@ -223,8 +214,8 @@ public class NewYorkTimes {
     // @todo Fix memory leak!
     private static Map objectCache = new HashMap();
 
-    public CacheArrayTypeAdapter(TypeAdapter<T> base, T defaultValue) {
-      super(base, defaultValue);
+    public CacheArrayTypeAdapter(T defaultValue) {
+      super(defaultValue);
     }
 
     @Override
@@ -244,7 +235,7 @@ public class NewYorkTimes {
         }
       }
 
-      return (T)objects;
+      return (T) objects;
     }
   }
 
@@ -257,8 +248,8 @@ public class NewYorkTimes {
     private TypeAdapter<T> base;
     private T defaultValue;
 
-    protected ArrayTypeAdapter(TypeAdapter<T> base, T defaultValue) {
-      this.base = base;
+    protected ArrayTypeAdapter(T defaultValue) {
+      base = (TypeAdapter<T>) gson.getAdapter(defaultValue.getClass());
       this.defaultValue = defaultValue;
     }
 

@@ -46,7 +46,7 @@ public class ArticleSearch implements ResultInterface {
 
   public static class StoryArrayTypeAdapter extends NewYorkTimes.CacheArrayTypeAdapter<Story[]> {
     public StoryArrayTypeAdapter() {
-      super(NewYorkTimes.getInstance().getGson().getAdapter(Story[].class), new Story[0]);
+      super(new Story[0]);
     }
   }
 
@@ -169,7 +169,7 @@ public class ArticleSearch implements ResultInterface {
 
     public static class MediaArrayTypeAdapter extends NewYorkTimes.ArrayTypeAdapter<Media[]> {
       public MediaArrayTypeAdapter() {
-        super(NewYorkTimes.getInstance().getGson().getAdapter(Media[].class), new Media[0]);
+        super(new Media[0]);
       }
     }
 
@@ -223,7 +223,7 @@ public class ArticleSearch implements ResultInterface {
 
     public static class KeywordArrayTypeAdapter extends NewYorkTimes.ArrayTypeAdapter<Keyword[]> {
       public KeywordArrayTypeAdapter() {
-        super(NewYorkTimes.getInstance().getGson().getAdapter(Keyword[].class), new Keyword[0]);
+        super(new Keyword[0]);
       }
     }
 
@@ -246,7 +246,7 @@ public class ArticleSearch implements ResultInterface {
 
       public static class PersonArrayTypeAdapter extends NewYorkTimes.ArrayTypeAdapter<Person[]> {
         public PersonArrayTypeAdapter() {
-          super(NewYorkTimes.getInstance().getGson().getAdapter(Person[].class), new Person[0]);
+          super(new Person[0]);
         }
       }
 
