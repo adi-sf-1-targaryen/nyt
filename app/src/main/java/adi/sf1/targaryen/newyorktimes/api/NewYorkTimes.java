@@ -105,7 +105,7 @@ public class NewYorkTimes {
    * @param query search query
    * @return
    */
-  public Call<TopStories> articleSearch(String query) {
+  public Call<SearchResults> articleSearch(String query) {
     return new Call<>(service.articleSearch(query, APIKeys.NYT_ARTICLE_SEARCH));
   }
 
@@ -196,7 +196,7 @@ public class NewYorkTimes {
    */
   private interface NewYorkTimesAPI {
     @GET("search/v2/articlesearch.json")
-    retrofit2.Call<TopStories> articleSearch(
+    retrofit2.Call<SearchResults> articleSearch(
       @Query("q") String query,
       @Query("api-key") String APIKey
     );
