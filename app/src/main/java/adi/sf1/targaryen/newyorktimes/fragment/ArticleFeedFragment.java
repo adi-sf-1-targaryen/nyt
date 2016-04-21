@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import adi.sf1.targaryen.newyorktimes.ArticleActivity;
+import adi.sf1.targaryen.newyorktimes.CheckInternetConnection;
 import adi.sf1.targaryen.newyorktimes.R;
 import adi.sf1.targaryen.newyorktimes.api.Call;
 import adi.sf1.targaryen.newyorktimes.api.Callback;
@@ -24,19 +25,19 @@ import adi.sf1.targaryen.newyorktimes.api.TopStories;
 import adi.sf1.targaryen.newyorktimes.recyclerAdapter.ArticleFeedAdapter;
 import retrofit2.Response;
 
-/**
- * Created by Raiders on 4/18/16.
- */
-public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.OnItemClickListener{
+
+public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.OnItemClickListener {
+
   private static final String TAG = "ArticleFeedFragment";
+  private RecyclerView recyclerView;
+  private TopStories.Section section = TopStories.Section.HOME;
 
   protected Context context;
-  private RecyclerView recyclerView;
+  protected SwipeRefreshLayout swipeContainer;
   protected ArticleFeedAdapter articleFeedAdapter;
+
   public static final String EXTRA_SECTION = "section";
   public static final String URL_EXTRA_KEY = "urlExtraKey";
-  private TopStories.Section section = TopStories.Section.HOME;
-  protected SwipeRefreshLayout swipeContainer;
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
 
   /**
    * Sets the views for the fragment and implements the various methods
+   *
    * @param inflater
    * @param container
    * @param savedInstanceState
@@ -89,7 +91,6 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setAdapter(articleFeedAdapter);
-
   }
 
   protected void setFeedList() {
@@ -101,19 +102,23 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
    * This data is placed in the recycler view
    */
   protected void setFeedList(boolean cache) {
-    NewYorkTimes.getInstance().getTopStories(section).enqueue(new Callback<TopStories>() {
-      @Override
-      public void onResponse(Call<TopStories> call, Response<TopStories> response) {
-        articleFeedAdapter.changeDataSet(response.body().getResults());
-        swipeContainer.setRefreshing(false);
-      }
+    if (CheckInternetConnection.isOnline(this.context)) {
+      NewYorkTimes.getInstance().getTopStories(section).enqueue(new Callback<TopStories>() {
+        @Override
+        public void onResponse(Call<TopStories> call, Response<TopStories> response) {
+          articleFeedAdapter.changeDataSet(response.body().getResults());
+          swipeContainer.setRefreshing(false);
+        }
 
-      @Override
-      public void onFailure(Call<TopStories> call, Throwable t) {
-        Toast.makeText(context, "Could not retrieve Top Stories", Toast.LENGTH_SHORT).show();
-        Log.w(TAG, "onFailure: ", t);
-      }
-    }, cache);
+        @Override
+        public void onFailure(Call<TopStories> call, Throwable t) {
+          Toast.makeText(context, "Could not retrieve Top Stories", Toast.LENGTH_SHORT).show();
+          Log.w(TAG, "onFailure: ", t);
+        }
+      }, cache);
+    } else {
+      Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
+    }
   }
 
   /**
@@ -121,6 +126,7 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
    * Sends the user to the article activity
    * Sends an intent with the article url to the article activity
    * The url is used to grab all of the article's details from the story object
+   *
    * @param story
    */
   @Override
@@ -129,5 +135,4 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
     articleActivityIntent.putExtra(URL_EXTRA_KEY, story.getUrl());
     startActivity(articleActivityIntent);
   }
-
 }
