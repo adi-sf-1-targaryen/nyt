@@ -38,7 +38,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
   NotificationManager mNotificationManager;
   SharedPreferences sharedPreferences;
 
-  private boolean topStoriesCheck = false;
+  public static boolean topStoriesCheck = false;
   private boolean mostPopularCheck = false;
   private boolean opinionCheck = false;
   private boolean worldCheck = false;
@@ -49,7 +49,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
   private boolean nyCheck = false;
   private boolean magazineCheck = false;
 
-  private String TOP_STORIES_CODE = "topStories";
+  public static final String TOP_STORIES_CODE = "topStories";
   private String MOST_POPULAR_CODE = "mostPopular";
   private String OPINION_CODE = "opinion";
   private String WORLD_CODE = "world";
@@ -352,7 +352,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
       new ComponentName( getPackageName(),
         JobSchedulerService.class.getName() ) );
 
-    builder.setPeriodic( 18000000 );
+    builder.setPeriodic( 3000 );
 
     if( mJobScheduler.schedule( builder.build() ) <= 0 ) {
       //If something goes wrong
