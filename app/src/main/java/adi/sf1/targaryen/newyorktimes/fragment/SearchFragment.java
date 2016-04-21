@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import adi.sf1.targaryen.newyorktimes.MainActivity;
 import adi.sf1.targaryen.newyorktimes.R;
 
 /**
@@ -18,12 +19,22 @@ import adi.sf1.targaryen.newyorktimes.R;
 
 public class SearchFragment extends ArticleFeedFragment {
 
-   RecyclerView recyclerViewSearch;
+  RecyclerView recyclerViewSearch;
+  String searchArticleQuery;
+
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    Bundle bundle = getArguments();
+    if (bundle != null) {
+      searchArticleQuery = bundle.getString(MainActivity.SEARCH_KEY);
+    }
+  }
 
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_search, container, false);
+    View view = inflater.inflate(R.layout.activity_search, container, false);
     recyclerViewSearch = (RecyclerView) view.findViewById(R.id.search_recycler_view);
     swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
     context = getContext();
@@ -45,6 +56,6 @@ public class SearchFragment extends ArticleFeedFragment {
 
   @Override
   protected void setFeedList(boolean cache) {
-    super.setFeedList(cache);
   }
+
 }

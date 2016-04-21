@@ -15,7 +15,8 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_search">
+        android:id="@+id/fragment_search"
+        android:name="adi.sf1.targaryen.newyorktimes.fragment.SearchFragment">
 
     </fragment>
 
