@@ -51,17 +51,7 @@ public class Call<T> {
             responseCache.put(url, response);
           }
 
-      /*    callback.onResponse(Call.this, response);
-          ConnectivityManager connMgr = (ConnectivityManager)
-            getSystemService(Context.CONNECTIVITY_SERVICE);
-          NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-          if (networkInfo != null && networkInfo.isConnected()) {
-            new DownloadWebpageTask().execute(stringUrl);
-          } else {
-            textView.setText("No network connection available.");
-          }
-        }*/
-
+          callback.onResponse(Call.this, response);
         }
 
         @Override
