@@ -1,6 +1,7 @@
 package adi.sf1.targaryen.newyorktimes.api;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.FieldNamingStrategy;
 import com.google.gson.Gson;
@@ -12,9 +13,12 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import adi.sf1.targaryen.newyorktimes.api.result.ArticleSearch;
 import adi.sf1.targaryen.newyorktimes.api.result.MostPopular;
+import adi.sf1.targaryen.newyorktimes.api.result.StoryInterface;
 import adi.sf1.targaryen.newyorktimes.api.result.TopStories;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -141,6 +145,27 @@ public class NewYorkTimes {
     return new Call<>(service.getTopStores(section.getValue(), APIKeys.NYT_TOP_STORIES));
   }
 
+  // @todo Use callback mechanism to allow for asynchronous request when the story does not exist.
+  public StoryInterface getStory(final String url) {
+    return (StoryInterface) CacheArrayTypeAdapter.objectCache.get(new Object() {
+      @Override
+      public int hashCode() {
+        return url.hashCode();
+      }
+
+      @Override
+      public boolean equals(Object o) {
+        if (o instanceof StoryInterface) {
+          StoryInterface story = (StoryInterface) o;
+
+          return url.equals(story.getUrl());
+        }
+
+        return false;
+      }
+    });
+  }
+
   /**
    * Get the Gson instance we use for parsing results.
    *
@@ -186,6 +211,40 @@ public class NewYorkTimes {
   public static class StringArrayTypeAdapter extends ArrayTypeAdapter<String[]> {
     public StringArrayTypeAdapter() {
       super(getInstance().getGson().getAdapter(String[].class), new String[0]);
+    }
+  }
+
+  /**
+   * TypeAdapter implementation that caches all objects and discards duplicates.
+   *
+   * @param <T>
+   */
+  public static class CacheArrayTypeAdapter<T> extends ArrayTypeAdapter<T> {
+    // @todo Fix memory leak!
+    private static Map objectCache = new HashMap();
+
+    public CacheArrayTypeAdapter(TypeAdapter<T> base, T defaultValue) {
+      super(base, defaultValue);
+    }
+
+    @Override
+    public T read(JsonReader in) throws IOException {
+      Object[] objects = (Object[]) super.read(in);
+
+      for (int i = 0; i < objects.length; ++i) {
+        Object object = objects[i];
+        Object cached = objectCache.get(object);
+
+        if (cached != null) {
+          objects[i] = cached;
+          Log.d(TAG, "read: objectCache Cache HIT");
+        } else {
+          Log.d(TAG, "read: objectCache Cache MISS");
+          objectCache.put(object, object);
+        }
+      }
+
+      return (T)objects;
     }
   }
 

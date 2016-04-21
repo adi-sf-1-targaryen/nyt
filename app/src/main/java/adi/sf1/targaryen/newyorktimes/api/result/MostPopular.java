@@ -104,7 +104,7 @@ public class MostPopular implements ResultInterface {
     }
   }
 
-  public static class StoryArrayTypeAdapter extends NewYorkTimes.ArrayTypeAdapter<Story[]> {
+  public static class StoryArrayTypeAdapter extends NewYorkTimes.CacheArrayTypeAdapter<Story[]> {
     public StoryArrayTypeAdapter() {
       super(NewYorkTimes.getInstance().getGson().getAdapter(Story[].class), new Story[0]);
     }
