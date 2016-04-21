@@ -50,7 +50,7 @@ public class ArticleSearch implements ResultInterface {
     }
   }
 
-  public static class Story implements StoryInterface {
+  public static class Story extends AbstractStory {
     private String _web_url;
     private String _snippet;
     private String _lead_paragraph;
