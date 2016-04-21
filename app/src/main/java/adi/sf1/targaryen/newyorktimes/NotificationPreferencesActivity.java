@@ -3,6 +3,9 @@ package adi.sf1.targaryen.newyorktimes;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +27,7 @@ import retrofit2.Response;
 
 /**
  * Created by Raiders on 4/20/16.
+ * Allows a user to choose sections to get notifications about when a new article is published
  */
 public class NotificationPreferencesActivity extends AppCompatActivity {
 
@@ -65,6 +69,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     setCheckboxClicks();
+    setJobHandler();
   }
 
   private void setViews() {
@@ -333,5 +338,24 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
     ny.setChecked(nyCheck);
     magazineCheck = sharedPreferences.getBoolean(MAGAZINE_CODE, magazineCheck);
     magazine.setChecked(magazineCheck);
+  }
+
+  /**
+   * Builds the JobScheduler in this activity.
+   * Sets the time for it to call the api every 30 mins
+   */
+  private void setJobHandler() {
+    JobScheduler mJobScheduler = (JobScheduler)
+      getSystemService( Context.JOB_SCHEDULER_SERVICE );
+
+    JobInfo.Builder builder = new JobInfo.Builder( 1,
+      new ComponentName( getPackageName(),
+        JobSchedulerService.class.getName() ) );
+
+    builder.setPeriodic( 18000000 );
+
+    if( mJobScheduler.schedule( builder.build() ) <= 0 ) {
+      //If something goes wrong
+    }
   }
 }
