@@ -192,7 +192,7 @@ public class ArticleSearch implements ResultInterface {
 
       @Override
       public String getUrl() {
-        return _url;
+        return "http://www.nytimes.com/" + _url;
       }
 
       @Override
