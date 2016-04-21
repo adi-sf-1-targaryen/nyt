@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -64,8 +63,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
       String query = intent.getStringExtra(SearchManager.QUERY);
-      Toast.makeText(MainActivity.this,"Searching for "+query, Toast.LENGTH_SHORT).show();
-
+      //Toast.makeText(MainActivity.this,"Searching for "+query, Toast.LENGTH_SHORT).show();
 
     }
   }
@@ -101,9 +99,10 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
       case R.id.search_articles:
         Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
         startActivity(searchIntent);
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
     }
-
-    return super.onOptionsItemSelected(item);
   }
 
   @Override

@@ -342,7 +342,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
 
   /**
    * Builds the JobScheduler in this activity.
-   * Sets the time for it to call the api every 30 mins
+   * Sets the time for it to call the api every 60 mins
    */
   private void setJobHandler() {
     JobScheduler mJobScheduler = (JobScheduler)
