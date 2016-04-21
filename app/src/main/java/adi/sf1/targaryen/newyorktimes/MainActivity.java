@@ -14,7 +14,7 @@ import android.view.MenuItem;
 
 import java.util.Locale;
 
-import adi.sf1.targaryen.newyorktimes.api.TopStories;
+import adi.sf1.targaryen.newyorktimes.api.result.TopStories;
 import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
 import adi.sf1.targaryen.newyorktimes.fragment.MostPopularFeedFragment;
 

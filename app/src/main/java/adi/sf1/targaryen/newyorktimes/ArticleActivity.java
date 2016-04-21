@@ -34,11 +34,9 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import io.fabric.sdk.android.Fabric;
-
-import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
-import adi.sf1.targaryen.newyorktimes.api.Story;
+import adi.sf1.targaryen.newyorktimes.api.result.StoryInterface;
 import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by Raiders on 4/19/16.
@@ -65,7 +63,7 @@ public class ArticleActivity extends AppCompatActivity {
   ShareButton shareButton;
   LoginButton loginButton;
   CallbackManager callbackManager;
-  Story story;
+  StoryInterface story;
   Button twitterShareButton;
   TwitterLoginButton twitterLoginButton;
 

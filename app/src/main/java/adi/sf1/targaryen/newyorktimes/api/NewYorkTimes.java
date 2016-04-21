@@ -1,8 +1,8 @@
 package adi.sf1.targaryen.newyorktimes.api;
 
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.google.gson.FieldNamingStrategy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
@@ -11,13 +11,11 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Field;
 
-import adi.sf1.targaryen.newyorktimes.api.MostPopular.Section;
-import adi.sf1.targaryen.newyorktimes.api.MostPopular.ShareType;
-import adi.sf1.targaryen.newyorktimes.api.MostPopular.Time;
-import adi.sf1.targaryen.newyorktimes.api.MostPopular.Type;
+import adi.sf1.targaryen.newyorktimes.api.result.ArticleSearch;
+import adi.sf1.targaryen.newyorktimes.api.result.MostPopular;
+import adi.sf1.targaryen.newyorktimes.api.result.TopStories;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
@@ -47,6 +45,14 @@ public class NewYorkTimes {
     return instance;
   }
 
+  private Gson gson = new GsonBuilder()
+    .setFieldNamingStrategy(new FieldNamingStrategy() {
+      @Override
+      public String translateName(Field f) {
+        return f.getName().substring(1);
+      }
+    }).create();
+
   /**
    * Interface built by retrofit2.
    */
@@ -56,44 +62,9 @@ public class NewYorkTimes {
    * Constructor.
    */
   NewYorkTimes() {
-    // Used for all base types.
-    Gson base = new Gson();
-
-    // Used to safely ignore invalid types for Metadata arrays in Most Popular API. It's ignored in Top Stories.
-    Gson media = new GsonBuilder()
-      .registerTypeHierarchyAdapter(Story.Media.MostPopular.Metadata[].class,
-        new ArrayTypeAdapter<>(base.getAdapter(Story.Media.MostPopular.Metadata[].class)))
-      .create();
-
-    // Used to safely ignore invalid types for Media and String arrays in Most Popular and Top Stories API.
-    Gson story = new GsonBuilder()
-      .registerTypeHierarchyAdapter(Story.Media.TopStory[].class,
-        new ArrayTypeAdapter<>(media.getAdapter(Story.Media.TopStory[].class)))
-      .registerTypeHierarchyAdapter(Story.Media.MostPopular[].class,
-        new ArrayTypeAdapter<>(media.getAdapter(Story.Media.MostPopular[].class)))
-      .registerTypeHierarchyAdapter(String[].class,
-        new ArrayTypeAdapter(media.getAdapter(String[].class)))
-      .create();
-
-    // Used to cache Most Popular and Top Stories story objects.
-    Gson storyCache = new GsonBuilder()
-      .registerTypeHierarchyAdapter(Story.TopStory.class,
-        new CacheTypeAdapter<>(story.getAdapter(Story.TopStory.class)))
-      .registerTypeHierarchyAdapter(Story.MostPopular.class,
-        new CacheTypeAdapter<>(story.getAdapter(Story.MostPopular.class)))
-      .create();
-
-    // Used to safely ignore invalid types for Story arrays in Most Popular and Top Stories API.
-    Gson root = new GsonBuilder()
-      .registerTypeHierarchyAdapter(Story.TopStory[].class,
-        new ArrayTypeAdapter<>(storyCache.getAdapter(Story.TopStory[].class)))
-      .registerTypeHierarchyAdapter(Story.MostPopular[].class,
-        new ArrayTypeAdapter<>(storyCache.getAdapter(Story.MostPopular[].class)))
-      .create();
-
     Retrofit retrofit = new Retrofit.Builder()
       .baseUrl("http://api.nytimes.com/svc/")
-      .addConverterFactory(GsonConverterFactory.create(root))
+      .addConverterFactory(GsonConverterFactory.create(gson))
       .build();
 
     service = retrofit.create(NewYorkTimesAPI.class);
@@ -105,7 +76,7 @@ public class NewYorkTimes {
    * @param query search query
    * @return
    */
-  public Call<SearchResults> articleSearch(String query) {
+  public Call<ArticleSearch> articleSearch(String query) {
     return new Call<>(service.articleSearch(query, APIKeys.NYT_ARTICLE_SEARCH));
   }
 
@@ -117,11 +88,11 @@ public class NewYorkTimes {
    * @param time    Max age of the stories.
    * @return
    */
-  public Call<MostPopular> getMostPopular(Type type, Section section, Time time) {
-    if (type == Type.SHARED) {
-      ShareType[] shareTypes = new ShareType[]{
-        ShareType.FACEBOOK,
-        ShareType.TWITTER
+  public Call<MostPopular> getMostPopular(MostPopular.Type type, MostPopular.Section section, MostPopular.Time time) {
+    if (type == MostPopular.Type.SHARED) {
+      MostPopular.ShareType[] shareTypes = new MostPopular.ShareType[]{
+        MostPopular.ShareType.FACEBOOK,
+        MostPopular.ShareType.TWITTER
       };
 
       return getMostShared(section, shareTypes, time);
@@ -138,9 +109,9 @@ public class NewYorkTimes {
    * @param time       Max age of the stories.
    * @return
    */
-  public Call<MostPopular> getMostShared(Section section, ShareType[] shareTypes, Time time) {
+  public Call<MostPopular> getMostShared(MostPopular.Section section, MostPopular.ShareType[] shareTypes, MostPopular.Time time) {
     if (shareTypes.length == 0) {
-      return getMostPopular(Type.SHARED, section, time);
+      return getMostPopular(MostPopular.Type.SHARED, section, time);
     }
 
     String[] shareValues = new String[shareTypes.length];
@@ -152,7 +123,7 @@ public class NewYorkTimes {
     String share = TextUtils.join(";", shareValues);
 
     return new Call<>(service.getMostPopular(
-      Type.SHARED.getValue(),
+      MostPopular.Type.SHARED.getValue(),
       section.getValue(),
       share,
       time.getValue(),
@@ -170,25 +141,13 @@ public class NewYorkTimes {
     return new Call<>(service.getTopStores(section.getValue(), APIKeys.NYT_TOP_STORIES));
   }
 
-  // @todo Use callback mechanism to allow for asynchronous request when the story does not exist.
-  public Story getStory(final String url) {
-    return (Story) CacheTypeAdapter.objectCache.get(new Object() {
-      @Override
-      public int hashCode() {
-        return url.hashCode();
-      }
-
-      @Override
-      public boolean equals(Object o) {
-        if (o instanceof Story) {
-          Story story = (Story) o;
-
-          return url.equals(story.getUrl());
-        }
-
-        return false;
-      }
-    });
+  /**
+   * Get the Gson instance we use for parsing results.
+   *
+   * @return
+   */
+  public Gson getGson() {
+    return gson;
   }
 
   /**
@@ -196,7 +155,7 @@ public class NewYorkTimes {
    */
   private interface NewYorkTimesAPI {
     @GET("search/v2/articlesearch.json")
-    retrofit2.Call<SearchResults> articleSearch(
+    retrofit2.Call<ArticleSearch> articleSearch(
       @Query("q") String query,
       @Query("api-key") String APIKey
     );
@@ -224,42 +183,9 @@ public class NewYorkTimes {
     );
   }
 
-  /**
-   * TypeAdapter implementation that caches all objects and discards duplicates.
-   *
-   * @param <T>
-   */
-  private static class CacheTypeAdapter<T> extends TypeAdapter<T> {
-    // @todo Fix memory leak!
-    private static Map objectCache = new HashMap();
-
-    private TypeAdapter<T> base;
-
-    public CacheTypeAdapter(TypeAdapter<T> base) {
-      this.base = base;
-    }
-
-    @Override
-    public void write(JsonWriter out, T value) throws IOException {
-      base.write(out, value);
-    }
-
-    @Override
-    public T read(JsonReader in) throws IOException {
-      T result = base.read(in);
-
-      Object cached = objectCache.get(result);
-
-      if (cached == null) {
-        Log.d(TAG, "read: objectCache Cache MISS");
-        objectCache.put(result, result);
-
-        return result;
-      }
-
-      Log.d(TAG, "read: objectCache Cache HIT");
-
-      return (T) cached;
+  public static class StringArrayTypeAdapter extends ArrayTypeAdapter<String[]> {
+    public StringArrayTypeAdapter() {
+      super(getInstance().getGson().getAdapter(String[].class), new String[0]);
     }
   }
 
@@ -268,11 +194,13 @@ public class NewYorkTimes {
    *
    * @param <T> An array type.
    */
-  private static class ArrayTypeAdapter<T> extends TypeAdapter<T> {
-    TypeAdapter<T> base;
+  public static class ArrayTypeAdapter<T> extends TypeAdapter<T> {
+    private TypeAdapter<T> base;
+    private T defaultValue;
 
-    public ArrayTypeAdapter(TypeAdapter<T> base) {
+    protected ArrayTypeAdapter(TypeAdapter<T> base, T defaultValue) {
       this.base = base;
+      this.defaultValue = defaultValue;
     }
 
     @Override
@@ -287,7 +215,7 @@ public class NewYorkTimes {
       } else {
         in.skipValue();
 
-        return null;
+        return defaultValue;
       }
     }
   }
