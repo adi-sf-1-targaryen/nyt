@@ -11,7 +11,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import adi.sf1.targaryen.newyorktimes.R;
-import adi.sf1.targaryen.newyorktimes.api.Story;
+import adi.sf1.targaryen.newyorktimes.api.result.MediaInterface;
+import adi.sf1.targaryen.newyorktimes.api.result.StoryInterface;
 
 /**
  * Created by Raiders on 4/18/16.
@@ -19,7 +20,7 @@ import adi.sf1.targaryen.newyorktimes.api.Story;
  */
 public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.ArticleFeedViewHolder> {
 
-  private Story[] feedList = null;
+  private StoryInterface[] feedList = null;
   private OnItemClickListener listener;
 
   /**
@@ -48,7 +49,7 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
      * @param story
      * @param listener
      */
-    public void setOnClickListener(final Story story, final OnItemClickListener listener) {
+    public void setOnClickListener(final StoryInterface story, final OnItemClickListener listener) {
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -102,8 +103,8 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
   @Override
   public void onBindViewHolder(ArticleFeedViewHolder holder, int position) {
 
-    Story story = feedList[position];
-    Story.Media media = story.getFirstImage();
+    StoryInterface story = feedList[position];
+    MediaInterface media = story.getFirstImage();
     if (media != null) {
       Context context = holder.image.getContext();
       Picasso.with(context).load(media.getUrl())
@@ -136,7 +137,7 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
    * Changes the data in the feed
    * @param feedList
    */
-  public void changeDataSet(Story[] feedList) {
+  public void changeDataSet(StoryInterface[] feedList) {
     this.feedList = feedList;
     notifyDataSetChanged();
   }
@@ -145,7 +146,7 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
    * Creates public interface for item click listener
    */
   public interface OnItemClickListener {
-    void onItemClick(Story story);
+    void onItemClick(StoryInterface story);
   }
 
 }
