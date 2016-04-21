@@ -9,6 +9,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -39,17 +40,18 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
   SharedPreferences sharedPreferences;
 
   public static boolean topStoriesCheck = false;
-  private boolean mostPopularCheck = false;
-  private boolean opinionCheck = false;
-  private boolean worldCheck = false;
-  private boolean usCheck = false;
-  private boolean businessDayCheck = false;
-  private boolean sportsCheck = false;
-  private boolean artsCheck = false;
-  private boolean nyCheck = false;
-  private boolean magazineCheck = false;
+  public static boolean mostPopularCheck = false;
+  public static boolean opinionCheck = false;
+  public static boolean worldCheck = false;
+  public static boolean usCheck = false;
+  public static boolean businessDayCheck = false;
+  public static boolean sportsCheck = false;
+  public static boolean artsCheck = false;
+  public static boolean nyCheck = false;
+  public static boolean magazineCheck = false;
 
-  public static final String TOP_STORIES_CODE = "topStories";
+  public static final String BOOLEAN_CODE = "booleanCode";
+  private String TOP_STORIES_CODE = "topStories";
   private String MOST_POPULAR_CODE = "mostPopular";
   private String OPINION_CODE = "opinion";
   private String WORLD_CODE = "world";
@@ -310,6 +312,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
     editor.putBoolean(NY_CODE, nyCheck);
     editor.putBoolean(MAGAZINE_CODE, magazineCheck);
     editor.commit();
+
   }
 
   /**
@@ -345,17 +348,36 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
    * Sets the time for it to call the api every 60 mins
    */
   private void setJobHandler() {
-    JobScheduler mJobScheduler = (JobScheduler)
-      getSystemService( Context.JOB_SCHEDULER_SERVICE );
+    if (Integer.valueOf(Build.VERSION.SDK_INT) > 20) {
+      JobScheduler mJobScheduler = (JobScheduler)
+        getSystemService( Context.JOB_SCHEDULER_SERVICE );
 
-    JobInfo.Builder builder = new JobInfo.Builder( 1,
-      new ComponentName( getPackageName(),
-        JobSchedulerService.class.getName() ) );
+      JobInfo.Builder builder = new JobInfo.Builder( 1,
+        new ComponentName( getPackageName(),
+          JobSchedulerService.class.getName() ) );
 
-    builder.setPeriodic( 3000 );
+      builder.setPeriodic( 3000 );
 
-    if( mJobScheduler.schedule( builder.build() ) <= 0 ) {
-      //If something goes wrong
+      if( mJobScheduler.schedule( builder.build() ) <= 0 ) {
+        //If something goes wrong
+      }
     }
+  }
+
+  private void createBundleForJobScheduler() {
+    Intent serviceIntent = new Intent(JobSchedulerService.class.getName());
+    Boolean[] booleenArray = new Boolean[10];
+    booleenArray[0] = topStoriesCheck;
+    booleenArray[1] = mostPopularCheck;
+    booleenArray[2] = opinionCheck;
+    booleenArray[3] = worldCheck;
+    booleenArray[4] = usCheck;
+    booleenArray[5] = businessDayCheck;
+    booleenArray[6] = sportsCheck;
+    booleenArray[7] = artsCheck;
+    booleenArray[8] = nyCheck;
+    booleenArray[9] = magazineCheck;
+    serviceIntent.putExtra(BOOLEAN_CODE, booleenArray);
+    getApplicationContext().startService(serviceIntent);
   }
 }

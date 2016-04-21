@@ -7,18 +7,12 @@ import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.NotificationCompat;
-import android.widget.Toast;
 
-import adi.sf1.targaryen.newyorktimes.api.Call;
-import adi.sf1.targaryen.newyorktimes.api.Callback;
-import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
-import adi.sf1.targaryen.newyorktimes.api.TopStories;
 import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
-import adi.sf1.targaryen.newyorktimes.recyclerAdapter.ArticleFeedAdapter;
-import retrofit2.Response;
 
 /**
  * Created by Raiders on 4/20/16.
@@ -27,10 +21,17 @@ import retrofit2.Response;
  */
 public class JobSchedulerService extends JobService {
 
-  private Boolean topStoriesBoolean = true;
   private String title;
   private String snippet;
   private String urlForArticle;
+
+
+  @Override
+  public int onStartCommand(Intent intent, int flags, int startId) {
+    boolean[] booleenArray = intent.getBooleanArrayExtra(NotificationPreferencesActivity.BOOLEAN_CODE);
+
+    return START_STICKY;
+  }
 
   /**
    * Starts the job scheduler
@@ -68,6 +69,10 @@ public class JobSchedulerService extends JobService {
 
   } );
 
+  /**
+   * Creates notifications for top article of selected category
+   * If the notification is clicked on, the user will be taken to the article
+   */
   private void createNotifications(int notificationID) {
     Intent intent = new Intent(this, ArticleActivity.class);
     intent.putExtra(ArticleFeedFragment.URL_EXTRA_KEY, urlForArticle);
