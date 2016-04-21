@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">New York Times Latest News</string>
+    <string name="article_title">Titel:</string>
+    <string name="article_date">Datum:</string>
+    <string name="article_author">Författare</string>
+    <string name="article_content">Innehåll</string>
+    <string name="facebook_app_id">524135594459226</string>
+    <string name="logo_desc">App logo</string>
+    <string name="snippet">Uttdrag</string>
+    <string name="top_stories">Topnyheter</string>
+    <string name="most_popular">Mest populära/lästa artiklar</string>
+    <string name="opinion">Opinion</string>
+    <string name="world">Världen</string>
+    <string name="us">U.S.</string>
+    <string name="business_day">Ekonomi</string>
+    <string name="sports">Sport</string>
+    <string name="arts">Konst</string>
+    <string name="new_york">New York</string>
+    <string name="magazine">Magasin</string>
+</resources>

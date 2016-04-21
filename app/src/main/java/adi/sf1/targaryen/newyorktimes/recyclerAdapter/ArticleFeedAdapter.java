@@ -149,16 +149,4 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     void onItemClick(StoryInterface story);
   }
 
-//  // Clean all elements of the recycler
-//  public void clear() {
-//    feedList.clear();
-//    notifyDataSetChanged();
-//  }
-//
-//  // Add a list of items
-//  public void addAll(List<list> list) {
-//    feedList.addAll(list);
-//    notifyDataSetChanged();
-//  }
-
 }

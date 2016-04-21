@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">New York Times Dernières Nouvelles</string>
+    <string name="article_title">Titre:</string>
+    <string name="article_date">Date:</string>
+    <string name="article_author">Auteur</string>
+    <string name="article_content">Contenu</string>
+    <string name="facebook_app_id">524135594459226</string>
+    <string name="logo_desc">App logo</string>
+    <string name="snippet">Fragment</string>
+    <string name="top_stories">Meilleurs histoires</string>
+    <string name="most_popular">Plus populaire</string>
+    <string name="opinion">Opinion</string>
+    <string name="world">Monde</string>
+    <string name="us">U.S.</string>
+    <string name="business_day">Jour ouvrable</string>
+    <string name="sports">Des sports</string>
+    <string name="arts">Arts</string>
+    <string name="new_york">New York</string>
+    <string name="magazine">Magazine</string>
+</resources>
