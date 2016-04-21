@@ -1,8 +1,6 @@
 package adi.sf1.targaryen.newyorktimes;
 
-/**
- * Created by nicolassaad on 4/18/16.
- */
+
 /*
  * Copyright (C) 2013 The Android Open Source Project
  *

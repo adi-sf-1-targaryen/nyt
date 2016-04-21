@@ -5,15 +5,14 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import adi.sf1.targaryen.newyorktimes.CheckInternetConnection;
 import adi.sf1.targaryen.newyorktimes.api.Call;
 import adi.sf1.targaryen.newyorktimes.api.Callback;
 import adi.sf1.targaryen.newyorktimes.api.MostPopular;
 import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
 import retrofit2.Response;
 
-/**
- * Created by nicolassaad on 4/19/16.
- */
+
 public class MostPopularFeedFragment extends ArticleFeedFragment {
   private static final String TAG = "MostPopularFeedFragment";
 
@@ -28,18 +27,23 @@ public class MostPopularFeedFragment extends ArticleFeedFragment {
    */
   @Override
   protected void setFeedList(boolean cache) {
-    NewYorkTimes.getInstance().getMostPopular(MostPopular.Type.EMAILED, MostPopular.Section.ALL, MostPopular.Time.DAY).enqueue(new Callback<MostPopular>() {
-      @Override
-      public void onResponse(Call<MostPopular> call, Response<MostPopular> response) {
-        articleFeedAdapter.changeDataSet(response.body().getResults());
-        swipeContainer.setRefreshing(false);
-      }
+    if (CheckInternetConnection.isOnline(this.context)) {
+      NewYorkTimes.getInstance().getMostPopular(MostPopular.Type.EMAILED, MostPopular.Section.ALL, MostPopular.Time.DAY)
+        .enqueue(new Callback<MostPopular>() {
+          @Override
+          public void onResponse(Call<MostPopular> call, Response<MostPopular> response) {
+            articleFeedAdapter.changeDataSet(response.body().getResults());
+            swipeContainer.setRefreshing(false);
+          }
 
-      @Override
-      public void onFailure(Call<MostPopular> call, Throwable t) {
-        Toast.makeText(context, "Could not retrieve Most Popular Stories", Toast.LENGTH_SHORT).show();
-        Log.w(TAG, "onFailure: ", t);
-      }
-    }, cache);
+          @Override
+          public void onFailure(Call<MostPopular> call, Throwable t) {
+            Toast.makeText(context, "Could not retrieve Most Popular Stories", Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "onFailure: ", t);
+          }
+        }, cache);
+    } else {
+      Toast.makeText(context, "Sorry, No Internet Connection", Toast.LENGTH_SHORT).show();
+    }
   }
 }
