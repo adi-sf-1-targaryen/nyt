@@ -20,8 +20,8 @@ import adi.sf1.targaryen.newyorktimes.R;
 import adi.sf1.targaryen.newyorktimes.api.Call;
 import adi.sf1.targaryen.newyorktimes.api.Callback;
 import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
-import adi.sf1.targaryen.newyorktimes.api.Story;
-import adi.sf1.targaryen.newyorktimes.api.TopStories;
+import adi.sf1.targaryen.newyorktimes.api.result.StoryInterface;
+import adi.sf1.targaryen.newyorktimes.api.result.TopStories;
 import adi.sf1.targaryen.newyorktimes.recyclerAdapter.ArticleFeedAdapter;
 import retrofit2.Response;
 
@@ -130,7 +130,7 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
    * @param story
    */
   @Override
-  public void onItemClick(Story story) {
+  public void onItemClick(StoryInterface story) {
     Intent articleActivityIntent = new Intent(context, ArticleActivity.class);
     articleActivityIntent.putExtra(URL_EXTRA_KEY, story.getUrl());
     startActivity(articleActivityIntent);

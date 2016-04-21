@@ -20,9 +20,9 @@ import android.widget.Toast;
 
 import adi.sf1.targaryen.newyorktimes.api.Call;
 import adi.sf1.targaryen.newyorktimes.api.Callback;
-import adi.sf1.targaryen.newyorktimes.api.MostPopular;
 import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
-import adi.sf1.targaryen.newyorktimes.api.TopStories;
+import adi.sf1.targaryen.newyorktimes.api.result.MostPopular;
+import adi.sf1.targaryen.newyorktimes.api.result.TopStories;
 import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
 import retrofit2.Response;
 

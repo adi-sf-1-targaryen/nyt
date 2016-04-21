@@ -32,7 +32,7 @@ import java.net.URL;
 import io.fabric.sdk.android.Fabric;
 
 import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
-import adi.sf1.targaryen.newyorktimes.api.Story;
+import adi.sf1.targaryen.newyorktimes.api.result.StoryInterface;
 import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
 
 /**
@@ -52,7 +52,7 @@ public class ArticleActivity extends AppCompatActivity {
   String urlForArticle;
 
   CallbackManager callbackManager;
-  Story story;
+  StoryInterface story;
 
   private static final String TWITTER_KEY = "PQd385fJYKJ3lhTGtpSuYe3Cy";
   private static final String TWITTER_SECRET = "1zQcUDzK5wFqgh2FalcXMjVwWYzXgacEO43JI9OjqOLe0cUjUi";
