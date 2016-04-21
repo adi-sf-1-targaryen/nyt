@@ -27,15 +27,17 @@ import retrofit2.Response;
 
 
 public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.OnItemClickListener {
+
   private static final String TAG = "ArticleFeedFragment";
+  private RecyclerView recyclerView;
+  private TopStories.Section section = TopStories.Section.HOME;
 
   protected Context context;
-  private RecyclerView recyclerView;
+  protected SwipeRefreshLayout swipeContainer;
   protected ArticleFeedAdapter articleFeedAdapter;
+
   public static final String EXTRA_SECTION = "section";
   public static final String URL_EXTRA_KEY = "urlExtraKey";
-  private TopStories.Section section = TopStories.Section.HOME;
-  protected SwipeRefreshLayout swipeContainer;
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,13 +91,11 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setAdapter(articleFeedAdapter);
-
   }
 
   protected void setFeedList() {
     setFeedList(true);
   }
-
 
   /**
    * Calls the NY Times API and grabs the needed data depending on the query made.
@@ -109,8 +109,6 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
           articleFeedAdapter.changeDataSet(response.body().getResults());
           swipeContainer.setRefreshing(false);
         }
-
-        ​
 
         @Override
         public void onFailure(Call<TopStories> call, Throwable t) {
@@ -137,5 +135,4 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
     articleActivityIntent.putExtra(URL_EXTRA_KEY, story.getUrl());
     startActivity(articleActivityIntent);
   }
-
 }

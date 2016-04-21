@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -44,18 +42,14 @@ import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
  */
 public class ArticleActivity extends AppCompatActivity {
 
-
   WebView articleBrowser;
 
   ImageButton shareAcrossAllButton;
   ImageButton twitterShareButton;
+  ShareButton shareButton;
 
   String title;
-
   String urlForArticle;
-
-
-  ShareButton shareButton;
 
   CallbackManager callbackManager;
   Story story;
@@ -68,6 +62,7 @@ public class ArticleActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     //Initialize Facebook SDK
     FacebookSdk.sdkInitialize(getApplicationContext());
+    //Initialize Twitter and Fabric SDK
     TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
     Fabric.with(this, new Twitter(authConfig));
     Fabric.with(this, new TwitterCore(authConfig), new TweetComposer());
@@ -78,27 +73,26 @@ public class ArticleActivity extends AppCompatActivity {
     fillViews();
     setShareAcrossAllButton();
     facebookIntegrationMethods();
-    twitterIntergrationMethods();
+    twitterIntegrationMethods();
   }
 
+  /**
+   * This method sets the view
+   */
   private void setViews() {
-
     articleBrowser = (WebView) findViewById(R.id.article_web_view);
-
-
     shareButton = (ShareButton) findViewById(R.id.facebook_share_button);
     twitterShareButton = (ImageButton) findViewById(R.id.twitter_share_button);
     shareAcrossAllButton = (ImageButton) findViewById(R.id.shareButton);
   }
 
-  private void twitterIntergrationMethods() {
-
-
+  /**
+   * This method allows the user to log in to his/hers twitter account, and to tweet article
+   */
+  private void twitterIntegrationMethods() {
     twitterShareButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-
-
         TweetComposer.Builder builder = null;
         try {
           builder = new TweetComposer.Builder(ArticleActivity.this)
@@ -111,7 +105,6 @@ public class ArticleActivity extends AppCompatActivity {
       }
     });
   }
-
 
   /**
    * Methods taken from Facebook SDK to be able to log in or out of facebook and then post this article
@@ -170,7 +163,7 @@ public class ArticleActivity extends AppCompatActivity {
     urlForArticle = getIntent().getStringExtra(ArticleFeedFragment.URL_EXTRA_KEY);
     story = NewYorkTimes.getInstance().getStory(urlForArticle);
   }
-  
+
 
   private void fillViews() {
 
