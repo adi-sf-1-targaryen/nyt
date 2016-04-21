@@ -40,7 +40,7 @@ public class SearchFragment extends ArticleFeedFragment {
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.activity_search, container, false);
+    View view = inflater.inflate(R.layout.fragment_search, container, false);
     recyclerViewSearch = (RecyclerView) view.findViewById(R.id.search_recycler_view);
     swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
     context = getContext();
