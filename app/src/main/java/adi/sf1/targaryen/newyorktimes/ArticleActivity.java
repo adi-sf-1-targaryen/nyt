@@ -169,7 +169,6 @@ public class ArticleActivity extends AppCompatActivity {
   private void getIntentFromFeedFragment() {
     urlForArticle = getIntent().getStringExtra(ArticleFeedFragment.URL_EXTRA_KEY);
     story = NewYorkTimes.getInstance().getStory(urlForArticle);
-
   }
   
 

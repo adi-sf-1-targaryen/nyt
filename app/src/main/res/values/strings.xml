@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">New York Times Latest News</string>
+    <string name="app_name">NYT Latest News</string>
     <string name="article_title">Title:</string>
     <string name="article_date">Date:</string>
     <string name="article_author">Author</string>
@@ -20,5 +20,6 @@
     <string name="notification_preferences">Notification Preferences</string>
     <string name="preferences">Preferences</string>
     <string name="search_articles">Search Articles</string>
+    <string name="enter_keywords">Enter keywords</string>
 </resources>
 
