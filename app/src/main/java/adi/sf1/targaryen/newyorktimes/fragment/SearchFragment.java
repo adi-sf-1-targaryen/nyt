@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import adi.sf1.targaryen.newyorktimes.CheckInternetConnection;
 import adi.sf1.targaryen.newyorktimes.MainActivity;
 import adi.sf1.targaryen.newyorktimes.api.Call;
 import adi.sf1.targaryen.newyorktimes.api.Callback;
@@ -25,6 +26,7 @@ public class SearchFragment extends ArticleFeedFragment {
 
   /**
    * Grabs the search query from the article feed fragment
+   *
    * @param savedInstanceState
    */
   @Override
@@ -38,23 +40,28 @@ public class SearchFragment extends ArticleFeedFragment {
 
   /**
    * Overrides the method to set the feed with the article search api
+   *
    * @param cache
    */
   @Override
   protected void setFeedList(boolean cache) {
-    NewYorkTimes.getInstance().articleSearch(searchArticleQuery).enqueue(new Callback<ArticleSearch>() {
-      @Override
-      public void onResponse(Call<ArticleSearch> call, Response<ArticleSearch> response) {
-        articleFeedAdapter.changeDataSet(response.body().getResults());
-        swipeContainer.setRefreshing(false);
-      }
+    if (CheckInternetConnection.isOnline(this.context)) {
+      NewYorkTimes.getInstance().articleSearch(searchArticleQuery).enqueue(new Callback<ArticleSearch>() {
+        @Override
+        public void onResponse(Call<ArticleSearch> call, Response<ArticleSearch> response) {
+          articleFeedAdapter.changeDataSet(response.body().getResults());
+          swipeContainer.setRefreshing(false);
+        }
 
-      @Override
-      public void onFailure(Call<ArticleSearch> call, Throwable t) {
-        Toast.makeText(context, "Could not retrive Search Result", Toast.LENGTH_LONG).show();
-        Log.w(TAG, "onFailure: ", t);
-      }
-    }, cache);
+        @Override
+        public void onFailure(Call<ArticleSearch> call, Throwable t) {
+          Toast.makeText(context, "Could not retrive Search Result", Toast.LENGTH_LONG).show();
+          Log.w(TAG, "onFailure: ", t);
+        }
+      }, cache);
+    } else {
+      Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
+    }
   }
 
 }
