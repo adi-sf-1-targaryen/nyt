@@ -17,12 +17,10 @@ import retrofit2.Response;
  * Fragment that shows the users search results and presents them in the recycler view
  */
 
-
 public class SearchFragment extends ArticleFeedFragment {
+
   private static final String TAG = "SearchFragment";
-
   private static final String SEARCH_KEY = "search";
-
   String searchArticleQuery = null;
 
   /**
@@ -63,6 +61,7 @@ public class SearchFragment extends ArticleFeedFragment {
    */
   @Override
   protected void setFeedList(boolean cache) {
+
     if (CheckInternetConnection.isOnline(context)) {
       if (searchArticleQuery != null) {
         NewYorkTimes.getInstance().articleSearch(searchArticleQuery).enqueue(new Callback<ArticleSearch>() {
@@ -79,9 +78,9 @@ public class SearchFragment extends ArticleFeedFragment {
           }
         }, cache);
       }
+
     } else {
       Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
     }
   }
-
 }
