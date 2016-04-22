@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import adi.sf1.targaryen.newyorktimes.CheckInternetConnection;
 import adi.sf1.targaryen.newyorktimes.api.Call;
 import adi.sf1.targaryen.newyorktimes.api.Callback;
 import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
@@ -26,6 +27,7 @@ public class SearchFragment extends ArticleFeedFragment {
 
   /**
    * Grabs the search query from the article feed fragment
+   *
    * @param savedInstanceState
    */
   @Override
@@ -56,11 +58,12 @@ public class SearchFragment extends ArticleFeedFragment {
 
   /**
    * Overrides the method to set the feed with the article search api
+   *
    * @param cache
    */
   @Override
   protected void setFeedList(boolean cache) {
-    if (searchArticleQuery != null) {
+    if (searchArticleQuery != null && CheckIternetConnection.isOnline(context)) {
       NewYorkTimes.getInstance().articleSearch(searchArticleQuery).enqueue(new Callback<ArticleSearch>() {
         @Override
         public void onResponse(Call<ArticleSearch> call, Response<ArticleSearch> response) {
@@ -74,6 +77,8 @@ public class SearchFragment extends ArticleFeedFragment {
           Log.w(TAG, "onFailure: ", t);
         }
       }, cache);
+    } else {
+      Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
     }
   }
 

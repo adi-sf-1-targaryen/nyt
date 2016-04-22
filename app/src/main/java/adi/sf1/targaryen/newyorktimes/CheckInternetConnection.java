@@ -6,7 +6,8 @@ import android.net.NetworkInfo;
 
 /**
  * Created by emiliaaxen on 16-04-20.
- * Method to tell whether or not the user is connected to the internet
+ * This class holds a method to tell whether or not the user is connected to the internet.
+ * The method is called before making every API call
  */
 public class CheckInternetConnection {
 
