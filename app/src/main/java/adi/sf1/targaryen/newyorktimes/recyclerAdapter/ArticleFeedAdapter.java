@@ -104,7 +104,7 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
   public void onBindViewHolder(ArticleFeedViewHolder holder, int position) {
 
     StoryInterface story = feedList[position];
-    MediaInterface media = story.getFirstImage();
+    MediaInterface media = story.getLastImage();
     if (media != null) {
       Context context = holder.image.getContext();
       Picasso.with(context).load(media.getUrl())
