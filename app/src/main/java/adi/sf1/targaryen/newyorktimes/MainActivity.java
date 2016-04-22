@@ -3,6 +3,7 @@ package adi.sf1.targaryen.newyorktimes;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
   private MenuItem searchArticles;
   private MenuItem preferences;
 
+  public final static String  SEARCH_KEY = "searchKey";
+  public final static String MY_PREF_KEY = "myPrefKey";
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -64,7 +66,14 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
       String query = intent.getStringExtra(SearchManager.QUERY);
-      Toast.makeText(MainActivity.this,"Searching for "+query, Toast.LENGTH_SHORT).show();
+      SharedPreferences preferences = getSharedPreferences(MY_PREF_KEY,MODE_PRIVATE);
+      SharedPreferences.Editor editor = preferences.edit();
+      editor.putString(SEARCH_KEY, query);
+      editor.commit();
+
+      /*SearchFragment searchFragment = new SearchFragment();
+      searchFragment.setArguments(bundle);*/
+
 
 
     }
@@ -95,15 +104,17 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     switch (item.getItemId()) {
       case R.id.preferences:
-//        Intent preferencesIntent = new Intent(MainActivity.this, NotificationPreferencesActivity.class);
-//        startActivity(preferencesIntent);
+ Intent preferencesIntent = new Intent(MainActivity.this, NotificationPreferencesActivity.class);
+        startActivity(preferencesIntent);
         return true;
       case R.id.search_articles:
         Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
         startActivity(searchIntent);
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
     }
 
-    return super.onOptionsItemSelected(item);
   }
 
   @Override
