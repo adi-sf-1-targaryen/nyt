@@ -27,10 +27,13 @@ import retrofit2.Response;
  */
 public class JobSchedulerService extends JobService {
 
+  //region Strings
   private String title;
   private String snippet;
   private String urlForArticle;
+  //endregion Strings
 
+  //region Checkbox booleans
   boolean topStoryCheck;
   boolean mostPopularCheck;
   boolean opinionCheck;
@@ -41,18 +44,22 @@ public class JobSchedulerService extends JobService {
   boolean artsCheck;
   boolean nyCheck;
   boolean magazineCheck;
+  //endregion Checkbox booleans
 
-  private final static int TOP_STORY_ID = 2321;
-  private final static int MOST_POPULAR_ID = 3422;
-  private final static int OPINION_ID = 4523;
-  private final static int WORLD_ID = 5624;
-  private final static int US_ID = 1111;
-  private final static int BUSINESS_DAY_ID = 6725;
-  private final static int SPORTS_ID = 2222;
-  private final static int NY_ID = 7825;
-  private final static int MAGAZINE_ID = 8927;
-  private final static int ARTS_ID = 9101;
+  //region Notification Codes
+  private final int TOP_STORY_ID = 2321;
+  private final int MOST_POPULAR_ID = 3422;
+  private final int OPINION_ID = 4523;
+  private final int WORLD_ID = 5624;
+  private final int US_ID = 1111;
+  private final int BUSINESS_DAY_ID = 6725;
+  private final int SPORTS_ID = 2222;
+  private final int NY_ID = 7825;
+  private final int MAGAZINE_ID = 8927;
+  private final int ARTS_ID = 9101;
+  //endregion Notifications Codes
 
+  //region sections
   TopStories.Section topStory = TopStories.Section.HOME;
   TopStories.Section opinion = TopStories.Section.OPINION;
   TopStories.Section world = TopStories.Section.WORLD;
@@ -62,6 +69,7 @@ public class JobSchedulerService extends JobService {
   TopStories.Section arts = TopStories.Section.ARTS;
   TopStories.Section ny = TopStories.Section.NYREGION;
   TopStories.Section magazine = TopStories.Section.MAGAZINE;
+  //endregion sections
 
   /**
    * Get booleans from activity to tell if notifications are needed for the section
