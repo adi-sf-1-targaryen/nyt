@@ -17,12 +17,10 @@ import retrofit2.Response;
  * Fragment that shows the users search results and presents them in the recycler view
  */
 
-
 public class SearchFragment extends ArticleFeedFragment {
+
   private static final String TAG = "SearchFragment";
-
   private static final String SEARCH_KEY = "search";
-
   String searchArticleQuery = null;
 
   /**
@@ -73,7 +71,7 @@ public class SearchFragment extends ArticleFeedFragment {
 
         @Override
         public void onFailure(Call<ArticleSearch> call, Throwable t) {
-          Toast.makeText(context, "Could not retrive Search Result", Toast.LENGTH_LONG).show();
+          Toast.makeText(context, "Could not retrieve Search Result", Toast.LENGTH_LONG).show();
           Log.w(TAG, "onFailure: ", t);
         }
       }, cache);
@@ -81,5 +79,4 @@ public class SearchFragment extends ArticleFeedFragment {
       Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
     }
   }
-
 }
