@@ -21,5 +21,6 @@
     <string name="preferences">Preferences</string>
     <string name="search_articles">Search Articles</string>
     <string name="enter_keywords">Enter keywords</string>
+    <string name="fb_login_protocol_scheme">524135594459226</string>
 </resources>
 
