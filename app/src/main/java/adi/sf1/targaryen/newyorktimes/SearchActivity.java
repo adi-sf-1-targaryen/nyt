@@ -2,7 +2,6 @@ package adi.sf1.targaryen.newyorktimes;
 
 import android.app.SearchManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -23,13 +22,7 @@ public class SearchActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_search);
 
-    SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.MY_PREF_KEY,0);
-    String search = sharedPreferences.getString(MainActivity.SEARCH_KEY, "");
-
-    Bundle bundle = new Bundle();
-    bundle.putString(MainActivity.SEARCH_KEY,search);
-    SearchFragment searchFragment = new SearchFragment();
-    searchFragment.setArguments(bundle);
+    handleIntent(getIntent());
   }
 
   @Override
@@ -41,6 +34,10 @@ public class SearchActivity extends AppCompatActivity {
 
     if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
       String query = intent.getStringExtra(SearchManager.QUERY);
+
+      SearchFragment fragment = (SearchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_search);
+
+      fragment.performSearch(query);
     }
   }
 
