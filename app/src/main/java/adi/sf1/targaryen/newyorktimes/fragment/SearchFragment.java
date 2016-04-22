@@ -73,7 +73,7 @@ public class SearchFragment extends ArticleFeedFragment {
 
           @Override
           public void onFailure(Call<ArticleSearch> call, Throwable t) {
-            Toast.makeText(context, "Could not retrive Search Result", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Could not retrieve Search Result", Toast.LENGTH_LONG).show();
             Log.w(TAG, "onFailure: ", t);
           }
         }, cache);
