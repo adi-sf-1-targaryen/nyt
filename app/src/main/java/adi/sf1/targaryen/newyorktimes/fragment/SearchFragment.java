@@ -14,6 +14,7 @@ import retrofit2.Response;
 
 /**
  * Created by emiliaaxen on 16-04-21.
+ * Fragment that shows the users search results and presents them in the recycler view
  */
 
 
@@ -22,6 +23,10 @@ public class SearchFragment extends ArticleFeedFragment {
 
   String searchArticleQuery;
 
+  /**
+   * Grabs the search query from the article feed fragment
+   * @param savedInstanceState
+   */
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -31,6 +36,10 @@ public class SearchFragment extends ArticleFeedFragment {
     }
   }
 
+  /**
+   * Overrides the method to set the feed with the article search api
+   * @param cache
+   */
   @Override
   protected void setFeedList(boolean cache) {
     NewYorkTimes.getInstance().articleSearch(searchArticleQuery).enqueue(new Callback<ArticleSearch>() {

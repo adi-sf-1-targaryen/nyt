@@ -153,6 +153,13 @@ public class JobSchedulerService extends JobService {
     mNotificationManager.notify(notificationID, mBuilder.build());
   }
 
+  /**
+   * Checks whether or not a top story api notification has been requested by the user.
+   * If it has, it makes the api call for the required section and creates the notification
+   * @param checkedSection
+   * @param section
+   * @param id
+   */
   private void checkIfTrueTopStory(boolean checkedSection, TopStories.Section section, final int id) {
     if (checkedSection) {
       NewYorkTimes.getInstance().getTopStories(section).enqueue(new Callback<TopStories>() {
@@ -172,6 +179,10 @@ public class JobSchedulerService extends JobService {
     }
   }
 
+  /**
+   * Checks whether or not a most popular story api notification has been requested by the user.
+   * If it has, it makes the api call for most popular story and creates the notification
+   */
   private void checkIfMostPopularTrue() {
     if (mostPopularCheck) {
       NewYorkTimes.getInstance().getMostPopular(MostPopular.Type.EMAILED, MostPopular.Section.ALL, MostPopular.Time.DAY).enqueue(new Callback<MostPopular>() {

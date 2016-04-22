@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
@@ -34,13 +33,16 @@ import retrofit2.Response;
  */
 public class NotificationPreferencesActivity extends AppCompatActivity {
 
+  //region Global Variables
   CheckBox topStories, mostPopular, opinion, world, us, businessDay, sports, arts, ny, magazine;
   private String title;
   private String snippet;
   private String urlForArticle;
   NotificationManager mNotificationManager;
   SharedPreferences sharedPreferences;
+  //endregion Global Variables
 
+  //region Checked booleans
   private boolean topStoriesCheck = false;
   private boolean mostPopularCheck = false;
   private boolean opinionCheck = false;
@@ -51,7 +53,9 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
   private boolean artsCheck = false;
   private boolean nyCheck = false;
   private boolean magazineCheck = false;
+  //endregion Checked boeleans
 
+  //region Shared Preferences Booleans Codes
   public static final String BOOLEAN_CODE = "booleanCode";
   private String TOP_STORIES_CODE = "topStories";
   private String MOST_POPULAR_CODE = "mostPopular";
@@ -63,7 +67,13 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
   private String ARTS_CODE = "arts";
   private String NY_CODE = "NY";
   private String MAGAZINE_CODE = "magazine";
+  //endregion Shared Preferences Booleans Codes
 
+  /**
+   * Creates the shared preferences and notification manager
+   * Calls methods to make the activity functional
+   * @param savedInstanceState
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -76,6 +86,9 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
     setJobHandler();
   }
 
+  /**
+   * Sets the views in the activity
+   */
   private void setViews() {
     topStories = (CheckBox) findViewById(R.id.checkbox_top_stories);
     mostPopular = (CheckBox) findViewById(R.id.checkbox_most_popular);
@@ -95,7 +108,6 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
    * @param view
    */
   private void onCheckboxClicked(final View view) {
-
     view.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -363,6 +375,10 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
     }
   }
 
+  /**
+   * Sends an array of booleans to the service to let the
+   * service know which sections it needs to create notifications for
+   */
   private void createIntentForJobScheduler() {
     Intent serviceIntent = new Intent(this,JobSchedulerService.class);
     boolean[] booleenArray = new boolean[10];
@@ -380,10 +396,12 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
     getApplicationContext().startService(serviceIntent);
   }
 
+  /**
+   * Sends the array of booleans to the service
+   */
   @Override
   protected void onStop() {
     super.onStop();
-    Log.d("NotificationPreferences", "onStop");
     createIntentForJobScheduler();
   }
 }

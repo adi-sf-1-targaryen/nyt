@@ -1,20 +1,23 @@
 package adi.sf1.targaryen.newyorktimes;
 
-import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
 
 import adi.sf1.targaryen.newyorktimes.fragment.SearchFragment;
 
+/**
+ * This activity holds the fragment that will show the result of the users search query
+ */
 public class SearchActivity extends AppCompatActivity {
 
-
+  /**
+   * Gets the user search query from shared preferences
+   * Sends the search query to fragment containing the search feel
+   * @param savedInstanceState
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -27,14 +30,6 @@ public class SearchActivity extends AppCompatActivity {
     bundle.putString(MainActivity.SEARCH_KEY,search);
     SearchFragment searchFragment = new SearchFragment();
     searchFragment.setArguments(bundle);
-
-    /*android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-    SearchFragment searchFragment = (SearchFragment) fragmentManager.findFragmentById(R.id.fragment_search);
-
-
-    //FragmentTransaction fragmentTransaction1 = getFragmentManager().beginTransaction()
-
-*/
   }
 
   @Override
@@ -46,8 +41,6 @@ public class SearchActivity extends AppCompatActivity {
 
     if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
       String query = intent.getStringExtra(SearchManager.QUERY);
-
-
     }
   }
 
