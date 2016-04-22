@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     setContentView(R.layout.activity_main);
 
+    /**
+     * Defining the Toolbar. The toolbar implements the swipe tab view
+     */
     Toolbar topToolBar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(topToolBar);
     topToolBar.setLogo(R.drawable.nyt_logo);
@@ -106,6 +109,11 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     return super.onOptionsItemSelected(item);
   }
 
+  /**
+   * After implementing ActionBar.TabListener we need to override these three methods
+   * @param tab
+   * @param ft
+   */
   @Override
   public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
     mViewPager.setCurrentItem(tab.getPosition());
