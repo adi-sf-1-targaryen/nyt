@@ -145,8 +145,11 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     holder.title.setText(story.getTitle());
     holder.author.setText(story.getByLine());
     String largeDate = story.getPublished();
-    String alteredDate = largeDate.substring(0, 10);
-    holder.date.setText(alteredDate);
+    if (largeDate != null) {
+      String alteredDate = largeDate.substring(0, 10);
+      holder.date.setText(alteredDate);
+    }
+
     holder.snippet.setText(story.getSummary());
     holder.setOnClickListener(feedList[position], listener);
   }
