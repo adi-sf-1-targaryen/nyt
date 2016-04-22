@@ -8,6 +8,10 @@
         android1:title="@string/preferences"
         app:showAsAction="never"/>
 
+    <item android1:id="@+id/this_will_not_break_app"
+          android1:title="THIS WILL NOT BREAK THE APP"
+          app:showAsAction="never"/>
+
     <item android1:id="@+id/search_articles"
           android1:title="@string/search_articles"
           app:actionViewClass="android.support.v7.widget.SearchView"

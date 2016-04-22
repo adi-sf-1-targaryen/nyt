@@ -3,7 +3,6 @@ package adi.sf1.targaryen.newyorktimes;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -100,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
         startActivity(searchIntent);
         return true;
+      case R.id.this_will_not_break_app:
+        throw new RuntimeException("THIS_DID_BREAK_THE_APP_SORRY");
       default:
         return super.onOptionsItemSelected(item);
     }
