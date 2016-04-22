@@ -81,6 +81,8 @@ public class NewYorkTimes {
    * @return
    */
   public Call<ArticleSearch> articleSearch(String query) {
+    Log.d(TAG, "articleSearch: Performing search for " + query);
+
     return new Call<>(service.articleSearch(query, APIKeys.NYT_ARTICLE_SEARCH));
   }
 
