@@ -47,6 +47,7 @@
             android:authorities="com.facebook.app.FacebookContentProvider524135594459226"
             android:exported="true"/>
 
+
         <activity android:name=".NotificationPreferencesActivity"/>
 
         <service android:name=".JobSchedulerService"

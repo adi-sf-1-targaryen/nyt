@@ -11,7 +11,7 @@ import adi.sf1.targaryen.newyorktimes.api.result.MostPopular;
 import retrofit2.Response;
 
 /**
- * This fragment shows the most popular articles which are grabbed from the most popular api
+ * This fragment shows the most popular articles which are grabbed from the New York Times most popular API
  */
 public class MostPopularFeedFragment extends ArticleFeedFragment {
   private static final String TAG = "MostPopularFeedFragment";
