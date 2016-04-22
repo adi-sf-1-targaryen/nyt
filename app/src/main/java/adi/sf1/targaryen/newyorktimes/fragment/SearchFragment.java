@@ -61,20 +61,24 @@ public class SearchFragment extends ArticleFeedFragment {
    */
   @Override
   protected void setFeedList(boolean cache) {
-    if (CheckInternetConnection.isOnline(this.context)) {
-      NewYorkTimes.getInstance().articleSearch(searchArticleQuery).enqueue(new Callback<ArticleSearch>() {
-        @Override
-        public void onResponse(Call<ArticleSearch> call, Response<ArticleSearch> response) {
-          articleFeedAdapter.changeDataSet(response.body().getResults());
-          swipeContainer.setRefreshing(false);
-        }
 
-        @Override
-        public void onFailure(Call<ArticleSearch> call, Throwable t) {
-          Toast.makeText(context, "Could not retrieve Search Result", Toast.LENGTH_LONG).show();
-          Log.w(TAG, "onFailure: ", t);
-        }
-      }, cache);
+    if (CheckInternetConnection.isOnline(context)) {
+      if (searchArticleQuery != null) {
+        NewYorkTimes.getInstance().articleSearch(searchArticleQuery).enqueue(new Callback<ArticleSearch>() {
+          @Override
+          public void onResponse(Call<ArticleSearch> call, Response<ArticleSearch> response) {
+            articleFeedAdapter.changeDataSet(response.body().getResults());
+            swipeContainer.setRefreshing(false);
+          }
+
+          @Override
+          public void onFailure(Call<ArticleSearch> call, Throwable t) {
+            Toast.makeText(context, "Could not retrive Search Result", Toast.LENGTH_LONG).show();
+            Log.w(TAG, "onFailure: ", t);
+          }
+        }, cache);
+      }
+
     } else {
       Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
     }

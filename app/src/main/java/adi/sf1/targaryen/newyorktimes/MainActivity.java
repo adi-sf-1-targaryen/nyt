@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     mSlidingTabLayout.setViewPager(mViewPager);
 
   }
-  
+
   /**
    * Creates the menu bar
    * Creates functionality for the search feature
