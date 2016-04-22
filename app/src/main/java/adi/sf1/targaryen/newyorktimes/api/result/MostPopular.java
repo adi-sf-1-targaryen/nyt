@@ -16,6 +16,7 @@ public class MostPopular implements ResultInterface {
 
   private transient String updated = (new Date()).toString();
 
+  @Override
   public Story[] getResults() {
     return _results;
   }
@@ -104,12 +105,20 @@ public class MostPopular implements ResultInterface {
     }
   }
 
+  /**
+   * Allow arrays of Story to be invalid; converts invalid values to empty array.
+   */
   public static class StoryArrayTypeAdapter extends NewYorkTimes.CacheArrayTypeAdapter<Story[]> {
     public StoryArrayTypeAdapter() {
       super(new Story[0]);
     }
   }
 
+  /**
+   * Implementation of StoryInterface for Most Popular API.
+   *
+   * AbstractStory includes the StoryInterface.
+   */
   public static class Story extends AbstractStory {
     private String _section;
     private String _subsection;
@@ -265,12 +274,18 @@ public class MostPopular implements ResultInterface {
       return null;
     }
 
+    /**
+     * Allow arrays of Media to be invalid; converts invalid values to empty array.
+     */
     public static class MediaArrayTypeAdapter extends NewYorkTimes.ArrayTypeAdapter<Media[]> {
       public MediaArrayTypeAdapter() {
         super(new Media[0]);
       }
     }
 
+    /**
+     * Implementation of MediaInterface for the Most Popular API.
+     */
     public static class Media implements MediaInterface {
       private String _type;
       private String _subtype;
@@ -326,6 +341,9 @@ public class MostPopular implements ResultInterface {
         return _media_metadata[_media_metadata.length - 1];
       }
 
+      /**
+       * Allow arrays of Metadata to be invalid; converts invalid values to empty array.
+       */
       public static class MetadataArrayTypeAdapter extends NewYorkTimes.ArrayTypeAdapter<Metadata[]> {
         public MetadataArrayTypeAdapter() {
           super(new Metadata[0]);

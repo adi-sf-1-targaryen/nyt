@@ -7,7 +7,9 @@ import java.util.Date;
 import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
 
 /**
- * Created by moltendorf on 16/4/17.
+ * Implementation of ResultInterface for the Article Search API.
+ *
+ * Provides fields for Gson to parse the JSON response properly.
  */
 public class ArticleSearch implements ResultInterface {
   private Response _response;
@@ -25,14 +27,25 @@ public class ArticleSearch implements ResultInterface {
     return updated;
   }
 
+  /**
+   * Gets the copyright for these results.
+   * @return
+   */
   public String getCopyright() {
     return _copyright;
   }
 
+  /**
+   * Number of hits the search query returned.
+   * @return
+   */
   public int getHits() {
     return _response._meta._hits;
   }
 
+  /**
+   * Article Search API returns a wrapper object in a wrapper object. This is provided to unwrap it again.
+   */
   private static class Response {
     private Meta _meta;
 
@@ -44,12 +57,20 @@ public class ArticleSearch implements ResultInterface {
     }
   }
 
+  /**
+   * Allow arrays of Story to be invalid; converts invalid values to empty array.
+   */
   public static class StoryArrayTypeAdapter extends NewYorkTimes.CacheArrayTypeAdapter<Story[]> {
     public StoryArrayTypeAdapter() {
       super(new Story[0]);
     }
   }
 
+  /**
+   * Implementation of StoryInterface for Article Search API.
+   *
+   * AbstractStory includes the StoryInterface.
+   */
   public static class Story extends AbstractStory {
     private String _web_url;
     private String _snippet;
@@ -167,12 +188,18 @@ public class ArticleSearch implements ResultInterface {
       return null;
     }
 
+    /**
+     * Allow arrays of Media to be invalid; converts invalid values to empty array.
+     */
     public static class MediaArrayTypeAdapter extends NewYorkTimes.ArrayTypeAdapter<Media[]> {
       public MediaArrayTypeAdapter() {
         super(new Media[0]);
       }
     }
 
+    /**
+     * Implementation of MediaInterface for the Article Search API.
+     */
     public static class Media implements MediaInterface {
       private String _type;
       private String _subtype;
@@ -206,6 +233,9 @@ public class ArticleSearch implements ResultInterface {
       }
     }
 
+    /**
+     * Represents different variations for the headline (title) of the story.
+     */
     public static class Headline {
       private String _main;
       private String _content_kicker;
@@ -221,12 +251,18 @@ public class ArticleSearch implements ResultInterface {
       }
     }
 
+    /**
+     * Allow arrays of Keyword to be invalid; converts invalid values to empty array.
+     */
     public static class KeywordArrayTypeAdapter extends NewYorkTimes.ArrayTypeAdapter<Keyword[]> {
       public KeywordArrayTypeAdapter() {
         super(new Keyword[0]);
       }
     }
 
+    /**
+     * Main keywords of the story.
+     */
     public static class Keyword {
       private String _rank;
       private String _is_major;
@@ -244,12 +280,18 @@ public class ArticleSearch implements ResultInterface {
         return _original;
       }
 
+      /**
+       * Allow arrays of Person to be invalid; converts invalid values to empty array.
+       */
       public static class PersonArrayTypeAdapter extends NewYorkTimes.ArrayTypeAdapter<Person[]> {
         public PersonArrayTypeAdapter() {
           super(new Person[0]);
         }
       }
 
+      /**
+       * Used to represent an author of an article.
+       */
       public static class Person {
         private String _organization;
         private String _role;
