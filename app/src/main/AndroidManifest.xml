@@ -38,12 +38,6 @@
             android:name="io.fabric.ApiKey"
             android:value="58313590833b89579ffaad39c93c66d5665bd3d1"/>
 
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
@@ -53,11 +47,14 @@
             android:authorities="com.facebook.app.FacebookContentProvider524135594459226"
             android:exported="true"/>
 
+        <activity android:name=".SearchActivity"/>
+
 
         <activity android:name=".NotificationPreferencesActivity"/>
 
-
-
+        <service android:name=".JobSchedulerService"
+                 android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
+
 
 </manifest>

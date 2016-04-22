@@ -71,10 +71,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
       editor.putString(SEARCH_KEY, query);
       editor.commit();
 
-      /*SearchFragment searchFragment = new SearchFragment();
-      searchFragment.setArguments(bundle);*/
-
-
 
     }
   }
@@ -104,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     switch (item.getItemId()) {
       case R.id.preferences:
- Intent preferencesIntent = new Intent(MainActivity.this, NotificationPreferencesActivity.class);
+        Intent preferencesIntent = new Intent(MainActivity.this, NotificationPreferencesActivity.class);
         startActivity(preferencesIntent);
         return true;
       case R.id.search_articles:
