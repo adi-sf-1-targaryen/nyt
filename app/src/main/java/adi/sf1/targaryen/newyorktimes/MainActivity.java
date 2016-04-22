@@ -3,6 +3,7 @@ package adi.sf1.targaryen.newyorktimes;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
   private MenuItem searchArticles;
   private MenuItem preferences;
 
+  public final static String  SEARCH_KEY = "searchKey";
+  public final static String MY_PREF_KEY = "myPrefKey";
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -63,7 +66,11 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
       String query = intent.getStringExtra(SearchManager.QUERY);
-      //Toast.makeText(MainActivity.this,"Searching for "+query, Toast.LENGTH_SHORT).show();
+      SharedPreferences preferences = getSharedPreferences(MY_PREF_KEY,MODE_PRIVATE);
+      SharedPreferences.Editor editor = preferences.edit();
+      editor.putString(SEARCH_KEY, query);
+      editor.commit();
+
 
     }
   }
@@ -103,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
       default:
         return super.onOptionsItemSelected(item);
     }
+
   }
 
   @Override

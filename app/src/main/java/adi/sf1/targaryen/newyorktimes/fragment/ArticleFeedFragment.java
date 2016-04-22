@@ -86,7 +86,7 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
   /**
    * Sets the recycler view and adapter for recycler view into the fragment
    */
-  private void setArticleFeedAdapter() {
+  protected void setArticleFeedAdapter() {
     articleFeedAdapter = new ArticleFeedAdapter(this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
     recyclerView.setLayoutManager(layoutManager);
