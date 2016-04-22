@@ -28,12 +28,15 @@ import retrofit2.http.Query;
 
 /**
  * Main retrofit2 New York Times API wrapper.
- * <p/>
+ * <p>
  * Singleton.
  */
 public class NewYorkTimes {
   private static final String TAG = "NewYorkTimes";
 
+  /**
+   * Main API wrapper instance.
+   */
   private static NewYorkTimes instance;
 
   /**
@@ -49,6 +52,9 @@ public class NewYorkTimes {
     return instance;
   }
 
+  /**
+   * Main Gson instance.
+   */
   private static Gson gson = new GsonBuilder()
     .setFieldNamingStrategy(new FieldNamingStrategy() {
       @Override
@@ -147,25 +153,16 @@ public class NewYorkTimes {
     return new Call<>(service.getTopStores(section.getValue(), APIKeys.NYT_TOP_STORIES));
   }
 
-  // @todo Use callback mechanism to allow for asynchronous request when the story does not exist.
+  /**
+   * @param url
+   * @return
+   * @todo Use callback mechanism to allow for asynchronous request when the story does not exist.
+   */
   public StoryInterface getStory(final String url) {
-    return (StoryInterface) CacheArrayTypeAdapter.objectCache.get(new Object() {
-      @Override
-      public int hashCode() {
-        return url.hashCode();
-      }
+    AbstractStoryKey key = AbstractStoryKey.getInstance();
+    key.setKey(url);
 
-      @Override
-      public boolean equals(Object o) {
-        if (o instanceof StoryInterface) {
-          StoryInterface story = (StoryInterface) o;
-
-          return url.equals(story.getUrl());
-        }
-
-        return false;
-      }
-    });
+    return (StoryInterface) CacheArrayTypeAdapter.objectCache.get(key);
   }
 
   /**
@@ -201,6 +198,9 @@ public class NewYorkTimes {
     );
   }
 
+  /**
+   * Allow arrays of String to be invalid; converts invalid values to empty array.
+   */
   public static class StringArrayTypeAdapter extends ArrayTypeAdapter<String[]> {
     public StringArrayTypeAdapter() {
       super(new String[0]);
@@ -220,6 +220,14 @@ public class NewYorkTimes {
       super(defaultValue);
     }
 
+    /**
+     * Uses base Gson to parse value. Caches the value or gets the canonical object.
+     * Return the defaultValue if the value cannot be parsed.
+     *
+     * @param in
+     * @return
+     * @throws IOException
+     */
     @Override
     public T read(JsonReader in) throws IOException {
       Object[] objects = (Object[]) super.read(in);
@@ -250,16 +258,35 @@ public class NewYorkTimes {
     private TypeAdapter<T> base;
     private T defaultValue;
 
+    /**
+     * Constructor.
+     *
+     * @param defaultValue Default value (usually an empty array) used when parsing fails.
+     */
     protected ArrayTypeAdapter(T defaultValue) {
       base = (TypeAdapter<T>) gson.getAdapter(defaultValue.getClass());
       this.defaultValue = defaultValue;
     }
 
+    /**
+     * Doesn't do anything special; just delegates the responsibility back to Gson.
+     *
+     * @param out
+     * @param value
+     * @throws IOException
+     */
     @Override
     public void write(JsonWriter out, T value) throws IOException {
       base.write(out, value);
     }
 
+    /**
+     * Return the defaultValue if the value cannot be parsed. Otherwise delegates responsibility back to Gson.
+     *
+     * @param in
+     * @return
+     * @throws IOException
+     */
     @Override
     public T read(JsonReader in) throws IOException {
       if (in.peek() == JsonToken.BEGIN_ARRAY) {
@@ -269,6 +296,65 @@ public class NewYorkTimes {
 
         return defaultValue;
       }
+    }
+  }
+
+  /**
+   * Used entirely to lookup objects in the object cache.
+   */
+  private static class AbstractStoryKey {
+    /**
+     * Main instance.
+     */
+    private static AbstractStoryKey instance = new AbstractStoryKey();
+
+    /**
+     * Get the main instance (not thread safe).
+     *
+     * @return
+     */
+    public static AbstractStoryKey getInstance() {
+      return instance;
+    }
+
+    /**
+     * Key used for lookup.
+     */
+    private String key = "";
+
+    /**
+     * Provided to match String against AbstractStory.
+     *
+     * @return
+     */
+    @Override
+    public int hashCode() {
+      return key.hashCode();
+    }
+
+    /**
+     * Provided to match String against AbstractStory.
+     *
+     * @return
+     */
+    @Override
+    public boolean equals(Object o) {
+      if (o instanceof StoryInterface) {
+        StoryInterface story = (StoryInterface) o;
+
+        return key.equals(story.getUrl());
+      }
+
+      return false;
+    }
+
+    /**
+     * Provide a new key for object re-use.
+     *
+     * @param key
+     */
+    public void setKey(String key) {
+      this.key = key;
     }
   }
 }
