@@ -63,7 +63,7 @@ public class SearchFragment extends ArticleFeedFragment {
    */
   @Override
   protected void setFeedList(boolean cache) {
-    if (searchArticleQuery != null && CheckIternetConnection.isOnline(context)) {
+    if (searchArticleQuery != null && CheckInternetConnection.isOnline(context)) {
       NewYorkTimes.getInstance().articleSearch(searchArticleQuery).enqueue(new Callback<ArticleSearch>() {
         @Override
         public void onResponse(Call<ArticleSearch> call, Response<ArticleSearch> response) {
