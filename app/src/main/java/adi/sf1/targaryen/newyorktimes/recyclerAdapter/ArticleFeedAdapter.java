@@ -19,6 +19,9 @@ import adi.sf1.targaryen.newyorktimes.api.result.StoryInterface;
  * Adapter for the recycler view that shows the article feed.
  */
 public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.ArticleFeedViewHolder> {
+  private static final int LAYOUT_LARGE_IMAGE = 0;
+  private static final int LAYOUT_SMALL_IMAGE = 1;
+  private static final int LAYOUT_NOIMAGE = 2;
 
   private StoryInterface[] feedList = null;
   private OnItemClickListener listener;
@@ -31,17 +34,20 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     public ImageView image;
     public TextView title, author, date, snippet;
 
+    private int viewType;
+
     /**
      * Sets the views for the article feed
      * @param itemView
      */
-    public ArticleFeedViewHolder(View itemView) {
+    public ArticleFeedViewHolder(View itemView, int viewType) {
       super(itemView);
       image = (ImageView) itemView.findViewById(R.id.image_article);
       title = (TextView) itemView.findViewById(R.id.title_text_article);
       author = (TextView) itemView.findViewById(R.id.author_text_article);
       date = (TextView) itemView.findViewById(R.id.date_text_article);
       snippet = (TextView) itemView.findViewById(R.id.content_text_article);
+      this.viewType = viewType;
     }
 
     /**
@@ -70,11 +76,12 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
 
 
   public int getItemViewType(int position) {
+    if (feedList[position].getFirstImage() != null) {
+      int large = (feedList[position].hashCode() % 5 == 0) ? LAYOUT_LARGE_IMAGE : LAYOUT_SMALL_IMAGE;
 
-    if (position == 0) {
-      return 1;
+      return position == 0 ? LAYOUT_LARGE_IMAGE : large;
     } else {
-      return 0;
+      return LAYOUT_NOIMAGE;
     }
   }
 
@@ -86,13 +93,24 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
    */
   @Override
   public ArticleFeedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View itemView;
-    if (viewType == 0) {
-      itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_article_feed, parent, false);
-    } else {
-      itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_article_feed_first, parent, false);
+    int layout;
+
+    switch (viewType) {
+      case LAYOUT_LARGE_IMAGE:
+        layout = R.layout.card_view_article_feed_first;
+        break;
+
+      case LAYOUT_SMALL_IMAGE:
+        layout = R.layout.card_view_article_feed;
+        break;
+
+      case LAYOUT_NOIMAGE:
+      default:
+        layout = R.layout.card_view_article_feed_noimage;
+        break;
     }
-    return new ArticleFeedViewHolder(itemView);
+
+    return new ArticleFeedViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false), viewType);
   }
 
   /**
@@ -104,16 +122,25 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
   public void onBindViewHolder(ArticleFeedViewHolder holder, int position) {
 
     StoryInterface story = feedList[position];
-    MediaInterface media = story.getLastImage();
-    if (media != null) {
-      Context context = holder.image.getContext();
-      Picasso.with(context).load(media.getUrl())
-        .into(holder.image);
-      holder.image.setVisibility(View.VISIBLE);
+
+    if (holder.image != null) {
+      MediaInterface media;
+
+      if (holder.viewType == LAYOUT_LARGE_IMAGE) {
+        media = story.getLastImage(); // big
+      } else {
+        media = story.getFirstImage(); // small
+      }
+      if (media != null) {
+        Context context = holder.image.getContext();
+        Picasso.with(context).load(media.getUrl())
+          .into(holder.image);
+        holder.image.setVisibility(View.VISIBLE);
 //      holder.image.getLayoutParams().height
-    } else {
-      holder.image.setImageResource(android.R.color.transparent);
-      holder.image.setVisibility(View.GONE);
+      } else {
+        holder.image.setImageResource(android.R.color.transparent);
+        holder.image.setVisibility(View.GONE);
+      }
     }
     holder.title.setText(story.getTitle());
     holder.author.setText(story.getByLine());

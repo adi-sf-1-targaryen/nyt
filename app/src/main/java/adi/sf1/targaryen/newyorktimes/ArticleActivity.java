@@ -117,7 +117,7 @@ public class ArticleActivity extends AppCompatActivity {
    */
   private void facebookIntegrationMethods() {
     /**
-     * Methods for logging in
+     * Methods for logging in to facebook
      */
     callbackManager = CallbackManager.Factory.create();
     LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {

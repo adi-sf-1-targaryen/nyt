@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    /**
+     * Defining the Toolbar. The toolbar implements the swipe tab view
+     */
     Toolbar topToolBar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(topToolBar);
     topToolBar.setLogo(R.drawable.nyt_logo);
@@ -53,32 +56,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
     mSlidingTabLayout.setViewPager(mViewPager);
 
-    handleIntent(getIntent());
-  }
-
-  /**
-   * If a new search intent is created, this method creates the intent and passes it to the
-   * handleIntent method
-   * @param intent
-   */
-  @Override
-  protected void onNewIntent(Intent intent) {
-    handleIntent(intent);
-  }
-
-  /**
-   * This method handles the search intent by grabbing the users search and putting it into the shared preferences
-   * These shared preferences can be accessed by the search activity to present them to the user.
-   * @param intent
-   */
-  private void handleIntent(Intent intent) {
-    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-      String query = intent.getStringExtra(SearchManager.QUERY);
-      SharedPreferences preferences = getSharedPreferences(MY_PREF_KEY,MODE_PRIVATE);
-      SharedPreferences.Editor editor = preferences.edit();
-      editor.putString(SEARCH_KEY, query);
-      editor.commit();
-    }
   }
 
   /**
@@ -129,6 +106,11 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
   }
 
+  /**
+   * After implementing ActionBar.TabListener we need to override these three methods
+   * @param tab
+   * @param ft
+   */
   @Override
   public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
     mViewPager.setCurrentItem(tab.getPosition());

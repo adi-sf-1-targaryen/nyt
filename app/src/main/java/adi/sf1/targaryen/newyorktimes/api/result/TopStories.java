@@ -27,6 +27,10 @@ public class TopStories implements ResultInterface {
     return _section;
   }
 
+  /**
+   * Gets the copyright for these results.
+   * @return
+   */
   public String getCopyright() {
     return _copyright;
   }
@@ -94,12 +98,20 @@ public class TopStories implements ResultInterface {
     }
   }
 
+  /**
+   * Allow arrays of Story to be invalid; converts invalid values to empty array.
+   */
   public static class StoryArrayTypeAdapter extends NewYorkTimes.CacheArrayTypeAdapter<Story[]> {
     public StoryArrayTypeAdapter() {
       super(new Story[0]);
     }
   }
 
+  /**
+   * Implementation of StoryInterface for Top Stories API.
+   *
+   * AbstractStory includes the StoryInterface.
+   */
   public static class Story extends AbstractStory {
     private String _section;
     private String _subsection;
@@ -218,12 +230,18 @@ public class TopStories implements ResultInterface {
       return null;
     }
 
+    /**
+     * Allow arrays of Media to be invalid; converts invalid values to empty array.
+     */
     public static class MediaArrayTypeAdapter extends NewYorkTimes.ArrayTypeAdapter<Media[]> {
       public MediaArrayTypeAdapter() {
         super(new Media[0]);
       }
     }
 
+    /**
+     * Implementation of MediaInterface for the Top Stories API.
+     */
     public static class Media implements MediaInterface {
       private String _type;
       private String _subtype;

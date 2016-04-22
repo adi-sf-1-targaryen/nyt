@@ -11,7 +11,8 @@ import okhttp3.Request;
 import retrofit2.Response;
 
 /**
- * Created by moltendorf on 16/4/19.
+ * Wrapper class for retrofit2.Call<T>.
+ * Caches responses on success.
  */
 public class Call<T> {
   private static final String TAG = "Call";
@@ -25,14 +26,34 @@ public class Call<T> {
     this.parent = parent;
   }
 
-  public Response<T> execute() throws IOException {
+  /**
+   * Synchronously send the request and return its response.
+   *
+   * @throws IOException      if a problem occurred talking to the server.
+   * @throws RuntimeException (and subclasses) if an unexpected error occurs creating the request
+   *                          or decoding the response.
+   */
+  public Response<T> execute1() throws IOException {
     return null;
   }
 
+  /**
+   * Asynchronously send the request and notify {@code callback} of its response or if an error
+   * occurred talking to the server, creating the request, or processing the response.
+   *
+   * @param callback
+   */
   public void enqueue(final Callback<T> callback) {
     enqueue(callback, true);
   }
 
+  /**
+   * Asynchronously send the request and notify {@code callback} of its response or if an error
+   * occurred talking to the server, creating the request, or processing the response.
+   *
+   * @param callback
+   * @param cache    Whether or not to fetch the response from cache.
+   */
   public void enqueue(final Callback<T> callback, boolean cache) {
     final HttpUrl url = parent.request().url();
     Response response = responseCache.get(url);
@@ -62,18 +83,32 @@ public class Call<T> {
     }
   }
 
+  /**
+   * Returns true if this call has been either {@linkplain #execute() executed} or {@linkplain
+   * #enqueue(Callback) enqueued}. It is an error to execute or enqueue a call more than once.
+   */
   public boolean isExecuted() {
     return parent.isExecuted();
   }
 
+  /**
+   * Cancel this call. An attempt will be made to cancel in-flight calls, and if the call has not
+   * yet been executed it never will be.
+   */
   public void cancel() {
     parent.cancel();
   }
 
+  /**
+   * True if {@link #cancel()} was called.
+   */
   public boolean isCanceled() {
     return false;
   }
 
+  /**
+   * The original HTTP request.
+   */
   public Request request() {
     return parent.request();
   }
