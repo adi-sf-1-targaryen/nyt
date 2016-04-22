@@ -1,26 +1,20 @@
 package adi.sf1.targaryen.newyorktimes.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
 import adi.sf1.targaryen.newyorktimes.CheckInternetConnection;
 import adi.sf1.targaryen.newyorktimes.api.Call;
 import adi.sf1.targaryen.newyorktimes.api.Callback;
-import adi.sf1.targaryen.newyorktimes.api.result.MostPopular;
 import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
+import adi.sf1.targaryen.newyorktimes.api.result.MostPopular;
 import retrofit2.Response;
 
-
+/**
+ * This fragment shows the most popular articles which are grabbed from the most popular api
+ */
 public class MostPopularFeedFragment extends ArticleFeedFragment {
   private static final String TAG = "MostPopularFeedFragment";
-
-  @Override
-  public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    // TODO: 4/19/16 DO STUFF HERE MAYBE (MAYBE NOT)
-  }
 
   /**
    * Makes the api call for the the most popular stories on the NY times

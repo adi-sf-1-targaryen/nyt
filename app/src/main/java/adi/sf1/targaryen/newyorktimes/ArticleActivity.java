@@ -57,6 +57,11 @@ public class ArticleActivity extends AppCompatActivity {
   private static final String TWITTER_KEY = "PQd385fJYKJ3lhTGtpSuYe3Cy";
   private static final String TWITTER_SECRET = "1zQcUDzK5wFqgh2FalcXMjVwWYzXgacEO43JI9OjqOLe0cUjUi";
 
+  /**
+   * Method calls methods necessary for this activity to function.
+   * This method initializes the facebook and twitter sharing functions
+   * @param savedInstanceState
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -144,7 +149,7 @@ public class ArticleActivity extends AppCompatActivity {
       .build();
 
     /**
-     * Post to facebookwall
+     * Post to facebook wall
      */
     shareButton.setShareContent(shareLinkContent);
   }
@@ -164,12 +169,12 @@ public class ArticleActivity extends AppCompatActivity {
     story = NewYorkTimes.getInstance().getStory(urlForArticle);
   }
 
-
+  /**
+   * This method tells the web view what url to load
+   */
   private void fillViews() {
-
     articleBrowser.setWebViewClient(new WebViewClient());
     articleBrowser.loadUrl(urlForArticle);
-
   }
 
   /**
