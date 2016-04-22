@@ -21,22 +21,24 @@ import adi.sf1.targaryen.newyorktimes.api.result.TopStories;
 import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
 import adi.sf1.targaryen.newyorktimes.fragment.MostPopularFeedFragment;
 
+/**
+ * The Main Activity is the first activity that is launched when the user opens the app.
+ * Within the main activity is the tool bar and the tab layout for the different sections.
+ * The activity also contains a fragment that populates the pager adapter with a feed of articles
+ * depending on what section the user is in
+ */
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
 
   SectionsPagerAdapter mSectionsPagerAdapter;
   ViewPager mViewPager;
-  static final String LOG_TAG = "SlidingTabsBasicFragment";
   private SlidingTabLayout mSlidingTabLayout;
-  private MenuItem searchArticles;
-  private MenuItem preferences;
 
   public final static String  SEARCH_KEY = "searchKey";
   public final static String MY_PREF_KEY = "myPrefKey";
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     setContentView(R.layout.activity_main);
 
     Toolbar topToolBar = (Toolbar) findViewById(R.id.toolbar);
@@ -45,36 +47,46 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     topToolBar.setLogoDescription(getResources().getString(R.string.logo_desc));
 
     mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
     mViewPager = (ViewPager) findViewById(R.id.pager);
-
     mViewPager.setAdapter(mSectionsPagerAdapter);
 
     mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-
     mSlidingTabLayout.setViewPager(mViewPager);
 
     handleIntent(getIntent());
   }
 
+  /**
+   * If a new search intent is created, this method creates the intent and passes it to the
+   * handleIntent method
+   * @param intent
+   */
   @Override
   protected void onNewIntent(Intent intent) {
     handleIntent(intent);
   }
 
+  /**
+   * This method handles the search intent by grabbing the users search and putting it into the shared preferences
+   * These shared preferences can be accessed by the search activity to present them to the user.
+   * @param intent
+   */
   private void handleIntent(Intent intent) {
-
     if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
       String query = intent.getStringExtra(SearchManager.QUERY);
       SharedPreferences preferences = getSharedPreferences(MY_PREF_KEY,MODE_PRIVATE);
       SharedPreferences.Editor editor = preferences.edit();
       editor.putString(SEARCH_KEY, query);
       editor.commit();
-
-
     }
   }
 
+  /**
+   * Creates the menu bar
+   * Creates functionality for the search feature
+   * @param menu
+   * @return
+   */
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
 // Inflate the menu; this adds items to the action bar if it is present.
@@ -91,8 +103,12 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     return true;
   }
 
+  /**
+   * Method that creates the actions for when a user selects an option in the menu bar
+   * @param item
+   * @return
+   */
   @Override
-
   public boolean onOptionsItemSelected(MenuItem item) {
 // Handle action bar item clicks here. The action bar will
 // automatically handle clicks on the Home/Up button, so long

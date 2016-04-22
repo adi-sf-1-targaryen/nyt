@@ -25,7 +25,11 @@ import adi.sf1.targaryen.newyorktimes.api.result.TopStories;
 import adi.sf1.targaryen.newyorktimes.recyclerAdapter.ArticleFeedAdapter;
 import retrofit2.Response;
 
-
+/**
+ * Fragment showing the list of articles for a certain new york times section/category.
+ * User can swipe to different categories or select them on the tab.
+ * User can click on articles to read the article and search articles by keyword from this fragment
+ */
 public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.OnItemClickListener {
 
   private static final String TAG = "ArticleFeedFragment";
@@ -39,6 +43,10 @@ public class ArticleFeedFragment extends Fragment implements ArticleFeedAdapter.
   public static final String EXTRA_SECTION = "section";
   public static final String URL_EXTRA_KEY = "urlExtraKey";
 
+  /**
+   * Grabs the section the user is currently browsing to populate articles that are within that section
+   * @param savedInstanceState
+   */
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
