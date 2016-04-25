@@ -1,9 +1,6 @@
 package adi.sf1.targaryen.newyorktimes;
 
 import android.annotation.TargetApi;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
@@ -14,18 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.Toast;
-
-import adi.sf1.targaryen.newyorktimes.api.Call;
-import adi.sf1.targaryen.newyorktimes.api.Callback;
-import adi.sf1.targaryen.newyorktimes.api.NewYorkTimes;
-import adi.sf1.targaryen.newyorktimes.api.result.MostPopular;
-import adi.sf1.targaryen.newyorktimes.api.result.TopStories;
-import adi.sf1.targaryen.newyorktimes.fragment.ArticleFeedFragment;
-import retrofit2.Response;
 
 /**
  * Created by Raiders on 4/20/16.
@@ -35,10 +22,6 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
 
   //region Global Variables
   CheckBox topStories, mostPopular, opinion, world, us, businessDay, sports, arts, ny, magazine;
-  private String title;
-  private String snippet;
-  private String urlForArticle;
-  NotificationManager mNotificationManager;
   SharedPreferences sharedPreferences;
   //endregion Global Variables
 
@@ -81,7 +64,6 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
 
     setViews();
     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-    mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     setCheckboxClicks();
     setJobHandler();
   }
@@ -114,111 +96,72 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
         boolean checked = ((CheckBox) view).isChecked();
         switch (view.getId()) {
           case R.id.checkbox_top_stories:
-            int NOTIFICATION_ID1 = 1;
             if (checked) {
-              TopStories.Section section = TopStories.Section.HOME;
-              getTopArticleForSection(section, NOTIFICATION_ID1);
               topStoriesCheck = true;
             } else {
-              mNotificationManager.cancel(NOTIFICATION_ID1);
               topStoriesCheck =false;
             }
             break;
           case R.id.checkbox_most_popular:
-            int NOTIFICATION_ID2 = 2;
             if (checked) {
-              getMostPopularArticles(NOTIFICATION_ID2);
               mostPopularCheck = true;
             } else {
-              mNotificationManager.cancel(NOTIFICATION_ID2);
               mostPopularCheck = false;
             }
             break;
           case R.id.checkbox_opinion:
-            int NOTIFICATION_ID3 = 3;
             if (checked) {
-              TopStories.Section section = TopStories.Section.OPINION;
-              getTopArticleForSection(section, NOTIFICATION_ID3);
               opinionCheck = true;
             } else {
-              mNotificationManager.cancel(NOTIFICATION_ID3);
               opinionCheck = false;
             }
             break;
           case R.id.checkbox_world:
-            int NOTIFICATION_ID4 = 4;
             if (checked) {
-              TopStories.Section section = TopStories.Section.WORLD;
-              getTopArticleForSection(section, NOTIFICATION_ID4);
               worldCheck = true;
             } else {
-              mNotificationManager.cancel(NOTIFICATION_ID4);
               worldCheck = false;
             }
             break;
           case R.id.checkbox_us:
-            int NOTIFICATION_ID5 = 5;
             if (checked) {
-              TopStories.Section section = TopStories.Section.NATIONAL;
-              getTopArticleForSection(section, NOTIFICATION_ID5);
               usCheck = true;
             } else {
-              mNotificationManager.cancel(NOTIFICATION_ID5);
               usCheck = false;
             }
             break;
           case R.id.checkbox_business_day:
-            int NOTIFICATION_ID6 = 6;
             if (checked) {
-              TopStories.Section section = TopStories.Section.BUSINESS;
-              getTopArticleForSection(section, NOTIFICATION_ID6);
               businessDayCheck = true;
             } else {
-              mNotificationManager.cancel(NOTIFICATION_ID6);
               businessDayCheck = false;
             }
             break;
           case R.id.checkbox_sports:
-            int NOTIFICATION_ID7 = 7;
             if (checked) {
-              TopStories.Section section = TopStories.Section.SPORTS;
-              getTopArticleForSection(section, NOTIFICATION_ID7);
               sportsCheck = true;
             } else {
-              mNotificationManager.cancel(NOTIFICATION_ID7);
               sportsCheck = false;
             }
             break;
           case R.id.checkbox_arts:
-            int NOTIFICATION_ID8 = 8;
             if (checked) {
-              TopStories.Section section = TopStories.Section.ARTS;
-              getTopArticleForSection(section, NOTIFICATION_ID8);
               artsCheck = true;
             } else {
-              mNotificationManager.cancel(NOTIFICATION_ID8);
               artsCheck = false;
             }
             break;
           case R.id.checkbox_ny:
-            int NOTIFICATION_ID9 = 9;
             if (checked) {
-              TopStories.Section section = TopStories.Section.NYREGION;
-              getTopArticleForSection(section, NOTIFICATION_ID9);
               nyCheck = true;
             } else {
-              mNotificationManager.cancel(NOTIFICATION_ID9);
               nyCheck = false;
             }
             break;
           case R.id.checkbox_magazine:
-            int NOTIFICATION_ID10 = 10;
             if (checked) {
-              TopStories.Section section = TopStories.Section.MAGAZINE;
-              getTopArticleForSection(section, NOTIFICATION_ID10);
               magazineCheck = true;
             } else {
-              mNotificationManager.cancel(NOTIFICATION_ID10);
               magazineCheck = false;
             }
             break;
@@ -242,70 +185,6 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
     onCheckboxClicked(arts);
     onCheckboxClicked(ny);
     onCheckboxClicked(magazine);
-  }
-
-  /**
-   * Queries top stories api for first article in the selected category
-   * @param section
-   */
-  private void getTopArticleForSection(TopStories.Section section, final int notificationID) {
-    NewYorkTimes.getInstance().getTopStories(section).enqueue(new Callback<TopStories>() {
-      @Override
-      public void onResponse(Call<TopStories> call, Response<TopStories> response) {
-        title = response.body().getResults()[0].getTitle();
-        snippet = response.body().getResults()[0].getSummary();
-        urlForArticle = response.body().getResults()[0].getUrl();
-        createNotifications(notificationID);
-      }
-
-      @Override
-      public void onFailure(Call<TopStories> call, Throwable t) {
-        Toast.makeText(NotificationPreferencesActivity.this, "Could not retrieve Top Stories", Toast.LENGTH_SHORT)
-          .show();
-      }
-    });
-  }
-
-  /**
-   * Queries most popular api for first article
-   */
-  private void getMostPopularArticles(final int notificationID) {
-    NewYorkTimes.getInstance().getMostPopular(MostPopular.Type.EMAILED, MostPopular.Section.ALL, MostPopular.Time.DAY)
-      .enqueue(new Callback<MostPopular>() {
-        @Override
-        public void onResponse(Call<MostPopular> call, Response<MostPopular> response) {
-          title = response.body().getResults()[0].getTitle();
-          snippet = response.body().getResults()[0].getSummary();
-          urlForArticle = response.body().getResults()[0].getUrl();
-          createNotifications(notificationID);
-        }
-
-        @Override
-        public void onFailure(Call<MostPopular> call, Throwable t) {
-          Toast.makeText(NotificationPreferencesActivity.this, "Could not retrieve Most Popular Stories", Toast.LENGTH_SHORT)
-            .show();
-        }
-      });
-  }
-
-  /**
-   * Creates notifications for top article of selected category
-   * If the notification is clicked on, the user will be taken to the article
-   */
-  private void createNotifications(int notificationID) {
-    Intent intent = new Intent(this, ArticleActivity.class);
-    intent.putExtra(ArticleFeedFragment.URL_EXTRA_KEY, urlForArticle);
-    PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
-
-    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
-    mBuilder.setSmallIcon(R.drawable.ic_ny_times_notification);
-    mBuilder.setContentTitle(title);
-    mBuilder.setContentText(snippet);
-    mBuilder.setContentIntent(pIntent);
-    mBuilder.setPriority(Notification.PRIORITY_DEFAULT);
-    mBuilder.setAutoCancel(true);
-
-    mNotificationManager.notify(notificationID, mBuilder.build());
   }
 
   /**
@@ -368,7 +247,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
       JobInfo.Builder builder = new JobInfo.Builder( 1,
         new ComponentName( getPackageName(),
           JobSchedulerService.class.getName() ) );
-      builder.setPeriodic( 36000000 );
+      builder.setPeriodic( 216000000 );
       if( mJobScheduler.schedule( builder.build() ) <= 0 ) {
         //If something goes wrong
       }
