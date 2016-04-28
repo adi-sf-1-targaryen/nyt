@@ -147,7 +147,7 @@ public class ArticleFeedAdapter extends RecyclerView.Adapter<ArticleFeedAdapter.
     String largeDate = story.getPublished();
     if (largeDate != null) {
       String alteredDate = largeDate.substring(0, 10);
-      holder.date.setText(alteredDate);
+
     }
 
     holder.snippet.setText(story.getSummary());
